@@ -2,14 +2,9 @@
 import os, subprocess
 
 # Local dependency paths, adapt them to your setup
-godot_headers_path = ARGUMENTS.get("headers", "godot_headers/")
-zlib_path = ARGUMENTS.get("zlib_path", "zlib/")
-zlib_library_path = ARGUMENTS.get("zlib_library", "zlib/build/release/zlibstatic")
-libpng_library_path = ARGUMENTS.get("libpng_library", "libpng/build/Release/libpng16_static")
-libvnc_path = ARGUMENTS.get("libvnc_path", "libvncserver/")
-libvnc_library_path = ARGUMENTS.get("libvnc_library", "libvncserver/build/Release/vncclient")
-cpp_bindings_path = ARGUMENTS.get("cpp_bindings_path", "cpp_bindings/")
-cpp_bindings_library_path = ARGUMENTS.get("cpp_bindings_library", "cpp_bindings/bin/godot_cpp_bindings")
+godot_headers_path = ARGUMENTS.get("headers", "godot-cpp/godot_headers/")
+cpp_bindings_path = ARGUMENTS.get("cpp_bindings_path", "godot-cpp/")
+cpp_bindings_library_path = ARGUMENTS.get("cpp_bindings_library", "godot-cpp/bin/godot-cpp")
 
 target = ARGUMENTS.get("target", "debug")
 
@@ -31,12 +26,16 @@ def add_sources(sources, directory):
         if file.endswith('.cpp'):
             sources.append(directory + '/' + file)
 
+target_name = 'demo/addons/gdprocmesh/bin/'
+
 if platform == "osx":
     env.Append(CCFLAGS = ['-g','-O3', '-arch', 'x86_64'])
     env.Append(LINKFLAGS = ['-arch', 'x86_64'])
+    target_name += 'osx/'
 
 if platform == "linux":
     env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++14'])
+    target_name += 'x11/'
 
 if platform == "windows":
     env.Append(CCFLAGS = ['-DWIN32', '-D_WIN32', '-D_WINDOWS', '-W3', '-GR', '-D_CRT_SECURE_NO_WARNINGS'])
@@ -44,13 +43,15 @@ if platform == "windows":
         env.Append(CCFLAGS = ['-EHsc', '-D_DEBUG', '-MDd'])
     else:
         env.Append(CCFLAGS = ['-O2', '-EHsc', '-DNDEBUG', '-MD'])
+    target_name += 'win64/'
+    cpp_bindings_library_path += '.windows.64'
 
 # , 'include', 'include/core'
-env.Append(CPPPATH=['.', 'src/', godot_headers_path, zlib_path, libvnc_path, libvnc_path + 'common/', libvnc_path + 'build/', cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/'])
-env.Append(LIBS=[libvnc_library_path, libpng_library_path, zlib_library_path, cpp_bindings_library_path, 'WS2_32'])
+env.Append(CPPPATH=['.', 'src/', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
+env.Append(LIBS=[cpp_bindings_library_path])
 
 sources = []
 add_sources(sources, "src")
 
-library = env.SharedLibrary(target='demo/bin/gdvnc', source=sources)
+library = env.SharedLibrary(target=target_name + 'libgdprocmesh', source=sources)
 Default(library)
