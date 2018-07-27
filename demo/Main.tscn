@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdns" type="Script" id=2]
+[ext_resource path="res://DirectionalLight.gd" type="Script" id=3]
 
 [sub_resource type="ArrayMesh" id=1]
 
@@ -19,7 +20,7 @@ surfaces/0 = {
 "vertex_count": 8
 }
 script = ExtResource( 2 )
-_sections_unfolded = [ "Script" ]
+_sections_unfolded = [ "Surface 1" ]
 size = 2.0
 
 [node name="Main" type="Spatial" index="0"]
@@ -79,4 +80,7 @@ directional_shadow_normal_bias = 0.8
 directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
+script = ExtResource( 3 )
+_sections_unfolded = [ "Light", "Script", "script" ]
+test = 2
 

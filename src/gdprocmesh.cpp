@@ -1,24 +1,11 @@
 #include "gdprocmesh.h"
+#include <GlobalConstants.hpp>
+#include <Dictionary.hpp>
 #include <VisualServer.hpp>
 
 using namespace godot;
 
-void GDProcMesh::_register_methods() {
-	register_method("_update", &GDProcMesh::_update);
-
-	/* register property setter and getter */
-	register_method("get_size", &GDProcMesh::get_size);
-	register_method("set_size", &GDProcMesh::set_size);
-	register_property<GDProcMesh, float>("size", &GDProcMesh::set_size, &GDProcMesh::get_size, 1.0);
-}
-
-void GDProcMesh::_init() {
-	printf("_init called\n");
-
-	/* need to think of a way to skip the first update if this is an existing node as our resulting mesh will be cached thanks to using ArrayMesh */
-	is_dirty = true;
-	call_deferred("_update");
-}
+/* Keeping this as example code, we're changing to _get_property_list, _get and _set because our properties will change
 
 float GDProcMesh::get_size() const {
 	return size;
@@ -31,6 +18,113 @@ void GDProcMesh::set_size(float new_size) {
 		is_dirty = true;
 		call_deferred("_update");
 	}
+}
+
+*/
+
+Array GDProcMesh::_get_property_list() {
+	Array arr;
+
+	{
+		Dictionary prop;
+		prop["name"] = "size";
+		prop["type"] = GlobalConstants::TYPE_REAL;
+//		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
+//		prop["hint_string"] = "";
+//		prop["usage"] = PROPERTY_USAGE_XYZ;
+
+		arr.push_back(prop);
+	}
+
+/*
+	{
+		Dictionary prop;
+
+		prop["name"] = "test";
+		prop["type"] = GlobalConstants::TYPE_INT;
+
+		arr.push_back(prop);
+	}
+*/
+	return arr;
+}
+
+Variant GDProcMesh::_get(String p_name) {
+	if (p_name == "size") {
+		printf("get size\n");
+		return Variant(size);
+	}
+
+	printf("get unknown: %s\n", p_name.utf8().get_data());
+	return Variant();
+}
+
+bool GDProcMesh::_set(String p_name, Variant p_value) {
+	if (p_name == "size") {
+		size = p_value;
+		is_dirty = true;
+		call_deferred("_update");
+
+		printf("set size to %0.2f\n", size);
+		return true;
+	}
+
+	// Didn't handle it? exit!
+	printf("set unknown: %s\n", p_name.utf8().get_data());
+	return false;
+}
+
+int GDProcMesh::get_free_id() {
+	int new_id = 1;
+
+	// loop through our keys to find our highest + 1
+
+
+	return new_id;
+}
+
+bool GDProcMesh::node_id_is_used(int p_id) {
+	// need to implement
+
+	return false;
+}
+
+void GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
+	if (p_id == 0) {
+		// no id set? get an unused id
+		p_id = get_free_id();
+	} else if (node_id_is_used(p_id)) {
+		// can't add this!
+		return;
+	}
+
+	nodes[p_id] = p_node;
+}
+
+void GDProcMesh::_register_methods() {
+	register_method("_update", &GDProcMesh::_update);
+
+	/* get properties the more difficult way so we dynamically change the number of properties */
+	register_method("_get_property_list", &GDProcMesh::_get_property_list);
+	register_method("_get", &GDProcMesh::_get);
+	register_method("_set", &GDProcMesh::_set);
+
+	/* old register property setter and getter, easier but fixed number of properties
+	register_method("get_size", &GDProcMesh::get_size);
+	register_method("set_size", &GDProcMesh::set_size);
+	register_property<GDProcMesh, float>("size", &GDProcMesh::set_size, &GDProcMesh::get_size, 1.0);
+	*/
+}
+
+void GDProcMesh::_init() {
+	printf("_init called\n");
+
+	// set some defaults...
+	size = 1.0;
+
+	/* need to think of a way to skip the first update if this is an existing node as our resulting mesh will be cached thanks to using ArrayMesh */
+	is_dirty = true;
+	call_deferred("_update");
 }
 
 void GDProcMesh::_update() {
@@ -140,10 +234,10 @@ void GDProcMesh::_update() {
 
 GDProcMesh::GDProcMesh() {
 	printf("GDProcMesh called\n");
-
-	size = 1.0;
 }
 
 GDProcMesh::~GDProcMesh() {
+	// do we need to clean up our map?
+
 	printf("~GDProcMesh called\n");
 }
