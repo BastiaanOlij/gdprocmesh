@@ -13,21 +13,15 @@ Instructions below have only been tested on Windows and the scons file may need 
 
 It is best to clone this repository from a terminal like so:
 ```
-git clone https://github.com/BastiaanOlij/gdprocmesh.git
+git clone --recursive https://github.com/BastiaanOlij/gdprocmesh.git
 cd gdprocmesh
 ```
 
-This project relies on [godot_headers](https://github.com/GodotNativeTools/godot_headers) and [godot-cpp](https://github.com/GodotNativeTools/godot-cpp) which have been submoduled in this repository so run:
-```
-git submodule init
-git submodule update
-cd godot-cpp
-git submodule init
-git submodule update
-```
+This project relies on [godot_headers](https://github.com/GodotNativeTools/godot_headers) and [godot-cpp](https://github.com/GodotNativeTools/godot-cpp) which have been submoduled in this repository.
 
-And this dependency will need to be compiled (assuming your godot-cpp folder is still current):
+These dependencies will need to be compiled:
 ```
+cd godot-cpp
 scons platform=windows generate-bindings=yes
 cd ..
 ```
