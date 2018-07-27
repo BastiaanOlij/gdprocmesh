@@ -46,6 +46,24 @@ Array GDProcMesh::_get_property_list() {
 		arr.push_back(prop);
 	}
 */
+
+	// add a property for each node that we have
+	std::map<int, Ref<GDProcNode> >::iterator it;
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		Dictionary prop;
+		String name = "nodes/";
+		name += String(it->first);
+
+		prop["name"] = name;
+		prop["type"] = GlobalConstants::TYPE_OBJECT;
+		prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+		prop["hint_string"] = "GDProcNode";
+//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
+
+		arr.push_back(prop);		
+	}
+
+
 	return arr;
 }
 
@@ -78,13 +96,20 @@ int GDProcMesh::get_free_id() {
 	int new_id = 1;
 
 	// loop through our keys to find our highest + 1
-
+	std::map<int, Ref<GDProcNode> >::iterator it;
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		if (it->first >= new_id) {
+			new_id = it->first + 1;
+		}
+	}
 
 	return new_id;
 }
 
 bool GDProcMesh::node_id_is_used(int p_id) {
-	// need to implement
+	if (nodes.find(p_id) != nodes.end()) {
+		return true;
+	}
 
 	return false;
 }
@@ -220,13 +245,22 @@ void GDProcMesh::_update() {
 	arr[ArrayMesh::ARRAY_NORMAL] = Variant(normals);
 	arr[ArrayMesh::ARRAY_INDEX] = Variant(indices);
 
+	String name = "Default";
+	Ref<Material> material;
+
 	// clear meshes in reverse order
 	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
+		if (s==0) {
+			name = surface_get_name(s);
+			material = surface_get_material(s);
+		}
 		surface_remove(s);
 	}
 
 	// lets add a new surface
 	add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arr);
+	surface_set_name(0, name);
+	surface_set_material(0, material);
 
 	// and we're good
 	is_dirty = false;

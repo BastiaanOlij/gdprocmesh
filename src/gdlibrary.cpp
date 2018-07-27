@@ -14,6 +14,8 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::Godot::nativescript_init(handle);
 
 	godot::register_tool_class<godot::GDProcMesh>();
+
+	// are these also tools or normal classes?
 	godot::register_tool_class<godot::GDProcNode>();
 //	godot::register_class<godot::GDProcMesh>();
 }

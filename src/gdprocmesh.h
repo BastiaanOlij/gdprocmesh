@@ -3,6 +3,7 @@
 
 #include <Godot.hpp>
 #include <ArrayMesh.hpp>
+#include <Material.hpp>
 #include <map>
 
 #include "gdprocnode.h"
