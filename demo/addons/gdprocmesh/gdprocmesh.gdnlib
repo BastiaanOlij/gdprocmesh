@@ -11,4 +11,4 @@ Windows.64=[  ]
 singleton=false
 load_once=true
 symbol_prefix="godot_"
-reloadable=true
+reloadable=false

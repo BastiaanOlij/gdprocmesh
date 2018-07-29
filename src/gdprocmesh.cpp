@@ -47,6 +47,7 @@ Array GDProcMesh::_get_property_list() {
 	}
 */
 
+/*
 	// add a property for each node that we have
 	std::map<int, Ref<GDProcNode> >::iterator it;
 	for (it = nodes.begin(); it != nodes.end(); it++) {
@@ -62,7 +63,7 @@ Array GDProcMesh::_get_property_list() {
 
 		arr.push_back(prop);		
 	}
-
+*/
 
 	return arr;
 }
@@ -73,22 +74,20 @@ Variant GDProcMesh::_get(String p_name) {
 		return Variant(size);
 	}
 
-	printf("get unknown: %s\n", p_name.utf8().get_data());
+	// Must be a property of our superclass, returning an empty (NIL) variant will handle it further
 	return Variant();
 }
 
 bool GDProcMesh::_set(String p_name, Variant p_value) {
 	if (p_name == "size") {
 		size = p_value;
-		is_dirty = true;
-		call_deferred("_update");
+		trigger_update();
 
 		printf("set size to %0.2f\n", size);
 		return true;
 	}
 
-	// Didn't handle it? exit!
-	printf("set unknown: %s\n", p_name.utf8().get_data());
+	// Must be a property of our superclass, returning false will handle it further
 	return false;
 }
 
@@ -123,11 +122,20 @@ void GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
 		return;
 	}
 
+	// trigger our trigger_update on a change of this node (commented out because I have a weird const error)
+//	GDProcNode * node = p_node.ptr();
+//	node->connect("changed", this, "trigger_update");
+
 	nodes[p_id] = p_node;
+
+	// trigger update
+	trigger_update();
 }
 
 void GDProcMesh::_register_methods() {
+	register_method("_post_init", &GDProcMesh::_post_init);
 	register_method("_update", &GDProcMesh::_update);
+	register_method("trigger_update", &GDProcMesh::trigger_update);
 
 	/* get properties the more difficult way so we dynamically change the number of properties */
 	register_method("_get_property_list", &GDProcMesh::_get_property_list);
@@ -141,15 +149,89 @@ void GDProcMesh::_register_methods() {
 	*/
 }
 
+void GDProcMesh::trigger_update() {
+	if (!is_dirty) {
+		is_dirty = true;
+		call_deferred("_update");
+	}
+}
+
 void GDProcMesh::_init() {
 	printf("_init called\n");
 
 	// set some defaults...
 	size = 1.0;
 
-	/* need to think of a way to skip the first update if this is an existing node as our resulting mesh will be cached thanks to using ArrayMesh */
+	// prevent deferred updates until we're ready
 	is_dirty = true;
-	call_deferred("_update");
+
+	// this should delay running _post_init until after all our data has been loaded
+	call_deferred("_post_init");
+}
+
+void GDProcMesh::_post_init() {
+	printf("_post_init called\n");
+	is_dirty = false;
+
+	if (nodes.size() == 0) {
+		// we have no nodes, so create our defaults...
+//		Ref<GDProcNode> surface;
+		Ref<GDProcSurface> surface;
+
+		printf("Creating instance\n");
+		surface.instance();
+
+		printf("Adding instance\n");
+		add_node(surface);
+	}
+}
+
+bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
+	switch (p_node->get_status()) {
+		case GDProcNode::PROCESS_STATUS_INPROGRESS: {
+			// this is bad, we have a circular dependency
+			printf("Found circular dependency in procedural mesh!\n");
+			return false;
+		}; break;
+		case GDProcNode::PROCESS_STATUS_UNCHANGED: {
+			// already processed and found it to be unchanged
+			return false;
+		}; break;
+		case GDProcNode::PROCESS_STATUS_CHANGED: {
+			// already processed and found it to be changed
+			return true;
+		}; break;
+		default: {
+			bool updated = false;
+			Array inputs;
+
+			// set node as being in progress
+			p_node->set_status(GDProcNode::PROCESS_STATUS_INPROGRESS);
+
+			// check all our inputs
+			for (int i = 0; i < p_node->get_input_connector_count(); i++) {
+				// find if this has been connected
+
+				// if so we need to call its update
+				// if do_update_node(input_id, input_node) {
+				//	updated = true
+				// }
+
+				// if not, just add a NIL input
+				inputs.push_back(Variant());
+			}
+
+			// update this node
+			if (p_node->update(updated, inputs)) {
+				updated = true;
+			}
+
+			// set node as processed with our result status..
+			p_node->set_status(updated ? GDProcNode::PROCESS_STATUS_CHANGED : GDProcNode::PROCESS_STATUS_UNCHANGED);
+
+			return updated;
+		}; break;
+	}
 }
 
 void GDProcMesh::_update() {
@@ -159,108 +241,57 @@ void GDProcMesh::_update() {
 		return;
 	}
 
-	// just testing with a cube for now
-	printf("Update called, updating mesh\n");
+	printf("Update called\n");
 
-	// define some variables
-	PoolVector3Array vertices;
-	PoolVector3Array normals;
-	PoolIntArray indices;
+	// if we change any surface we turn this to true and check if we need to do any post processing.
+	bool has_changed = false; 
 
-	// prepare our data
-	vertices.resize(8);
-	{
-		PoolVector3Array::Write w = vertices.write();
-		Vector3 *v = w.ptr();
-		float hs = size / 2.0f;
-
-		v[0].x = -hs; v[0].y = -hs; v[0].z = -hs;
-		v[1].x =  hs; v[1].y = -hs; v[1].z = -hs;
-		v[2].x =  hs; v[2].y =  hs; v[2].z = -hs;
-		v[3].x = -hs; v[3].y =  hs; v[3].z = -hs;
-
-		v[4].x = -hs; v[4].y = -hs; v[4].z =  hs;
-		v[5].x =  hs; v[5].y = -hs; v[5].z =  hs;
-		v[6].x =  hs; v[6].y =  hs; v[6].z =  hs;
-		v[7].x = -hs; v[7].y =  hs; v[7].z =  hs;
+	// Reset our process status, we want to check each node atleast once...
+	std::map<int, Ref<GDProcNode> >::iterator it;
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		it->second->set_status(GDProcNode::PROCESS_STATUS_PENDING);
 	}
 
-	// prepare our data
-	normals.resize(8);
-	{
-		PoolVector3Array::Write w = normals.write();
-		Vector3 *n = w.ptr();
+	// now find all our final nodes
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		if (it->second->get_output_connector_count() == 0) {
+			// trigger updating this node
+			if (do_update_node(it->first, it->second)) {
+				String name = "Surface_1";
+				Ref<Material> material;
 
-		// this will look ugly but we're just testing..
-		n[0].x = -1.0; n[0].y = -1.0; n[0].z = -1.0;
-		n[1].x =  1.0; n[1].y = -1.0; n[1].z = -1.0;
-		n[2].x =  1.0; n[2].y =  1.0; n[2].z = -1.0;
-		n[3].x = -1.0; n[3].y =  1.0; n[3].z = -1.0;
+				// find our surface and get some info we may want to cache like our material
+				int64_t s = surface_find_by_name(name);
+				if (s != -1) {
+					// remember our material, we're reusing it!
+					material = surface_get_material(s);
 
-		n[4].x = -1.0; n[4].y = -1.0; n[4].z =  1.0;
-		n[5].x =  1.0; n[5].y = -1.0; n[5].z =  1.0;
-		n[6].x =  1.0; n[6].y =  1.0; n[6].z =  1.0;
-		n[7].x = -1.0; n[7].y =  1.0; n[7].z =  1.0;
+					// clear our surface
+					surface_remove(s);
+				}
 
-		for (int i = 0; i < 8; i++) {
-			n[i].normalize();
+				// get our new surface
+				Variant surface = it->second->get_output(0);
+
+				// check if this is a valid array and update!
+				if (surface.get_type() == Variant::ARRAY) {
+					Array arr = surface;
+
+					// lets add a new surface
+					add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arr);
+					surface_set_name(0, name);
+					surface_set_material(0, material);
+				}
+			}
 		}
 	}
 
-	indices.resize(12 * 3);
-	{
-		PoolIntArray::Write w = indices.write();
-		int *i = w.ptr();
-
-		// front
-		i[ 0] = 0; i[ 1] = 1; i[ 2] = 3;
-		i[ 3] = 1; i[ 4] = 2; i[ 5] = 3;
-
-		// back
-		i[ 6] = 5; i[ 7] = 4; i[ 8] = 6;
-		i[ 9] = 4; i[10] = 7; i[11] = 6;
-
-		// left
-		i[12] = 4; i[13] = 0; i[14] = 3;
-		i[15] = 4; i[16] = 3; i[17] = 7;
-
-		// right
-		i[18] = 1; i[19] = 5; i[20] = 6;
-		i[21] = 1; i[22] = 6; i[23] = 2;
-
-		// top
-		i[24] = 4; i[25] = 5; i[26] = 1;
-		i[27] = 4; i[28] = 1; i[29] = 0;
-
-		// bottom
-		i[30] = 3; i[31] = 2; i[32] = 6;
-		i[33] = 3; i[34] = 6; i[35] = 7;
-	}
-
-	// load up our array
-	Array arr;
-	arr.resize(ArrayMesh::ARRAY_MAX);
-
-	arr[ArrayMesh::ARRAY_VERTEX] = Variant(vertices);
-	arr[ArrayMesh::ARRAY_NORMAL] = Variant(normals);
-	arr[ArrayMesh::ARRAY_INDEX] = Variant(indices);
-
-	String name = "Default";
-	Ref<Material> material;
-
-	// clear meshes in reverse order
+	// clear left overs (we need to improve on this)
 	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
-		if (s==0) {
-			name = surface_get_name(s);
-			material = surface_get_material(s);
+		if (surface_get_name(s) != "Surface_1") {
+			surface_remove(s);
 		}
-		surface_remove(s);
 	}
-
-	// lets add a new surface
-	add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arr);
-	surface_set_name(0, name);
-	surface_set_material(0, material);
 
 	// and we're good
 	is_dirty = false;

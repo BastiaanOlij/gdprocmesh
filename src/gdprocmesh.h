@@ -4,6 +4,8 @@
 #include <Godot.hpp>
 #include <ArrayMesh.hpp>
 #include <Material.hpp>
+
+// yes, yuck, using std::map for now....
 #include <map>
 
 #include "gdprocnode.h"
@@ -15,11 +17,12 @@ class GDProcMesh : public ArrayMesh {
 
 private:
 	bool is_dirty;
+	void trigger_update();
 
-	// yes, yuck, use std::map....
 	std::map<int, Ref<GDProcNode> > nodes;
 	int get_free_id();
 	bool node_id_is_used(int p_id);
+	bool do_update_node(int p_id, Ref<GDProcNode> p_node);
 
 	// testing
 	float size;
@@ -28,6 +31,7 @@ public:
 	static void _register_methods();
 	
 	void _init();
+	void _post_init();
 	void _update();
 
 	/* properties */
