@@ -22,9 +22,10 @@ This project relies on [godot_headers](https://github.com/GodotNativeTools/godot
 These dependencies will need to be compiled:
 ```
 cd godot-cpp
-scons platform=windows generate-bindings=yes
+scons platform=windows generate-bindings=yes use_custom_api_file=yes custom_api_file=../api.json
 cd ..
 ```
+(custom api is temporary as we needed a newer api file)
 
 Now we can compile our module:
 ```
