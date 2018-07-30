@@ -9,6 +9,8 @@
 #include <map>
 
 #include "gdprocnode.h"
+#include "gdprocsurface.h"
+#include "gdprocbox.h"
 
 namespace godot {
 
@@ -40,7 +42,7 @@ public:
 	bool _set(String p_name, Variant p_value);
 
 	/* nodes */
-	void add_node(const Ref<GDProcNode> &p_node, int p_id = 0);
+	int add_node(const Ref<GDProcNode> &p_node, int p_id = 0);
 
 	/* old
 	float get_size() const;

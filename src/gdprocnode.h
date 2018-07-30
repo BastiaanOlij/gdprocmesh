@@ -51,32 +51,6 @@ public:
 	void set_position(Vector2 p_pos);
 };
 
-class GDProcSurface : public GDProcNode {
-	/* this will fail, GODOT_SUBCLASS is broken */
-	GODOT_SUBCLASS(GDProcSurface, GDProcNode)
-
-private:
-	Array surface_arr;
-
-public:
-	static void _register_methods();
-
-	void _init();
-
-	virtual bool update(bool p_inputs_updated, const Array &p_inputs);
-
-	virtual int get_input_connector_count() const;
-	virtual Variant::Type get_input_connector_type(int p_idx) const;
-	virtual const String get_input_connector_name(int p_idx) const;
-
-	// Here we make a special exception.
-	// We don't declare our outputs because our user can't link up the output 
-	// but we do need to access our final surface array.
-	virtual int get_output_connector_count() const;
-	virtual const Variant get_output(int p_idx) const;
-
-};
-
 }
 
 #endif /* !GD_PROC_NODE_H */

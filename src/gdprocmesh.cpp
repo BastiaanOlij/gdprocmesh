@@ -27,7 +27,7 @@ Array GDProcMesh::_get_property_list() {
 
 	{
 		Dictionary prop;
-		prop["name"] = "size";
+		prop["name"] = "data/size";
 		prop["type"] = GlobalConstants::TYPE_REAL;
 //		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
 //		prop["hint_string"] = "";
@@ -65,6 +65,21 @@ Array GDProcMesh::_get_property_list() {
 	}
 */
 
+	// now add a property for our connection
+	{
+		Dictionary prop;
+		prop["name"] = "graph/connections";
+		prop["type"] = GlobalConstants::TYPE_INT_ARRAY;
+//		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
+//		prop["hint_string"] = "";
+//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
+
+		arr.push_back(prop);
+	}
+
+
+	// now add properties for any inputs
+
 	return arr;
 }
 
@@ -72,6 +87,12 @@ Variant GDProcMesh::_get(String p_name) {
 	if (p_name == "size") {
 		printf("get size\n");
 		return Variant(size);
+	} else if (p_name == "graph/connections") {
+		PoolIntArray ret;
+
+		// add our connection data here
+
+		return Variant(ret);
 	}
 
 	// Must be a property of our superclass, returning an empty (NIL) variant will handle it further
@@ -84,6 +105,12 @@ bool GDProcMesh::_set(String p_name, Variant p_value) {
 		trigger_update();
 
 		printf("set size to %0.2f\n", size);
+		return true;
+	} else if (p_name == "graph/connections") {
+		PoolIntArray data = p_value;
+
+		// need to process our array
+
 		return true;
 	}
 
@@ -113,23 +140,26 @@ bool GDProcMesh::node_id_is_used(int p_id) {
 	return false;
 }
 
-void GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
+int GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
 	if (p_id == 0) {
 		// no id set? get an unused id
 		p_id = get_free_id();
 	} else if (node_id_is_used(p_id)) {
 		// can't add this!
-		return;
+		return -1;
 	}
 
 	// trigger our trigger_update on a change of this node (commented out because I have a weird const error)
-//	GDProcNode * node = p_node.ptr();
-//	node->connect("changed", this, "trigger_update");
+	// GDProcNode * node = p_node.ptr();
+	// node->connect("changed", this, "trigger_update");
 
 	nodes[p_id] = p_node;
 
 	// trigger update
 	trigger_update();
+
+	// return the ID that we ended up using
+	return p_id;
 }
 
 void GDProcMesh::_register_methods() {
@@ -157,8 +187,6 @@ void GDProcMesh::trigger_update() {
 }
 
 void GDProcMesh::_init() {
-	printf("_init called\n");
-
 	// set some defaults...
 	size = 1.0;
 
@@ -170,19 +198,24 @@ void GDProcMesh::_init() {
 }
 
 void GDProcMesh::_post_init() {
-	printf("_post_init called\n");
 	is_dirty = false;
 
 	if (nodes.size() == 0) {
 		// we have no nodes, so create our defaults...
-//		Ref<GDProcNode> surface;
-		Ref<GDProcSurface> surface;
 
-		printf("Creating instance\n");
+		// create a box
+		Ref<GDProcBox> box;
+		box.instance();
+
+		int box_id = add_node(box);
+
+		// create our surface
+		Ref<GDProcSurface> surface;
 		surface.instance();
 
-		printf("Adding instance\n");
-		add_node(surface);
+		int surface_id = add_node(surface);
+
+		// add our connections
 	}
 }
 
@@ -241,8 +274,6 @@ void GDProcMesh::_update() {
 		return;
 	}
 
-	printf("Update called\n");
-
 	// if we change any surface we turn this to true and check if we need to do any post processing.
 	bool has_changed = false; 
 
@@ -263,6 +294,8 @@ void GDProcMesh::_update() {
 				// find our surface and get some info we may want to cache like our material
 				int64_t s = surface_find_by_name(name);
 				if (s != -1) {
+					printf("Removing surface %s\n", name.utf8().get_data());
+
 					// remember our material, we're reusing it!
 					material = surface_get_material(s);
 
@@ -277,10 +310,24 @@ void GDProcMesh::_update() {
 				if (surface.get_type() == Variant::ARRAY) {
 					Array arr = surface;
 
-					// lets add a new surface
-					add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arr);
-					surface_set_name(0, name);
-					surface_set_material(0, material);
+					if (arr.size() == ArrayMesh::ARRAY_MAX) {
+						// log
+						printf("Updating surface %s\n", name.utf8().get_data());
+
+						// lets add a new surface
+						int64_t new_surface_id = get_surface_count();
+						add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arr);
+
+						surface_set_name(new_surface_id, name);
+
+						if (material.is_valid()) {
+							surface_set_material(new_surface_id, material);								
+						}
+					} else {
+						printf("Final node is not returning a correctly sized array\n");	
+					}
+				} else {
+					printf("Final node is not returning an array \n");
 				}
 			}
 		}
@@ -288,7 +335,9 @@ void GDProcMesh::_update() {
 
 	// clear left overs (we need to improve on this)
 	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
-		if (surface_get_name(s) != "Surface_1") {
+		String name = surface_get_name(s);
+		if (name != "Surface_1") {
+			printf("Removing surface %s\n", name.utf8().get_data());
 			surface_remove(s);
 		}
 	}
