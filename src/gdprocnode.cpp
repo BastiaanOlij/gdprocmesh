@@ -6,7 +6,7 @@ void GDProcNode::_register_methods() {
 	// position
 	register_method("get_position", &GDProcNode::get_position);
 	register_method("set_position", &GDProcNode::set_position);
-	register_property<GDProcNode, Vector2>("size", &GDProcNode::set_position, &GDProcNode::get_position, Vector2());
+	register_property<GDProcNode, Vector2>("position", &GDProcNode::set_position, &GDProcNode::get_position, Vector2());
 
 	// connectors
 	register_method("get_input_connector_count", &GDProcNode::get_input_connector_count);
@@ -30,7 +30,6 @@ void GDProcNode::set_status(GDProcNode::ProcessStatus p_status) {
 }
 
 void GDProcNode::_init() {
-	printf("GDProcNode::_init\n");
 	must_update = true;
 	position = Vector2(0.0, 0.0);
 }

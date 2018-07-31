@@ -1,10 +1,32 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdns" type="Script" id=2]
-[ext_resource path="res://DirectionalLight.gd" type="Script" id=3]
+[ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdnlib" type="GDNativeLibrary" id=2]
+[ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdns" type="Script" id=3]
+[ext_resource path="res://DirectionalLight.gd" type="Script" id=4]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="NativeScript" id=1]
+
+class_name = "GDProcBox"
+library = ExtResource( 2 )
+
+[sub_resource type="Resource" id=2]
+
+script = SubResource( 1 )
+position = Vector2( 0, 0 )
+size = Vector3( 2, 2, 2 )
+
+[sub_resource type="NativeScript" id=3]
+
+class_name = "GDProcSurface"
+library = ExtResource( 2 )
+
+[sub_resource type="Resource" id=4]
+
+script = SubResource( 3 )
+position = Vector2( 0, 0 )
+
+[sub_resource type="SpatialMaterial" id=5]
 
 render_priority = 0
 flags_transparent = false
@@ -31,7 +53,7 @@ params_billboard_mode = 0
 params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.878431, 0.364706, 0.364706, 1 )
+albedo_color = Color( 0.815686, 0.262745, 0.262745, 1 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -58,9 +80,9 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo" ]
+_sections_unfolded = [ "Albedo", "Emission" ]
 
-[sub_resource type="ArrayMesh" id=2]
+[sub_resource type="ArrayMesh" id=6]
 
 blend_shape_mode = 0
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -71,20 +93,22 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 36,
-"material": SubResource( 1 ),
-"name": "Surface_1",
+"material": SubResource( 5 ),
+"name": "Surface_2",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 8
 }
-script = ExtResource( 2 )
-_sections_unfolded = [ "Script", "Surface 1" ]
-size = 2.0
+script = ExtResource( 3 )
+_sections_unfolded = [ "Data", "Graph", "Nodes", "Script", "Surface 1", "graph/connections", "nodes/1", "nodes/2" ]
+nodes/1 = SubResource( 2 )
+nodes/2 = SubResource( 4 )
+graph/connections = PoolIntArray( 2, 0, 1, 0, 2, 1, 1, 1, 2, 8, 1, 2 )
 
 [node name="Main" type="Spatial" index="0"]
 script = ExtResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+[node name="ProceduralMesh" type="MeshInstance" parent="." index="0"]
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -94,7 +118,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 2 )
+mesh = SubResource( 6 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Material" ]
@@ -139,7 +163,7 @@ directional_shadow_normal_bias = 0.8
 directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 _sections_unfolded = [ "Light", "Script", "script" ]
 test = 2
 

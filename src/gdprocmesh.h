@@ -5,7 +5,8 @@
 #include <ArrayMesh.hpp>
 #include <Material.hpp>
 
-// yes, yuck, using std::map for now....
+// yes using std C++
+#include <vector>
 #include <map>
 
 #include "gdprocnode.h"
@@ -26,8 +27,35 @@ private:
 	bool node_id_is_used(int p_id);
 	bool do_update_node(int p_id, Ref<GDProcNode> p_node);
 
-	// testing
-	float size;
+	struct ctor {
+		int node;
+		int connector;
+
+		ctor() {
+			node = -1;
+			connector = 0;
+		}
+
+		ctor(int p_node, int p_connector) {
+			node = p_node;
+			connector = p_connector;
+		}
+	};
+
+	struct connection {
+		ctor input;
+		ctor output;
+
+		connection(int p_input_node, int p_input_connector, int p_output_node, int p_output_connector) {
+			input.node = p_input_node;
+			input.connector = p_input_connector;
+			output.node = p_output_node;
+			output.connector = p_output_connector;
+		}
+	};
+
+	std::vector<connection> connections;
+	const ctor get_output_for_input(int p_input_node, int p_input_connector) const;
 
 public:
 	static void _register_methods();
@@ -43,6 +71,12 @@ public:
 
 	/* nodes */
 	int add_node(const Ref<GDProcNode> &p_node, int p_id = 0);
+	int find_node(const Ref<GDProcNode> &p_node);
+	void remove_node(int p_id);
+
+	/* connections */
+	void add_connection(int p_input_node, int p_input_connector, int p_output_node, int p_output_connector);
+	void remove_connection(int p_input_node, int p_input_connector);
 
 	/* old
 	float get_size() const;

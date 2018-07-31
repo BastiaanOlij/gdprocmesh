@@ -5,65 +5,26 @@
 
 using namespace godot;
 
-/* Keeping this as example code, we're changing to _get_property_list, _get and _set because our properties will change
-
-float GDProcMesh::get_size() const {
-	return size;
-}
-
-void GDProcMesh::set_size(float new_size) {
-	printf("Changing size from %0.2f to %0.2f\n", size, new_size);
-	if (size != new_size) {
-		size = new_size;
-		is_dirty = true;
-		call_deferred("_update");
-	}
-}
-
-*/
-
 Array GDProcMesh::_get_property_list() {
 	Array arr;
 
-	{
-		Dictionary prop;
-		prop["name"] = "data/size";
-		prop["type"] = GlobalConstants::TYPE_REAL;
-//		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
-//		prop["hint_string"] = "";
-//		prop["usage"] = PROPERTY_USAGE_XYZ;
-
-		arr.push_back(prop);
-	}
-
-/*
-	{
-		Dictionary prop;
-
-		prop["name"] = "test";
-		prop["type"] = GlobalConstants::TYPE_INT;
-
-		arr.push_back(prop);
-	}
-*/
-
-/*
 	// add a property for each node that we have
 	std::map<int, Ref<GDProcNode> >::iterator it;
 	for (it = nodes.begin(); it != nodes.end(); it++) {
 		Dictionary prop;
 		String name = "nodes/";
-		name += String(it->first);
+		name += String::num_int64(it->first);
 
 		prop["name"] = name;
 		prop["type"] = GlobalConstants::TYPE_OBJECT;
 		prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
 		prop["hint_string"] = "GDProcNode";
+//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
+		// PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE is new and not yet in gdnative..
 //		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
 
 		arr.push_back(prop);		
 	}
-*/
 
 	// now add a property for our connection
 	{
@@ -72,6 +33,8 @@ Array GDProcMesh::_get_property_list() {
 		prop["type"] = GlobalConstants::TYPE_INT_ARRAY;
 //		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
 //		prop["hint_string"] = "";
+//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
+		// PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE is new and not yet in gdnative..
 //		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
 
 		arr.push_back(prop);
@@ -84,13 +47,35 @@ Array GDProcMesh::_get_property_list() {
 }
 
 Variant GDProcMesh::_get(String p_name) {
-	if (p_name == "size") {
-		printf("get size\n");
-		return Variant(size);
+	if (p_name.begins_with(String("nodes/"))) {
+		String index = p_name.split('/')[1];
+		int id = (int) index.to_int();
+		
+		std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(id);
+		if (it == nodes.end()) {
+			printf("Couldn't find node %i\n", id);
+			return Variant();
+		} else {
+			return Variant(it->second);
+		}
 	} else if (p_name == "graph/connections") {
 		PoolIntArray ret;
 
-		// add our connection data here
+		ret.resize((int) connections.size() * 4);
+		{
+			PoolIntArray::Write w = ret.write();
+			int *i = w.ptr();
+			int p = 0;
+
+			// add our connection data here
+			std::vector<connection>::iterator it;
+			for (it = connections.begin(); it != connections.end(); it++) {
+				i[p++] = it->input.node;
+				i[p++] = it->input.connector;
+				i[p++] = it->output.node;
+				i[p++] = it->output.connector;
+			}
+		}
 
 		return Variant(ret);
 	}
@@ -100,16 +85,21 @@ Variant GDProcMesh::_get(String p_name) {
 }
 
 bool GDProcMesh::_set(String p_name, Variant p_value) {
-	if (p_name == "size") {
-		size = p_value;
-		trigger_update();
+	if (p_name.begins_with(String("nodes/"))) {
+		String index = p_name.split('/')[1];
+		int id = (int) index.to_int();
 
-		printf("set size to %0.2f\n", size);
+		printf("Loading node %i from scene\n", id);
+		add_node(p_value, id);
+
 		return true;
 	} else if (p_name == "graph/connections") {
 		PoolIntArray data = p_value;
+		int count = data.size();
 
-		// need to process our array
+		for(int i = 0; i < count; i+=4) {
+			add_connection(data[i], data[i+1], data[i+2], data[i+3]);
+		}
 
 		return true;
 	}
@@ -150,8 +140,8 @@ int GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
 	}
 
 	// trigger our trigger_update on a change of this node (commented out because I have a weird const error)
-	// GDProcNode * node = p_node.ptr();
-	// node->connect("changed", this, "trigger_update");
+	Ref<GDProcNode> r = p_node;
+	r->connect("changed", this, "trigger_update");
 
 	nodes[p_id] = p_node;
 
@@ -162,21 +152,111 @@ int GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
 	return p_id;
 }
 
+int GDProcMesh::find_node(const Ref<GDProcNode> &p_node) {
+	std::map<int, Ref<GDProcNode> >::iterator it;
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		// note, == on Ref<> compares internal pointer :)
+		if (it->second == p_node) {
+			return it->first;
+		}
+	}
+
+	return -1;
+}
+
+void GDProcMesh::remove_node(int p_id) {
+	size_t max = connections.size(); // size_t is unsigned so will wrap around!!
+	if (max != 0) {
+		// first remove any connector related to this
+		for (size_t i = max - 1; i >= 0 && i < max; i--) {
+			if ((connections[i].input.node == p_id) || (connections[i].output.node == p_id)) {
+				connections.erase(connections.begin() + i);
+			}
+		}
+	}
+
+	// now remove our node
+	nodes.erase(p_id);
+
+	// trigger update
+	trigger_update();
+}
+
+void GDProcMesh::add_connection(int p_input_node, int p_input_connector, int p_output_node, int p_output_connector) {
+	// does our input node exist?
+	if (!node_id_is_used(p_input_node)) {
+		printf("Unknown input node %i\n", p_input_node);
+		return;
+	}
+
+	// does our output node exist?
+	if (!node_id_is_used(p_output_node)) {
+		printf("Unknown output node %i\n", p_output_node);
+		return;
+	}
+
+	// first remove any existing connection on our input connector
+	remove_connection(p_input_node, p_input_connector);
+
+	// now add a new one
+	printf("Add new connection\n");
+	connections.push_back(connection(p_input_node, p_input_connector, p_output_node, p_output_connector));
+
+	// trigger an update
+	trigger_update();
+}
+
+void GDProcMesh::remove_connection(int p_input_node, int p_input_connector) {
+	size_t max = connections.size(); // size_t is unsigned so will wrap around!!
+	if (max == 0) {
+		return;
+	}
+
+	// there should be only one but better safe then sorry..
+	for (size_t i = max - 1; i >= 0 && i < max; i--) {
+		if ((connections[i].input.node == p_input_node) && (connections[i].input.connector == p_input_connector)) {
+			connections.erase(connections.begin() + i);
+
+			trigger_update();
+		}
+	}
+}
+
+const GDProcMesh::ctor GDProcMesh::get_output_for_input(int p_input_node, int p_input_connector) const {
+	size_t max = connections.size(); // size_t is unsigned so will wrap around!!
+	if (max == 0) {
+		return ctor(-1, 0);
+	}
+
+	for (size_t i = max - 1; i >= 0 && i < max; i--) {
+		connection c = connections[i];
+		if ((c.input.node == p_input_node) && (c.input.connector == p_input_connector)) {
+			return c.output;
+		}
+	}
+
+	return ctor(-1, 0);
+}
+
 void GDProcMesh::_register_methods() {
+	/* init and update */
 	register_method("_post_init", &GDProcMesh::_post_init);
 	register_method("_update", &GDProcMesh::_update);
 	register_method("trigger_update", &GDProcMesh::trigger_update);
+
+	/* nodes */
+	register_method("add_node", &GDProcMesh::add_node);
+	register_method("find_node", &GDProcMesh::find_node);
+	register_method("remove_node", &GDProcMesh::remove_node);
+
+	/* connections */
+	register_method("add_connection", &GDProcMesh::add_connection);
+	register_method("remove_connection", &GDProcMesh::remove_connection);
 
 	/* get properties the more difficult way so we dynamically change the number of properties */
 	register_method("_get_property_list", &GDProcMesh::_get_property_list);
 	register_method("_get", &GDProcMesh::_get);
 	register_method("_set", &GDProcMesh::_set);
-
-	/* old register property setter and getter, easier but fixed number of properties
-	register_method("get_size", &GDProcMesh::get_size);
-	register_method("set_size", &GDProcMesh::set_size);
-	register_property<GDProcMesh, float>("size", &GDProcMesh::set_size, &GDProcMesh::get_size, 1.0);
-	*/
 }
 
 void GDProcMesh::trigger_update() {
@@ -187,9 +267,6 @@ void GDProcMesh::trigger_update() {
 }
 
 void GDProcMesh::_init() {
-	// set some defaults...
-	size = 1.0;
-
 	// prevent deferred updates until we're ready
 	is_dirty = true;
 
@@ -198,24 +275,31 @@ void GDProcMesh::_init() {
 }
 
 void GDProcMesh::_post_init() {
+	// Set dirty as false even though we haven't called update.
+	// This means that if we've loaded a graph and our
+	// previously generated mesh, which is saved in the scene,
+	// we skip a bunch of expensive recalculating.
 	is_dirty = false;
 
 	if (nodes.size() == 0) {
 		// we have no nodes, so create our defaults...
 
+		// create our surface, keep this as the first
+		Ref<GDProcSurface> surface;
+		surface.instance();
+		int surface_id = add_node(surface);
+
 		// create a box
 		Ref<GDProcBox> box;
 		box.instance();
-
 		int box_id = add_node(box);
 
-		// create our surface
-		Ref<GDProcSurface> surface;
-		surface.instance();
-
-		int surface_id = add_node(surface);
-
 		// add our connections
+		add_connection(surface_id, 0, box_id, 0); // vertices
+		add_connection(surface_id, 1, box_id, 1); // normals
+		add_connection(surface_id, 8, box_id, 2); // indices
+
+		// note that this will have trigger an update...
 	}
 }
 
@@ -244,14 +328,30 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 			// check all our inputs
 			for (int i = 0; i < p_node->get_input_connector_count(); i++) {
 				// find if this has been connected
+				ctor c = get_output_for_input(p_id, i);
 
-				// if so we need to call its update
-				// if do_update_node(input_id, input_node) {
-				//	updated = true
-				// }
+				if (c.node == -1 ){
+					printf("Node %i, Connector %i is not connected\n", p_id, i);
+					// if not, just add a NIL input
+					inputs.push_back(Variant());
+				} else {
+					// make sure this is a valid node
+					std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(c.node);
+					if (it == nodes.end()) {
+						printf("Unknown node %i\n", c.node);
+						inputs.push_back(Variant());
+					} else {
+						Ref<GDProcNode> output_node = it->second;
 
-				// if not, just add a NIL input
-				inputs.push_back(Variant());
+						// lets make sure this has been updated (if we already did then that is fine)
+						if (do_update_node(c.node, output_node)) {
+							updated = true;
+						}
+
+						// and get our output
+						inputs.push_back(output_node->get_output(c.connector));
+					}
+				}
 			}
 
 			// update this node
@@ -288,13 +388,14 @@ void GDProcMesh::_update() {
 		if (it->second->get_output_connector_count() == 0) {
 			// trigger updating this node
 			if (do_update_node(it->first, it->second)) {
-				String name = "Surface_1";
+				String name = "Surface_";
+				name += String::num_int64(it->first);
 				Ref<Material> material;
 
 				// find our surface and get some info we may want to cache like our material
 				int64_t s = surface_find_by_name(name);
 				if (s != -1) {
-					printf("Removing surface %s\n", name.utf8().get_data());
+					printf("Removing changed surface %s\n", name.utf8().get_data());
 
 					// remember our material, we're reusing it!
 					material = surface_get_material(s);
@@ -336,8 +437,24 @@ void GDProcMesh::_update() {
 	// clear left overs (we need to improve on this)
 	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
 		String name = surface_get_name(s);
-		if (name != "Surface_1") {
-			printf("Removing surface %s\n", name.utf8().get_data());
+
+		if (name.begins_with(String("Surface_"))) {
+			String index = name.split('_')[1];
+			int id = (int) index.to_int();
+
+			std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(id);
+			if (it == nodes.end()) {
+				// node has been removed
+				printf("Removing unused surface %s\n", name.utf8().get_data());
+				surface_remove(s);
+			} else if (it->second->get_output_connector_count() != 0) {
+				// This is not a final node.
+				printf("Removing unused surface %s\n", name.utf8().get_data());
+				surface_remove(s);
+			}
+		} else {
+			// not one of ours?!
+			printf("Removing unused surface %s\n", name.utf8().get_data());
 			surface_remove(s);
 		}
 	}
