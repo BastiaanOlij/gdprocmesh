@@ -47,7 +47,8 @@ Array GDProcMesh::_get_property_list() {
 }
 
 Variant GDProcMesh::_get(String p_name) {
-	if (p_name.begins_with(String("nodes/"))) {
+	String str_nodes = String("nodes/"); // temporary workaround to get around compile issue on Linux, needs further research
+	if (p_name.begins_with(str_nodes)) {
 		String index = p_name.split('/')[1];
 		int id = (int) index.to_int();
 		
@@ -85,7 +86,8 @@ Variant GDProcMesh::_get(String p_name) {
 }
 
 bool GDProcMesh::_set(String p_name, Variant p_value) {
-	if (p_name.begins_with(String("nodes/"))) {
+	String str_nodes = String("nodes/"); // temporary workaround to get around compile issue on Linux, needs further research
+	if (p_name.begins_with(str_nodes)) {
 		String index = p_name.split('/')[1];
 		int id = (int) index.to_int();
 
@@ -438,7 +440,8 @@ void GDProcMesh::_update() {
 	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
 		String name = surface_get_name(s);
 
-		if (name.begins_with(String("Surface_"))) {
+		String str_surface = String("Surface_"); // temporary workaround to get around compile issue on Linux, needs further research
+		if (name.begins_with(str_surface)) {
 			String index = name.split('_')[1];
 			int id = (int) index.to_int();
 
