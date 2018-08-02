@@ -1,10 +1,13 @@
 #!python
 import os, subprocess
 
+target_path = 'demo/addons/gdprocmesh/bin/'
+target_name = 'libgdprocmesh'
+
 # Local dependency paths, adapt them to your setup
-godot_headers_path = ARGUMENTS.get("headers", "godot-cpp/godot_headers/")
-cpp_bindings_path = ARGUMENTS.get("cpp_bindings_path", "godot-cpp/")
-cpp_bindings_library_path = ARGUMENTS.get("cpp_bindings_library", "godot-cpp/bin/godot-cpp")
+godot_headers_path = "godot-cpp/godot_headers/"
+cpp_bindings_path = "godot-cpp/"
+cpp_library = "godot-cpp"
 
 target = ARGUMENTS.get("target", "debug")
 
@@ -26,32 +29,32 @@ def add_sources(sources, directory):
         if file.endswith('.cpp'):
             sources.append(directory + '/' + file)
 
-target_name = 'demo/addons/gdprocmesh/bin/'
-
 if platform == "osx":
+    target_path += 'osx/'
+    cpp_library += '.osx.64'
     env.Append(CCFLAGS = ['-g','-O3', '-arch', 'x86_64'])
     env.Append(LINKFLAGS = ['-arch', 'x86_64'])
-    target_name += 'osx/'
 
 if platform == "linux":
+    target_path += 'x11/'
+    cpp_library += '.linux.64'
     env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++14'])
-    target_name += 'x11/'
 
 if platform == "windows":
+    target_path += 'win64/'
+    cpp_library += '.windows.64'
     env.Append(CCFLAGS = ['-DWIN32', '-D_WIN32', '-D_WINDOWS', '-W3', '-GR', '-D_CRT_SECURE_NO_WARNINGS'])
     if target == "debug":
         env.Append(CCFLAGS = ['-EHsc', '-D_DEBUG', '-MDd'])
     else:
         env.Append(CCFLAGS = ['-O2', '-EHsc', '-DNDEBUG', '-MD'])
-    target_name += 'win64/'
-    cpp_bindings_library_path += '.windows.64'
 
-# , 'include', 'include/core'
 env.Append(CPPPATH=['.', 'src/', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
-env.Append(LIBS=[cpp_bindings_library_path])
+env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
+env.Append(LIBS=[cpp_library])
 
 sources = []
 add_sources(sources, "src")
 
-library = env.SharedLibrary(target=target_name + 'libgdprocmesh', source=sources)
+library = env.SharedLibrary(target=target_path + target_name, source=sources)
 Default(library)
