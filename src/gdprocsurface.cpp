@@ -6,6 +6,10 @@ void GDProcSurface::_register_methods() {
 
 }
 
+String GDProcSurface::get_type_name() {
+	return String("Surface");
+}
+
 void GDProcSurface::_init() {
 	// first call super class
 	GDProcNode::_init();

@@ -16,6 +16,10 @@ config/name="GDNative Procedural Mesh Demo"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "gdprocmesh" )
+
 [input]
 
 ui_accept={

@@ -166,6 +166,26 @@ int GDProcMesh::find_node(const Ref<GDProcNode> &p_node) {
 	return -1;
 }
 
+Ref<GDProcNode> GDProcMesh::get_node(int p_id) {
+	std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(p_id);
+	if (it == nodes.end()) {
+		return Ref<GDProcNode>();
+	} else {
+		return it->second;
+	}
+}
+
+Array GDProcMesh::get_node_id_list() {
+	Array arr;
+
+	std::map<int, Ref<GDProcNode> >::iterator it;
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		arr.push_back(Variant(it->first));
+	}
+
+	return arr;
+}
+
 void GDProcMesh::remove_node(int p_id) {
 	size_t max = connections.size(); // size_t is unsigned so will wrap around!!
 	if (max != 0) {
@@ -176,6 +196,8 @@ void GDProcMesh::remove_node(int p_id) {
 			}
 		}
 	}
+
+	nodes[p_id]->disconnect("changed", this, "trigger_update");
 
 	// now remove our node
 	nodes.erase(p_id);
@@ -196,6 +218,8 @@ void GDProcMesh::add_connection(int p_input_node, int p_input_connector, int p_o
 		printf("Unknown output node %i\n", p_output_node);
 		return;
 	}
+
+	///@TODO we should add a check here to see if the type of the output node matches the type of the input node
 
 	// first remove any existing connection on our input connector
 	remove_connection(p_input_node, p_input_connector);
@@ -249,6 +273,8 @@ void GDProcMesh::_register_methods() {
 	/* nodes */
 	register_method("add_node", &GDProcMesh::add_node);
 	register_method("find_node", &GDProcMesh::find_node);
+	register_method("get_node", &GDProcMesh::get_node);
+	register_method("get_node_id_list", &GDProcMesh::get_node_id_list);
 	register_method("remove_node", &GDProcMesh::remove_node);
 
 	/* connections */
@@ -289,11 +315,13 @@ void GDProcMesh::_post_init() {
 		// create our surface, keep this as the first
 		Ref<GDProcSurface> surface;
 		surface.instance();
+		surface->set_position(Vector2(500.0, 10.0));
 		int surface_id = add_node(surface);
 
 		// create a box
 		Ref<GDProcBox> box;
 		box.instance();
+		surface->set_position(Vector2(10.0, 10.0));
 		int box_id = add_node(box);
 
 		// add our connections

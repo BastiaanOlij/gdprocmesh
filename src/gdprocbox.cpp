@@ -6,6 +6,10 @@ void GDProcBox::_register_methods() {
 	register_property("size", &GDProcBox::set_size, &GDProcBox::get_size, Vector3(1.0, 1.0, 1.0));
 }
 
+String GDProcBox::get_type_name() {
+	return String("Box");
+}
+
 void GDProcBox::_init() {
 	// first call super class
 	GDProcNode::_init();

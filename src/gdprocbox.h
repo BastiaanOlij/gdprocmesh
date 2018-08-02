@@ -20,6 +20,8 @@ private:
 public:
 	static void _register_methods();
 
+	virtual String get_type_name();
+
 	void _init();
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs);

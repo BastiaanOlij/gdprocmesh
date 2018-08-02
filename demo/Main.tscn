@@ -13,7 +13,7 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=2]
 
 script = SubResource( 1 )
-position = Vector2( 0, 0 )
+position = Vector2( 10, 10 )
 size = Vector3( 2, 2, 2 )
 
 [sub_resource type="NativeScript" id=3]
@@ -24,7 +24,7 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=4]
 
 script = SubResource( 3 )
-position = Vector2( 0, 0 )
+position = Vector2( 500, 10 )
 
 [sub_resource type="SpatialMaterial" id=5]
 
@@ -53,7 +53,7 @@ params_billboard_mode = 0
 params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.815686, 0.262745, 0.262745, 1 )
+albedo_color = Color( 0.654902, 0.2, 0.2, 1 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -80,7 +80,7 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Emission" ]
+_sections_unfolded = [ "Albedo", "Flags" ]
 
 [sub_resource type="ArrayMesh" id=6]
 
@@ -100,7 +100,7 @@ surfaces/0 = {
 "vertex_count": 8
 }
 script = ExtResource( 3 )
-_sections_unfolded = [ "Data", "Graph", "Nodes", "Script", "Surface 1", "graph/connections", "nodes/1", "nodes/2" ]
+_sections_unfolded = [ "Data", "Graph", "Nodes", "Script", "Surface 1", "nodes/2" ]
 nodes/1 = SubResource( 2 )
 nodes/2 = SubResource( 4 )
 graph/connections = PoolIntArray( 2, 0, 1, 0, 2, 1, 1, 1, 2, 8, 1, 2 )

@@ -3,6 +3,7 @@
 using namespace godot;
 
 void GDProcNode::_register_methods() {
+	register_method("get_type_name", &GDProcNode::get_type_name);
 	// position
 	register_method("get_position", &GDProcNode::get_position);
 	register_method("set_position", &GDProcNode::set_position);
@@ -27,6 +28,10 @@ GDProcNode::ProcessStatus GDProcNode::get_status() const {
 
 void GDProcNode::set_status(GDProcNode::ProcessStatus p_status) {
 	status = p_status;
+}
+
+String GDProcNode::get_type_name() {
+	return String("Node");
 }
 
 void GDProcNode::_init() {

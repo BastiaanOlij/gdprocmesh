@@ -32,6 +32,8 @@ public:
 	ProcessStatus get_status() const; // get the current process status
 	void set_status(ProcessStatus p_status); // change the process status
 
+	virtual String get_type_name();
+
 	void _init(); // our initializer called by Godot
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations

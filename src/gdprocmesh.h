@@ -72,6 +72,8 @@ public:
 	/* nodes */
 	int add_node(const Ref<GDProcNode> &p_node, int p_id = 0);
 	int find_node(const Ref<GDProcNode> &p_node);
+	Ref<GDProcNode> get_node(int p_id);
+	Array get_node_id_list();
 	void remove_node(int p_id);
 
 	/* connections */
