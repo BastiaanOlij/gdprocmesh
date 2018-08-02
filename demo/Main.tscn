@@ -100,7 +100,7 @@ surfaces/0 = {
 "vertex_count": 8
 }
 script = ExtResource( 3 )
-_sections_unfolded = [ "Data", "Graph", "Nodes", "Script", "Surface 1", "nodes/2" ]
+_sections_unfolded = [ "Data", "Graph", "Nodes", "Script", "Surface 1", "graph/connections" ]
 nodes/1 = SubResource( 2 )
 nodes/2 = SubResource( 4 )
 graph/connections = PoolIntArray( 2, 0, 1, 0, 2, 1, 1, 1, 2, 8, 1, 2 )

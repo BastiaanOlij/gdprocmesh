@@ -79,6 +79,7 @@ public:
 	/* connections */
 	void add_connection(int p_input_node, int p_input_connector, int p_output_node, int p_output_connector);
 	void remove_connection(int p_input_node, int p_input_connector);
+	Array get_connection_list();
 
 	/* old
 	float get_size() const;

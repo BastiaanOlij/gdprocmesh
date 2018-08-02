@@ -248,6 +248,24 @@ void GDProcMesh::remove_connection(int p_input_node, int p_input_connector) {
 	}
 }
 
+Array GDProcMesh::get_connection_list() {
+	Array arr;
+
+	std::vector<connection>::iterator it;
+	for (it = connections.begin(); it != connections.end(); it++) {
+		Array row;
+
+		row.push_back(it->input.node);
+		row.push_back(it->input.connector);
+		row.push_back(it->output.node);
+		row.push_back(it->output.connector);
+
+		arr.push_back(row);
+	}
+
+	return arr;
+}
+
 const GDProcMesh::ctor GDProcMesh::get_output_for_input(int p_input_node, int p_input_connector) const {
 	size_t max = connections.size(); // size_t is unsigned so will wrap around!!
 	if (max == 0) {
@@ -280,6 +298,7 @@ void GDProcMesh::_register_methods() {
 	/* connections */
 	register_method("add_connection", &GDProcMesh::add_connection);
 	register_method("remove_connection", &GDProcMesh::remove_connection);
+	register_method("get_connection_list", &GDProcMesh::get_connection_list);
 
 	/* get properties the more difficult way so we dynamically change the number of properties */
 	register_method("_get_property_list", &GDProcMesh::_get_property_list);
