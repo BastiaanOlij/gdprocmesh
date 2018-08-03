@@ -19,7 +19,7 @@ Array GDProcMesh::_get_property_list() {
 		prop["type"] = GlobalConstants::TYPE_OBJECT;
 		prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
 		prop["hint_string"] = "GDProcNode";
-//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
 		// PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE is new and not yet in gdnative..
 //		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
 
@@ -33,7 +33,7 @@ Array GDProcMesh::_get_property_list() {
 		prop["type"] = GlobalConstants::TYPE_INT_ARRAY;
 //		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
 //		prop["hint_string"] = "";
-//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
+		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
 		// PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE is new and not yet in gdnative..
 //		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
 
@@ -91,7 +91,7 @@ bool GDProcMesh::_set(String p_name, Variant p_value) {
 		String index = p_name.split('/')[1];
 		int id = (int) index.to_int();
 
-		printf("Loading node %i from scene\n", id);
+		// printf("Loading node %i from scene\n", id);
 		add_node(p_value, id);
 
 		return true;
@@ -225,7 +225,6 @@ void GDProcMesh::add_connection(int p_input_node, int p_input_connector, int p_o
 	remove_connection(p_input_node, p_input_connector);
 
 	// now add a new one
-	printf("Add new connection\n");
 	connections.push_back(connection(p_input_node, p_input_connector, p_output_node, p_output_connector));
 
 	// trigger an update
@@ -334,13 +333,13 @@ void GDProcMesh::_post_init() {
 		// create our surface, keep this as the first
 		Ref<GDProcSurface> surface;
 		surface.instance();
-		surface->set_position(Vector2(500.0, 10.0));
+		surface->set_position(Vector2(500.0, 50.0));
 		int surface_id = add_node(surface);
 
 		// create a box
 		Ref<GDProcBox> box;
 		box.instance();
-		surface->set_position(Vector2(10.0, 10.0));
+		surface->set_position(Vector2(10.0, 50.0));
 		int box_id = add_node(box);
 
 		// add our connections
@@ -419,7 +418,7 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 void GDProcMesh::_update() {
 	// if we've already updated this, exit....
 	if (!is_dirty) {
-		printf("Update called but not dirty\n");
+		// printf("Update called but not dirty\n");
 		return;
 	}
 
@@ -444,7 +443,7 @@ void GDProcMesh::_update() {
 				// find our surface and get some info we may want to cache like our material
 				int64_t s = surface_find_by_name(name);
 				if (s != -1) {
-					printf("Removing changed surface %s\n", name.utf8().get_data());
+					// printf("Removing changed surface %s\n", name.utf8().get_data());
 
 					// remember our material, we're reusing it!
 					material = surface_get_material(s);
@@ -462,7 +461,7 @@ void GDProcMesh::_update() {
 
 					if (arr.size() == ArrayMesh::ARRAY_MAX) {
 						// log
-						printf("Updating surface %s\n", name.utf8().get_data());
+						// printf("Updating surface %s\n", name.utf8().get_data());
 
 						// lets add a new surface
 						int64_t new_surface_id = get_surface_count();
@@ -495,16 +494,16 @@ void GDProcMesh::_update() {
 			std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(id);
 			if (it == nodes.end()) {
 				// node has been removed
-				printf("Removing unused surface %s\n", name.utf8().get_data());
+				// printf("Removing unused surface %s\n", name.utf8().get_data());
 				surface_remove(s);
 			} else if (it->second->get_output_connector_count() != 0) {
 				// This is not a final node.
-				printf("Removing unused surface %s\n", name.utf8().get_data());
+				// printf("Removing unused surface %s\n", name.utf8().get_data());
 				surface_remove(s);
 			}
 		} else {
 			// not one of ours?!
-			printf("Removing unused surface %s\n", name.utf8().get_data());
+			// printf("Removing unused surface %s\n", name.utf8().get_data());
 			surface_remove(s);
 		}
 	}
@@ -514,11 +513,9 @@ void GDProcMesh::_update() {
 }
 
 GDProcMesh::GDProcMesh() {
-	printf("GDProcMesh called\n");
+	// nothing to do here yet
 }
 
 GDProcMesh::~GDProcMesh() {
 	// do we need to clean up our map?
-
-	printf("~GDProcMesh called\n");
 }

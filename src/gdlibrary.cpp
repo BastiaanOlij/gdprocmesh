@@ -21,6 +21,4 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcNode>();
 	godot::register_tool_class<godot::GDProcSurface>();
 	godot::register_tool_class<godot::GDProcBox>();
-
-//	godot::register_class<godot::GDProcMesh>();
 }

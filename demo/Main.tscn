@@ -13,7 +13,7 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=2]
 
 script = SubResource( 1 )
-position = Vector2( 10, 10 )
+position = Vector2( 260, 160 )
 size = Vector3( 2, 2, 2 )
 
 [sub_resource type="NativeScript" id=3]
@@ -24,7 +24,7 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=4]
 
 script = SubResource( 3 )
-position = Vector2( 500, 10 )
+position = Vector2( 680, 120 )
 
 [sub_resource type="SpatialMaterial" id=5]
 
@@ -53,7 +53,7 @@ params_billboard_mode = 0
 params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.654902, 0.2, 0.2, 1 )
+albedo_color = Color( 0.847059, 0.168627, 0.647059, 1 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
