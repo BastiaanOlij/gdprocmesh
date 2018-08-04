@@ -14,6 +14,8 @@ void GDProcNode::_register_methods() {
 	register_method("get_input_connector_type", &GDProcNode::get_input_connector_type);
 	register_method("get_input_connector_name", &GDProcNode::get_input_connector_name);
 
+	register_method("get_connector_property_name", &GDProcNode::get_connector_property_name);
+
 	register_method("get_output_connector_count", &GDProcNode::get_output_connector_count);
 	register_method("get_output_connector_type", &GDProcNode::get_output_connector_type);
 	register_method("get_output_connector_name", &GDProcNode::get_output_connector_name);

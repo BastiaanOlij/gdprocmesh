@@ -3,7 +3,9 @@
 using namespace godot;
 
 void GDProcBox::_register_methods() {
-
+	register_property<GDProcBox, float>("width", &GDProcBox::set_width, &GDProcBox::get_width, 1.0);
+	register_property<GDProcBox, float>("height", &GDProcBox::set_height, &GDProcBox::get_height, 1.0);
+	register_property<GDProcBox, float>("depth", &GDProcBox::set_depth, &GDProcBox::get_depth, 1.0);
 }
 
 String GDProcBox::get_type_name() {
@@ -15,18 +17,64 @@ void GDProcBox::_init() {
 	GDProcNode::_init();
 }
 
+void GDProcBox::set_width(float p_width) {
+	if (default_size.x != p_width) {
+		default_size.x = p_width;
+		must_update = true;
+		emit_signal("changed");
+	}
+}
+
+float GDProcBox::get_width() const {
+	return default_size.x;
+}
+
+void GDProcBox::set_height(float p_height) {
+	if (default_size.y != p_height) {
+		default_size.y = p_height;
+		must_update = true;
+		emit_signal("changed");
+	}
+}
+
+float GDProcBox::get_height() const {
+	return default_size.y;
+}
+
+void GDProcBox::set_depth(float p_depth) {
+	if (default_size.z != p_depth) {
+		default_size.z = p_depth;
+		must_update = true;
+		emit_signal("changed");
+	}
+}
+
+float GDProcBox::get_depth() const {
+	return default_size.z;
+}
+
 bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 	bool updated = must_update;
 	must_update = false;
 
 	if (updated || p_inputs_updated) {
 		printf("Updating box\n");
-		Vector3 size = Vector3(1.0, 1.0, 1.0);
+		Vector3 size = default_size;
 
 		int input_count = p_inputs.size();
 		if (input_count > 0) {
-			if (p_inputs[0].get_type() == Variant::VECTOR3) {
-				size = p_inputs[0];
+			if (p_inputs[0].get_type() == Variant::REAL) {
+				size.x = p_inputs[0];
+			}
+		}
+		if (input_count > 1) {
+			if (p_inputs[1].get_type() == Variant::REAL) {
+				size.y = p_inputs[1];
+			}
+		}
+		if (input_count > 2) {
+			if (p_inputs[2].get_type() == Variant::REAL) {
+				size.z = p_inputs[2];
 			}
 		}
 
@@ -48,28 +96,6 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 			v[5].x =  hsx; v[5].y = -hsy; v[5].z =  hsz;
 			v[6].x =  hsx; v[6].y =  hsy; v[6].z =  hsz;
 			v[7].x = -hsx; v[7].y =  hsy; v[7].z =  hsz;
-		}
-
-		// prepare our data
-		normals.resize(8);
-		{
-			PoolVector3Array::Write w = normals.write();
-			Vector3 *n = w.ptr();
-
-			// this will look ugly but we're just testing..
-			n[0].x = -1.0; n[0].y = -1.0; n[0].z = -1.0;
-			n[1].x =  1.0; n[1].y = -1.0; n[1].z = -1.0;
-			n[2].x =  1.0; n[2].y =  1.0; n[2].z = -1.0;
-			n[3].x = -1.0; n[3].y =  1.0; n[3].z = -1.0;
-
-			n[4].x = -1.0; n[4].y = -1.0; n[4].z =  1.0;
-			n[5].x =  1.0; n[5].y = -1.0; n[5].z =  1.0;
-			n[6].x =  1.0; n[6].y =  1.0; n[6].z =  1.0;
-			n[7].x = -1.0; n[7].y =  1.0; n[7].z =  1.0;
-
-			for (int i = 0; i < 8; i++) {
-				n[i].normalize();
-			}
 		}
 
 		indices.resize(12 * 3);
@@ -108,19 +134,39 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 }
 
 int GDProcBox::get_input_connector_count() const {
-	return 1;
+	return 3;
 }
 
 Variant::Type GDProcBox::get_input_connector_type(int p_slot) const {
-	return Variant::VECTOR3;
+	return Variant::REAL;
 }
 
 const String GDProcBox::get_input_connector_name(int p_slot) const {
-	return "size";
+	if (p_slot == 0) {
+		return "width";
+	} else if (p_slot == 1) {
+		return "height";
+	} else if (p_slot == 2) {
+		return "depth";
+	}
+
+	return "";
+}
+
+const String GDProcBox::get_connector_property_name(int p_slot) const {
+	if (p_slot == 0) {
+		return "width";
+	} else if (p_slot == 1) {
+		return "height";
+	} else if (p_slot == 2) {
+		return "depth";
+	}
+
+	return "";
 }
 
 int GDProcBox::get_output_connector_count() const {
-	return 3;
+	return 2;
 }
 
 Variant::Type GDProcBox::get_output_connector_type(int p_slot) const {
@@ -128,8 +174,6 @@ Variant::Type GDProcBox::get_output_connector_type(int p_slot) const {
 		case 0:
 			return Variant::POOL_VECTOR3_ARRAY;
 		case 1:
-			return Variant::POOL_VECTOR3_ARRAY;
-		case 2:
 			return Variant::POOL_INT_ARRAY;
 		default:
 			return Variant::NIL;		
@@ -141,8 +185,6 @@ const String GDProcBox::get_output_connector_name(int p_slot) const {
 		case 0:
 			return "Vertices";
 		case 1:
-			return "Normals";
-		case 2:
 			return "Indices";
 		default:
 			return "???";
@@ -154,8 +196,6 @@ const Variant GDProcBox::get_output(int p_slot) const {
 		case 0:
 			return Variant(vertices);
 		case 1:
-			return Variant(normals);
-		case 2:
 			return Variant(indices);
 		default:
 			return Variant();

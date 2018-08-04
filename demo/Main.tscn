@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdnlib" type="GDNativeLibrary" id=2]
 [ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdns" type="Script" id=3]
-[ext_resource path="res://DirectionalLight.gd" type="Script" id=4]
 
 [sub_resource type="NativeScript" id=1]
 
@@ -13,32 +12,32 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=2]
 
 script = SubResource( 1 )
-position = Vector2( 500, 50 )
+position = Vector2( 720, 100 )
 
 [sub_resource type="NativeScript" id=3]
 
-class_name = "GDProcBox"
+class_name = "GDProcGenNormals"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=4]
 
 script = SubResource( 3 )
-position = Vector2( 280, 100 )
+position = Vector2( 480, 160 )
 
 [sub_resource type="NativeScript" id=5]
 
-class_name = "GDProcVector"
+class_name = "GDProcBox"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=6]
 
 script = SubResource( 5 )
-position = Vector2( 40, 120 )
-x = 1.0
-y = 1.0
-z = 1.0
+position = Vector2( 0, 100 )
+width = 1.5
+height = 1.0
+depth = 1.0
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=7]
 
 render_priority = 0
 flags_transparent = false
@@ -94,18 +93,18 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="ArrayMesh" id=7]
+[sub_resource type="ArrayMesh" id=8]
 
 blend_shape_mode = 0
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 surfaces/0 = {
-"aabb": AABB( -0.5, -0.5, -0.5, 1, 1, 1 ),
-"array_data": PoolByteArray( 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 191, 183, 183, 183, 0, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 191, 73, 183, 183, 0, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 191, 73, 73, 183, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 191, 183, 73, 183, 0, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 63, 183, 183, 73, 0, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 63, 73, 183, 73, 0, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 63, 73, 73, 73, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 63, 183, 73, 73, 0 ),
+"aabb": AABB( -0.75, -0.5, -0.5, 1.5, 1, 1 ),
+"array_data": PoolByteArray( 0, 0, 64, 191, 0, 0, 0, 191, 0, 0, 0, 191, 54, 81, 81, 0, 0, 0, 64, 63, 0, 0, 0, 191, 0, 0, 0, 191, 202, 81, 81, 0, 0, 0, 64, 63, 0, 0, 0, 63, 0, 0, 0, 191, 202, 175, 81, 0, 0, 0, 64, 191, 0, 0, 0, 63, 0, 0, 0, 191, 54, 175, 81, 0, 0, 0, 64, 191, 0, 0, 0, 191, 0, 0, 0, 63, 54, 81, 175, 0, 0, 0, 64, 63, 0, 0, 0, 191, 0, 0, 0, 63, 202, 81, 175, 0, 0, 0, 64, 63, 0, 0, 0, 63, 0, 0, 0, 63, 202, 175, 175, 0, 0, 0, 64, 191, 0, 0, 0, 63, 0, 0, 0, 63, 54, 175, 175, 0 ),
 "array_index_data": PoolByteArray( 0, 0, 1, 0, 3, 0, 1, 0, 2, 0, 3, 0, 5, 0, 4, 0, 6, 0, 4, 0, 7, 0, 6, 0, 4, 0, 0, 0, 3, 0, 4, 0, 3, 0, 7, 0, 1, 0, 5, 0, 6, 0, 1, 0, 6, 0, 2, 0, 4, 0, 5, 0, 1, 0, 4, 0, 1, 0, 0, 0, 3, 0, 2, 0, 6, 0, 3, 0, 6, 0, 7, 0 ),
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 36,
-"material": SubResource( 8 ),
+"material": SubResource( 7 ),
 "name": "Surface_1",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -116,7 +115,7 @@ _sections_unfolded = [ "Script", "Surface 1" ]
 nodes/1 = SubResource( 2 )
 nodes/2 = SubResource( 4 )
 nodes/3 = SubResource( 6 )
-graph/connections = PoolIntArray( 1, 0, 2, 0, 1, 1, 2, 1, 1, 8, 2, 2, 2, 0, 3, 0 )
+graph/connections = PoolIntArray( 2, 0, 3, 0, 2, 1, 3, 1, 1, 0, 3, 0, 1, 1, 2, 0, 1, 8, 3, 1 )
 
 [node name="Main" type="Spatial" index="0"]
 script = ExtResource( 1 )
@@ -131,7 +130,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 7 )
+mesh = SubResource( 8 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Material", "Script" ]
@@ -152,7 +151,7 @@ near = 0.05
 far = 100.0
 
 [node name="DirectionalLight" type="DirectionalLight" parent="." index="2"]
-transform = Transform( 0.81893, -0.275531, 0.503424, 0, 0.877209, 0.480109, -0.573893, -0.393176, 0.718373, 0, 5.50652, 0 )
+transform = Transform( 0.860919, -0.244252, 0.446274, -0.0962505, 0.783167, 0.614317, -0.499555, -0.571831, 0.650733, 0, 2.32417, 0 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
 light_energy = 1.0
@@ -176,7 +175,5 @@ directional_shadow_normal_bias = 0.8
 directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
-script = ExtResource( 4 )
 _sections_unfolded = [ "Light", "Script", "script" ]
-test = 2
 

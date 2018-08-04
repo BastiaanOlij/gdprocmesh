@@ -81,15 +81,38 @@ func _update_graph():
 				var right_color = Color(0.0, 0.0, 1.0, 1.0)
 				
 				var hb = HBoxContainer.new()
+				
 				if left_is_valid:
 					var label = Label.new()
 					label.set_text(node.get_input_connector_name(i))
 					hb.add_child(label)
 					left_type = node.get_input_connector_type(i)
 					left_color = _get_type_color(left_type)
-					
-					# should check if we can apply a default value to this input and add entry fields if so
-					# this should not apply to arrays
+				
+				var prop_name = node.get_connector_property_name(i)
+				if prop_name != '':
+					var prop_field = null
+					var prop_value = node.get(prop_name)
+					var prop_type = typeof(prop_value)
+					if prop_type == TYPE_INT:
+						prop_field = LineEdit.new()
+						prop_field.align = LineEdit.ALIGN_RIGHT
+						prop_field.set_text(String(prop_value))
+					elif prop_type == TYPE_REAL:
+						prop_field = LineEdit.new()
+						prop_field.align = LineEdit.ALIGN_RIGHT
+						prop_field.set_text("%0.3f" % prop_value)
+						
+					if prop_field:
+						var prop_arr = Array()
+						prop_arr.push_back(node_id)
+						prop_arr.push_back(prop_name)
+						prop_arr.push_back(prop_field)
+						prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
+						prop_field.connect("focus_exited", self, "_exit_node_property", prop_arr)
+						hb.add_child(prop_field)
+				
+				hb.add_spacer(false)
 				
 				if right_is_valid:
 					var label = Label.new()
@@ -108,6 +131,25 @@ func _update_graph():
 		$GraphEdit.connect_node('Node_' + String(c[2]), c[3], 'Node_' + String(c[0]), c[1])
 	
 	print(String($GraphEdit.get_connection_list()))
+
+func _set_node_property(p_value, p_node_id, p_property, p_field):
+	print("Test " + String(p_value) + " " + String(p_node_id) + " " + String(p_property))
+	
+	var node = procmesh.get_node(p_node_id)
+	if node:
+		node.set(p_property, p_value)
+		
+		# see what it changed to and update our display, need to figure out how...
+		var prop_value = node.get(p_property)
+		var prop_type = typeof(prop_value)
+		if prop_type == TYPE_INT:
+			p_field.set_text(String(prop_value))
+		elif prop_type == TYPE_REAL:
+			p_field.set_text("%0.3f" % prop_value)
+
+func _exit_node_property(p_node_id, p_property, p_field):
+	var value = p_field.get_text()
+	_set_node_property(value, p_node_id, p_property, p_field)
 
 func _remove_node(p_node_id):
 	# need to implement this

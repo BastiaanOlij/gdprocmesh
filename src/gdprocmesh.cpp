@@ -344,30 +344,27 @@ void GDProcMesh::_post_init() {
 		// create our surface, keep this as the first
 		Ref<GDProcSurface> surface;
 		surface.instance();
-		surface->set_position(Vector2(500.0, 50.0));
+		surface->set_position(Vector2(650.0, 50.0));
 		int surface_id = add_node(surface);
+
+		// create our generate normals entry
+		Ref<GDProcGenNormals> gen_normals;
+		gen_normals.instance();
+		gen_normals->set_position(Vector2(350.0, 50.0));
+		int gen_normals_id = add_node(gen_normals);
 
 		// create a box
 		Ref<GDProcBox> box;
 		box.instance();
-		box->set_position(Vector2(250.0, 50.0));
+		box->set_position(Vector2(50.0, 50.0));
 		int box_id = add_node(box);
 
-		// create a box
-		Ref<GDProcVector> vector;
-		vector.instance();
-		vector->set_position(Vector2(10.0, 50.0));
-		vector->set_x(1.0);
-		vector->set_y(1.0);
-		vector->set_z(1.0);
-		int vector_id = add_node(vector);
-
 		// add our connections
-		add_connection(surface_id, 0, box_id, 0); // vertices
-		add_connection(surface_id, 1, box_id, 1); // normals
-		add_connection(surface_id, 8, box_id, 2); // indices
-
-		add_connection(box_id, 0, vector_id, 0); // size
+		add_connection(gen_normals_id, 0, box_id, 0); // vertices input to normals
+		add_connection(gen_normals_id, 1, box_id, 1); // indices input to normals
+		add_connection(surface_id, 0, box_id, 0); // vertices input to box
+		add_connection(surface_id, 1, gen_normals_id, 0); // normals input to box
+		add_connection(surface_id, 8, box_id, 1); // indices input to box
 
 		// note that this will have trigger an update...
 	}

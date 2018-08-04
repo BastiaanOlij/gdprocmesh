@@ -4,6 +4,7 @@
 #include "gdprocsurface.h"
 #include "gdprocbox.h"
 #include "gdprocvector.h"
+#include "gdprocgennormals.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
 	godot::Godot::gdnative_init(o);
@@ -23,5 +24,6 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcNode>();
 	godot::register_tool_class<godot::GDProcSurface>();
 	godot::register_tool_class<godot::GDProcBox>();
+	godot::register_tool_class<godot::GDProcGenNormals>();
 	godot::register_tool_class<godot::GDProcVector>();
 }
