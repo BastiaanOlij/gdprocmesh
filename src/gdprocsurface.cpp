@@ -90,8 +90,8 @@ int GDProcSurface::get_input_connector_count() const {
 	return ArrayMesh::ARRAY_MAX;
 }
 
-Variant::Type GDProcSurface::get_input_connector_type(int p_idx) const {
-	switch (p_idx) {
+Variant::Type GDProcSurface::get_input_connector_type(int p_slot) const {
+	switch (p_slot) {
 		case ArrayMesh::ARRAY_VERTEX:
 			return Variant::POOL_VECTOR3_ARRAY;
 		case ArrayMesh::ARRAY_NORMAL:
@@ -115,8 +115,8 @@ Variant::Type GDProcSurface::get_input_connector_type(int p_idx) const {
 	}
 }
 
-const String GDProcSurface::get_input_connector_name(int p_idx) const {
-	switch (p_idx) {
+const String GDProcSurface::get_input_connector_name(int p_slot) const {
+	switch (p_slot) {
 		case ArrayMesh::ARRAY_VERTEX:
 			return "Vertices";
 		case ArrayMesh::ARRAY_NORMAL:
@@ -147,9 +147,9 @@ int GDProcSurface::get_output_connector_count() const {
 	return 0;
 }
 
-const Variant GDProcSurface::get_output(int p_idx) const {
+const Variant GDProcSurface::get_output(int p_slot) const {
 	// this should only be called after update is called. 
-	if (p_idx == 0) {
+	if (p_slot == 0) {
 		return Variant(surface_arr);
 	}
 

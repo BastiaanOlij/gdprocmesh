@@ -3,7 +3,7 @@
 using namespace godot;
 
 void GDProcBox::_register_methods() {
-	register_property("size", &GDProcBox::set_size, &GDProcBox::get_size, Vector3(1.0, 1.0, 1.0));
+
 }
 
 String GDProcBox::get_type_name() {
@@ -13,21 +13,6 @@ String GDProcBox::get_type_name() {
 void GDProcBox::_init() {
 	// first call super class
 	GDProcNode::_init();
-
-	// default our size
-	size = Vector3(1.0, 1.0, 1.0);
-}
-
-void GDProcBox::set_size(Vector3 p_size) {
-	if (size != p_size) {
-		size = p_size;
-		must_update = true;
-		emit_signal("changed");
-	}
-}
-
-Vector3 GDProcBox::get_size() const {
-	return size;
 }
 
 bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
@@ -36,8 +21,14 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 
 	if (updated || p_inputs_updated) {
 		printf("Updating box\n");
+		Vector3 size = Vector3(1.0, 1.0, 1.0);
 
-		// !BAS! We should add an input that allow us to override our size
+		int input_count = p_inputs.size();
+		if (input_count > 0) {
+			if (p_inputs[0].get_type() == Variant::VECTOR3) {
+				size = p_inputs[0];
+			}
+		}
 
 		// prepare our data
 		vertices.resize(8);
@@ -116,12 +107,24 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 	return updated;
 }
 
+int GDProcBox::get_input_connector_count() const {
+	return 1;
+}
+
+Variant::Type GDProcBox::get_input_connector_type(int p_slot) const {
+	return Variant::VECTOR3;
+}
+
+const String GDProcBox::get_input_connector_name(int p_slot) const {
+	return "size";
+}
+
 int GDProcBox::get_output_connector_count() const {
 	return 3;
 }
 
-Variant::Type GDProcBox::get_output_connector_type(int p_idx) const {
-	switch (p_idx) {
+Variant::Type GDProcBox::get_output_connector_type(int p_slot) const {
+	switch (p_slot) {
 		case 0:
 			return Variant::POOL_VECTOR3_ARRAY;
 		case 1:
@@ -133,8 +136,8 @@ Variant::Type GDProcBox::get_output_connector_type(int p_idx) const {
 	}
 }
 
-const String GDProcBox::get_output_connector_name(int p_idx) const {
-	switch (p_idx) {
+const String GDProcBox::get_output_connector_name(int p_slot) const {
+	switch (p_slot) {
 		case 0:
 			return "Vertices";
 		case 1:
@@ -146,8 +149,8 @@ const String GDProcBox::get_output_connector_name(int p_idx) const {
 	}
 }
 
-const Variant GDProcBox::get_output(int p_idx) const {
-	switch (p_idx) {
+const Variant GDProcBox::get_output(int p_slot) const {
+	switch (p_slot) {
 		case 0:
 			return Variant(vertices);
 		case 1:

@@ -39,6 +39,10 @@ void GDProcNode::_init() {
 	position = Vector2(0.0, 0.0);
 }
 
+void GDProcNode::_touch() {
+	must_update = true;	
+}
+
 bool GDProcNode::update(bool p_inputs_updated, const Array &p_inputs) {
 	bool updated = must_update;
 	must_update = false;
@@ -51,11 +55,15 @@ int GDProcNode::get_input_connector_count() const {
 	return 0;
 }
 
-Variant::Type GDProcNode::get_input_connector_type(int p_idx) const {
+Variant::Type GDProcNode::get_input_connector_type(int p_slot) const {
 	return Variant::NIL;
 }
 
-const String GDProcNode::get_input_connector_name(int p_idx) const {
+const String GDProcNode::get_input_connector_name(int p_slot) const {
+	return "";
+}
+
+const String GDProcNode::get_connector_property_name(int p_slot) const {
 	return "";
 }
 
@@ -64,15 +72,15 @@ int GDProcNode::get_output_connector_count() const {
 	return 1;
 }
 
-Variant::Type GDProcNode::get_output_connector_type(int p_idx) const {
+Variant::Type GDProcNode::get_output_connector_type(int p_slot) const {
 	return Variant::NIL;
 }
 
-const String GDProcNode::get_output_connector_name(int p_idx) const {
+const String GDProcNode::get_output_connector_name(int p_slot) const {
 	return "Default";
 }
 
-const Variant GDProcNode::get_output(int p_idx) const {
+const Variant GDProcNode::get_output(int p_slot) const {
 	return Variant();
 }
 

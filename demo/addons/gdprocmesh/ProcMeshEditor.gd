@@ -16,7 +16,11 @@ func edit_mesh(p_procmesh):
 		hide()
 
 func _get_type_color(p_type):
-	if p_type == TYPE_VECTOR3_ARRAY:
+	if p_type == TYPE_REAL:
+		return Color("#f34d4d")
+	elif p_type == TYPE_VECTOR3:
+		return Color("#1e8a76")
+	elif p_type == TYPE_VECTOR3_ARRAY:
 		return Color("#d67dee")
 	elif p_type == TYPE_VECTOR2_ARRAY:
 		return Color("#61daf4")
@@ -121,11 +125,22 @@ func _dragged_node(p_from, p_to, p_node_id):
 func _add_node(p_type):
 	print('Add: ' + node_classes[p_type])
 	
-	# this crashes atm
-	var new_node = load('res://addons/gdprocmesh/' + node_classes[p_type] + '.gdns').new()
+	var new_script = NativeScript.new()
+	new_script.library = procmesh.script.library
+	new_script.set_class_name(node_classes[p_type])
+	
+	var new_node = Resource.new()
+	new_node.script = new_script
+	
 	if new_node:
+		var id_to_use = procmesh.get_free_id()
+
+		# this crashes atm
+		print('Add node to mesh')
 		new_node.set_position(Vector2(10.0, 50.0))
-		procmesh.add_node(new_node, 0)
+		procmesh.add_node(new_node, id_to_use)
+		
+		print('Update graph')
 		_update_graph();
 
 func _add_node_class(p_name, p_class):
@@ -142,8 +157,9 @@ func _ready():
 	# add some options (should make this smarter, maybe build an array first)
 	add_popup = add_button.get_popup()
 	add_popup.connect("id_pressed", self, "_add_node")
-	_add_node_class("Box", "gdprocbox")
-	_add_node_class("Surface", "gdprocsurface")
+	_add_node_class("Vector", "GDProcVector")
+	_add_node_class("Box", "GDProcBox")
+	_add_node_class("Surface", "GDProcSurface")
 	
 	pass # Replace with function body.
 

@@ -12,6 +12,7 @@
 #include "gdprocnode.h"
 #include "gdprocsurface.h"
 #include "gdprocbox.h"
+#include "gdprocvector.h"
 
 namespace godot {
 

@@ -13,10 +13,10 @@ class GDProcNode : public Resource {
 
 public:
 	enum ProcessStatus {
-		PROCESS_STATUS_PENDING,
-		PROCESS_STATUS_INPROGRESS,
-		PROCESS_STATUS_UNCHANGED,
-		PROCESS_STATUS_CHANGED
+		PROCESS_STATUS_PENDING, // all nodes are cleared to this before we update our mesh
+		PROCESS_STATUS_INPROGRESS, // a node gets this status when we are in the middle of updating it, helps detect cyclic relationships
+		PROCESS_STATUS_UNCHANGED, // a node gets this status once we finish updating and find the node unchanged
+		PROCESS_STATUS_CHANGED // a node gets this status once we finish updating at its contents has changed
 	};
 
 private:
@@ -32,25 +32,28 @@ public:
 	ProcessStatus get_status() const; // get the current process status
 	void set_status(ProcessStatus p_status); // change the process status
 
-	virtual String get_type_name();
+	virtual String get_type_name(); // gets the name we display in the title of the GraphNode
 
 	void _init(); // our initializer called by Godot
+	void _touch(); // marks this node for update
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
 
-	virtual int get_input_connector_count() const;
-	virtual Variant::Type get_input_connector_type(int p_idx) const;
-	virtual const String get_input_connector_name(int p_idx) const;
+	virtual int get_input_connector_count() const; // returns the number of input connectors this note has
+	virtual Variant::Type get_input_connector_type(int p_slot) const; // returns the type of the data expected for this input
+	virtual const String get_input_connector_name(int p_slot) const; // returns the name for this input
 
-	virtual int get_output_connector_count() const;
-	virtual Variant::Type get_output_connector_type(int p_idx) const;
-	virtual const String get_output_connector_name(int p_idx) const;
+	virtual const String get_connector_property_name(int p_slot) const; // if we want an editable field for this slot, returns the name of the related property
+
+	virtual int get_output_connector_count() const; // returns the number of output connectors this node has
+	virtual Variant::Type get_output_connector_type(int p_slot) const; // returns the type of the data that is output by this output
+	virtual const String get_output_connector_name(int p_slot) const; // returns the name for this output
 
 	// get our actual output for a connector, this should only be called after update has run!
-	virtual const Variant get_output(int p_idx) const;
+	virtual const Variant get_output(int p_slot) const; // returns the output data itself
 
-	Vector2 get_position() const;
-	void set_position(Vector2 p_pos);
+	Vector2 get_position() const; // get the display position of this node in our graph
+	void set_position(Vector2 p_pos); // sets the display position of thisnode in our graph
 };
 
 }

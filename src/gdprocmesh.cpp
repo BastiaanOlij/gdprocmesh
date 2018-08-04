@@ -133,21 +133,29 @@ bool GDProcMesh::node_id_is_used(int p_id) {
 }
 
 int GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
-	if (p_id == 0) {
+	if (!p_node.is_valid()) {
+		printf("Invalid node passed to add_node\n");
+		return -1;
+	} else if (p_id == 0) {
 		// no id set? get an unused id
 		p_id = get_free_id();
 	} else if (node_id_is_used(p_id)) {
 		// can't add this!
 		return -1;
 	}
+	printf("Adding node with id %i\n", p_id);
 
 	// trigger our trigger_update on a change of this node (commented out because I have a weird const error)
+	printf("Connecting changed trigger update\n");
 	Ref<GDProcNode> r = p_node;
 	r->connect("changed", this, "trigger_update");
 
+	// Add our node
+	printf("Assignig node to array\n");
 	nodes[p_id] = p_node;
 
 	// trigger update
+	printf("Trigger update\n");
 	trigger_update();
 
 	// return the ID that we ended up using
@@ -288,11 +296,14 @@ void GDProcMesh::_register_methods() {
 	register_method("trigger_update", &GDProcMesh::trigger_update);
 
 	/* nodes */
+	register_method("get_free_id", &GDProcMesh::get_free_id);
 	register_method("add_node", &GDProcMesh::add_node);
 	register_method("find_node", &GDProcMesh::find_node);
 	register_method("get_node", &GDProcMesh::get_node);
 	register_method("get_node_id_list", &GDProcMesh::get_node_id_list);
 	register_method("remove_node", &GDProcMesh::remove_node);
+
+	/* should add some methods to interact with nodes directly */
 
 	/* connections */
 	register_method("add_connection", &GDProcMesh::add_connection);
@@ -339,13 +350,24 @@ void GDProcMesh::_post_init() {
 		// create a box
 		Ref<GDProcBox> box;
 		box.instance();
-		surface->set_position(Vector2(10.0, 50.0));
+		box->set_position(Vector2(250.0, 50.0));
 		int box_id = add_node(box);
+
+		// create a box
+		Ref<GDProcVector> vector;
+		vector.instance();
+		vector->set_position(Vector2(10.0, 50.0));
+		vector->set_x(1.0);
+		vector->set_y(1.0);
+		vector->set_z(1.0);
+		int vector_id = add_node(vector);
 
 		// add our connections
 		add_connection(surface_id, 0, box_id, 0); // vertices
 		add_connection(surface_id, 1, box_id, 1); // normals
 		add_connection(surface_id, 8, box_id, 2); // indices
+
+		add_connection(box_id, 0, vector_id, 0); // size
 
 		// note that this will have trigger an update...
 	}
@@ -425,6 +447,32 @@ void GDProcMesh::_update() {
 	// if we change any surface we turn this to true and check if we need to do any post processing.
 	bool has_changed = false; 
 
+	// clear surfaces we'll no longer be needing
+	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
+		String name = surface_get_name(s);
+
+		String str_surface = String("Surface_"); // temporary workaround to get around compile issue on Linux, needs further research
+		if (name.begins_with(str_surface)) {
+			String index = name.split('_')[1];
+			int id = (int) index.to_int();
+
+			std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(id);
+			if (it == nodes.end()) {
+				// node has been removed
+				// printf("Removing unused surface %s\n", name.utf8().get_data());
+				surface_remove(s);
+			} else if (it->second->get_output_connector_count() != 0) {
+				// This is not a final node.
+				// printf("Removing unused surface %s\n", name.utf8().get_data());
+				surface_remove(s);
+			}
+		} else {
+			// not one of ours?!
+			// printf("Removing unused surface %s\n", name.utf8().get_data());
+			surface_remove(s);
+		}
+	}
+
 	// Reset our process status, we want to check each node atleast once...
 	std::map<int, Ref<GDProcNode> >::iterator it;
 	for (it = nodes.begin(); it != nodes.end(); it++) {
@@ -479,32 +527,6 @@ void GDProcMesh::_update() {
 					printf("Final node is not returning an array \n");
 				}
 			}
-		}
-	}
-
-	// clear left overs (we need to improve on this)
-	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
-		String name = surface_get_name(s);
-
-		String str_surface = String("Surface_"); // temporary workaround to get around compile issue on Linux, needs further research
-		if (name.begins_with(str_surface)) {
-			String index = name.split('_')[1];
-			int id = (int) index.to_int();
-
-			std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(id);
-			if (it == nodes.end()) {
-				// node has been removed
-				// printf("Removing unused surface %s\n", name.utf8().get_data());
-				surface_remove(s);
-			} else if (it->second->get_output_connector_count() != 0) {
-				// This is not a final node.
-				// printf("Removing unused surface %s\n", name.utf8().get_data());
-				surface_remove(s);
-			}
-		} else {
-			// not one of ours?!
-			// printf("Removing unused surface %s\n", name.utf8().get_data());
-			surface_remove(s);
 		}
 	}
 
