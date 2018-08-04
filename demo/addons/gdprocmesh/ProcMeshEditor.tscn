@@ -41,3 +41,5 @@ use_snap = true
 zoom = 1.0
 _sections_unfolded = [ "Size Flags" ]
 
+[connection signal="connection_request" from="GraphEdit" to="." method="_on_GraphEdit_connection_request"]
+[connection signal="disconnection_request" from="GraphEdit" to="." method="_on_GraphEdit_disconnection_request"]

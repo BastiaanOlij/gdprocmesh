@@ -21,6 +21,7 @@ void GDProcVector::set_x(float x) {
 	if (defaults.x != x) {
 		defaults.x = x;
 		must_update = true;
+		emit_signal("changed");
 	}
 }
 
@@ -32,6 +33,7 @@ void GDProcVector::set_y(float y) {
 	if (defaults.y != y) {
 		defaults.y = y;
 		must_update = true;
+		emit_signal("changed");
 	}
 }
 
@@ -43,6 +45,7 @@ void GDProcVector::set_z(float z) {
 	if (defaults.z != z) {
 		defaults.z = z;
 		must_update = true;
+		emit_signal("changed");
 	}
 }
 

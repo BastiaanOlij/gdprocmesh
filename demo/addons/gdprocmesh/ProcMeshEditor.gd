@@ -39,13 +39,13 @@ func _update_graph():
 	$GraphEdit.clear_connections()
 	for child in $GraphEdit.get_children():
 		if child.is_class('GraphNode'):
-			print('removing: ' + child.name)
+			# print('removing: ' + child.name)
 			$GraphEdit.remove_child(child)
 	
 	# lets build our new graph
 	var node_ids = procmesh.get_node_id_list()
 	for node_id in node_ids:
-		print("Found node with id " + String(node_id))
+		# print("Found node with id " + String(node_id))
 		var node = procmesh.get_node(node_id)
 		
 		# create a graph node for this
@@ -54,9 +54,7 @@ func _update_graph():
 		
 		gn.set_offset(node.position)
 		gn.set_title(node.get_type_name())
-		gn.set_name('Node_' + String(node_id))
-		
-		print("Node name: " + gn.name)
+		gn.set_name(String(node_id))
 		
 		var node_arr = Array()
 		node_arr.push_back(node_id)
@@ -68,9 +66,7 @@ func _update_graph():
 		
 		var input_connector_count = node.get_input_connector_count()
 		var output_connector_count = node.get_output_connector_count()
-		
-		print("Input: " + String(input_connector_count) + ", output: " + String(output_connector_count))
-		
+				
 		if (input_connector_count > 0 or output_connector_count > 0):
 			for i in range(0, max(input_connector_count, output_connector_count)):
 				var left_is_valid = i < input_connector_count
@@ -127,14 +123,9 @@ func _update_graph():
 	
 	var connections = procmesh.get_connection_list()
 	for c in connections:
-		print('Connect ' + String(c[0]) + ', ' + String(c[1]) +' - ' + String(c[2]) + ', ' + String(c[3]))
-		$GraphEdit.connect_node('Node_' + String(c[2]), c[3], 'Node_' + String(c[0]), c[1])
-	
-	print(String($GraphEdit.get_connection_list()))
+		$GraphEdit.connect_node(String(c[2]), c[3], String(c[0]), c[1])
 
 func _set_node_property(p_value, p_node_id, p_property, p_field):
-	print("Test " + String(p_value) + " " + String(p_node_id) + " " + String(p_property))
-	
 	var node = procmesh.get_node(p_node_id)
 	if node:
 		node.set(p_property, p_value)
@@ -152,21 +143,20 @@ func _exit_node_property(p_node_id, p_property, p_field):
 	_set_node_property(value, p_node_id, p_property, p_field)
 
 func _remove_node(p_node_id):
-	# need to implement this
-	pass
+	procmesh.remove_node(p_node_id)
+	_update_graph();
 
 func _dragged_node(p_from, p_to, p_node_id):
 	# maybe add this to an undo/redo thing?
-	var drag_name = 'Node_' + String(p_node_id)
-	print('Drag: ' + drag_name + ' from ' + String(p_from) + ' to ' + String(p_to))
+	var drag_name = String(p_node_id)
 	
 	var node = procmesh.get_node(p_node_id)
 	if node:
 		node.set_position(p_to)
 
 func _add_node(p_type):
-	print('Add: ' + node_classes[p_type])
-	
+	print("Add node")
+
 	var new_script = NativeScript.new()
 	new_script.library = procmesh.script.library
 	new_script.set_class_name(node_classes[p_type])
@@ -176,13 +166,11 @@ func _add_node(p_type):
 	
 	if new_node:
 		var id_to_use = procmesh.get_free_id()
-
-		# this crashes atm
-		print('Add node to mesh')
+		
+		print("add to mesh")
 		new_node.set_position(Vector2(10.0, 50.0))
 		procmesh.add_node(new_node, id_to_use)
 		
-		print('Update graph')
 		_update_graph();
 
 func _add_node_class(p_name, p_class):
@@ -202,8 +190,23 @@ func _ready():
 	_add_node_class("Vector", "GDProcVector")
 	_add_node_class("Box", "GDProcBox")
 	_add_node_class("Surface", "GDProcSurface")
-	
-	pass # Replace with function body.
+	_add_node_class("Generate normals", "GDProcGenNormals")
+	_add_node_class("Translate", "GDProcTranslate")
 
 func _input(event):
 	pass
+
+func _on_GraphEdit_connection_request(from, from_slot, to, to_slot):
+	var output_node = from.to_int()
+	var input_node = to.to_int()
+	procmesh.add_connection(input_node, to_slot, output_node, from_slot)
+	
+	_update_graph();
+
+
+func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
+	# ignore from
+	var input_node = to.to_int()
+	procmesh.remove_connection(input_node, to_slot)
+
+	_update_graph();

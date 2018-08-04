@@ -132,7 +132,7 @@ bool GDProcMesh::node_id_is_used(int p_id) {
 	return false;
 }
 
-int GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
+int GDProcMesh::add_node(Ref<GDProcNode> p_node, int p_id) {
 	if (!p_node.is_valid()) {
 		printf("Invalid node passed to add_node\n");
 		return -1;
@@ -143,26 +143,23 @@ int GDProcMesh::add_node(const Ref<GDProcNode> &p_node, int p_id) {
 		// can't add this!
 		return -1;
 	}
-	printf("Adding node with id %i\n", p_id);
+
+	printf("Adding node\n");
 
 	// trigger our trigger_update on a change of this node (commented out because I have a weird const error)
-	printf("Connecting changed trigger update\n");
-	Ref<GDProcNode> r = p_node;
-	r->connect("changed", this, "trigger_update");
+	p_node->connect("changed", this, "trigger_update");
 
 	// Add our node
-	printf("Assignig node to array\n");
 	nodes[p_id] = p_node;
 
 	// trigger update
-	printf("Trigger update\n");
 	trigger_update();
 
 	// return the ID that we ended up using
 	return p_id;
 }
 
-int GDProcMesh::find_node(const Ref<GDProcNode> &p_node) {
+int GDProcMesh::find_node(Ref<GDProcNode> p_node) {
 	std::map<int, Ref<GDProcNode> >::iterator it;
 	for (it = nodes.begin(); it != nodes.end(); it++) {
 		// note, == on Ref<> compares internal pointer :)
@@ -205,6 +202,7 @@ void GDProcMesh::remove_node(int p_id) {
 		}
 	}
 
+	// disconnect our signal
 	nodes[p_id]->disconnect("changed", this, "trigger_update");
 
 	// now remove our node
@@ -235,6 +233,9 @@ void GDProcMesh::add_connection(int p_input_node, int p_input_connector, int p_o
 	// now add a new one
 	connections.push_back(connection(p_input_node, p_input_connector, p_output_node, p_output_connector));
 
+	// touch our input node
+	get_node(p_input_node)->_touch();
+
 	// trigger an update
 	trigger_update();
 }
@@ -248,8 +249,12 @@ void GDProcMesh::remove_connection(int p_input_node, int p_input_connector) {
 	// there should be only one but better safe then sorry..
 	for (size_t i = max - 1; i >= 0 && i < max; i--) {
 		if ((connections[i].input.node == p_input_node) && (connections[i].input.connector == p_input_connector)) {
+			// touch our input node
+			get_node(p_input_node)->_touch();
+
 			connections.erase(connections.begin() + i);
 
+			// trigger update
 			trigger_update();
 		}
 	}
@@ -397,8 +402,8 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 				// find if this has been connected
 				ctor c = get_output_for_input(p_id, i);
 
-				if (c.node == -1 ){
-					printf("Node %i, Connector %i is not connected\n", p_id, i);
+				if (c.node == -1 ) {
+					// printf("Node %i, Connector %i is not connected\n", p_id, i);
 					// if not, just add a NIL input
 					inputs.push_back(Variant());
 				} else {
@@ -501,10 +506,22 @@ void GDProcMesh::_update() {
 				Variant surface = it->second->get_output(0);
 
 				// check if this is a valid array and update!
-				if (surface.get_type() == Variant::ARRAY) {
+				if (surface.get_type() != Variant::ARRAY) {
+					printf("Final node is not returning an array \n");
+				} else {
 					Array arr = surface;
 
-					if (arr.size() == ArrayMesh::ARRAY_MAX) {
+					if (arr.size() != ArrayMesh::ARRAY_MAX) {
+						printf("Final node is not returning a correctly sized array\n");	
+					} else if (arr[ArrayMesh::ARRAY_VERTEX].get_type() != Variant::POOL_VECTOR3_ARRAY) {
+						printf("No vertices in surface\n");
+					} else if (((PoolVector3Array) arr[ArrayMesh::ARRAY_VERTEX]).size() == 0) {
+						printf("No vertices in surface\n");
+					} else if (arr[ArrayMesh::ARRAY_INDEX].get_type() != Variant::POOL_INT_ARRAY) {
+						printf("No indices in surface\n");
+					} else if (((PoolIntArray) arr[ArrayMesh::ARRAY_INDEX]).size() == 0) {
+						printf("No indices in surface\n");
+					} else {
 						// log
 						// printf("Updating surface %s\n", name.utf8().get_data());
 
@@ -517,11 +534,7 @@ void GDProcMesh::_update() {
 						if (material.is_valid()) {
 							surface_set_material(new_surface_id, material);								
 						}
-					} else {
-						printf("Final node is not returning a correctly sized array\n");	
 					}
-				} else {
-					printf("Final node is not returning an array \n");
 				}
 			}
 		}

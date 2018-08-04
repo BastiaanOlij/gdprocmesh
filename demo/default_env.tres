@@ -22,7 +22,7 @@ texture_size = 2
 
 [resource]
 
-background_mode = 0
+background_mode = 2
 background_sky = SubResource( 1 )
 background_sky_custom_fov = 0.0
 background_color = Color( 0, 0, 0, 1 )
