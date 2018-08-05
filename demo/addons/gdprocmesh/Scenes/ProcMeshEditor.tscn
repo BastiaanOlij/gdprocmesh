@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/gdprocmesh/ProcMeshEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/gdprocmesh/Scripts/ProcMeshEditor.gd" type="Script" id=1]
 
 [node name="ProcMeshEditor" type="VBoxContainer" index="0"]
 anchor_left = 0.0

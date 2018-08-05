@@ -8,7 +8,7 @@ func _enter_tree():
 	# Initialization of the plugin goes here
 	add_custom_type("GDProcMesh", "ArrayMesh", preload("res://addons/gdprocmesh/gdprocmesh.gdns"), preload("icon_array_mesh.svg"))
 	
-	control = preload("res://addons/gdprocmesh/ProcMeshEditor.tscn").instance()
+	control = preload("res://addons/gdprocmesh/Scenes/ProcMeshEditor.tscn").instance()
 	
 	button = add_control_to_bottom_panel(control, "Procedural Mesh")
 	button.hide()

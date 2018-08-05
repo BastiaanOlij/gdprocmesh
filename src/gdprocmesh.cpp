@@ -144,7 +144,7 @@ int GDProcMesh::add_node(Ref<GDProcNode> p_node, int p_id) {
 		return -1;
 	}
 
-	printf("Adding node\n");
+	// printf("Adding node\n");
 
 	// trigger our trigger_update on a change of this node (commented out because I have a weird const error)
 	p_node->connect("changed", this, "trigger_update");
@@ -448,11 +448,15 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 }
 
 void GDProcMesh::_update() {
+
 	// if we've already updated this, exit....
 	if (!is_dirty) {
 		// printf("Update called but not dirty\n");
 		return;
 	}
+
+	// we'll be iterating around.... ;)
+	std::map<int, Ref<GDProcNode> >::iterator it;
 
 	// if we change any surface we turn this to true and check if we need to do any post processing.
 	bool has_changed = false; 
@@ -460,31 +464,26 @@ void GDProcMesh::_update() {
 	// clear surfaces we'll no longer be needing
 	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
 		String name = surface_get_name(s);
+		bool found = false;
 
-		String str_surface = String("Surface_"); // temporary workaround to get around compile issue on Linux, needs further research
-		if (name.begins_with(str_surface)) {
-			String index = name.split('_')[1];
-			int id = (int) index.to_int();
-
-			std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(id);
-			if (it == nodes.end()) {
-				// node has been removed
-				// printf("Removing unused surface %s\n", name.utf8().get_data());
-				surface_remove(s);
-			} else if (it->second->get_output_connector_count() != 0) {
-				// This is not a final node.
-				// printf("Removing unused surface %s\n", name.utf8().get_data());
-				surface_remove(s);
+		for (it = nodes.begin(); !found && it != nodes.end(); it++) {
+			String node_name = it->second->get_name();
+			if (node_name == "") {
+				node_name = "Surface_";
+				node_name += String::num_int64(it->first);
 			}
-		} else {
-			// not one of ours?!
-			// printf("Removing unused surface %s\n", name.utf8().get_data());
-			surface_remove(s);
+			if ((node_name == name) && (it->second->get_output_connector_count() == 0)) {
+				found = true;
+			}
+		}
+
+		if (!found) {
+			printf("Removing unused surface %s\n", name.utf8().get_data());
+			surface_remove(s);			
 		}
 	}
 
 	// Reset our process status, we want to check each node atleast once...
-	std::map<int, Ref<GDProcNode> >::iterator it;
 	for (it = nodes.begin(); it != nodes.end(); it++) {
 		it->second->set_status(GDProcNode::PROCESS_STATUS_PENDING);
 	}
@@ -497,14 +496,17 @@ void GDProcMesh::_update() {
 
 			// if contents has changed, update our surface
 			if (changed) {
-				String name = "Surface_";
-				name += String::num_int64(it->first);
+				String name = it->second->get_name();
+				if (name == "") {
+					name = "Surface_";
+					name += String::num_int64(it->first);
+				}
 				Ref<Material> material;
 
 				// find our surface and get some info we may want to cache like our material
 				int64_t s = surface_find_by_name(name);
 				if (s != -1) {
-					// printf("Removing changed surface %lli, %s\n", s, name.utf8().get_data());
+					printf("Removing changed surface %lli, %s\n", s, name.utf8().get_data());
 
 					// remember our material, we're reusing it!
 					material = surface_get_material(s);
@@ -534,7 +536,7 @@ void GDProcMesh::_update() {
 						printf("No indices in surface\n");
 					} else {
 						// log
-						// printf("Updating surface %s\n", name.utf8().get_data());
+						printf("Updating surface %s\n", name.utf8().get_data());
 
 						// lets add a new surface
 						int64_t new_surface_id = get_surface_count();

@@ -32,7 +32,7 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=6]
 
 script = SubResource( 5 )
-position = Vector2( -100, 160 )
+position = Vector2( -100, 140 )
 width = 1.0
 height = 1.0
 depth = 1.0
@@ -67,6 +67,7 @@ library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=12]
 
+resource_name = "Test 1"
 script = SubResource( 11 )
 position = Vector2( 1100, 20 )
 
@@ -77,6 +78,7 @@ library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=14]
 
+resource_name = "Test 2"
 script = SubResource( 13 )
 position = Vector2( 1100, 340 )
 
@@ -88,12 +90,12 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=16]
 
 script = SubResource( 15 )
-position = Vector2( 380, -80 )
+position = Vector2( 340, -80 )
 x = -2.0
 y = 0.0
 z = 0.0
 
-[sub_resource type="SpatialMaterial" id=17]
+[sub_resource type="SpatialMaterial" id=20]
 
 render_priority = 0
 flags_transparent = false
@@ -120,11 +122,11 @@ params_billboard_mode = 0
 params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.105882, 0.862745, 0.203922, 1 )
+albedo_color = Color( 0.2, 0.709804, 0.505882, 1 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
-roughness = 0.0
+roughness = 0.6
 roughness_texture_channel = 0
 emission_enabled = false
 normal_enabled = false
@@ -149,7 +151,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="SpatialMaterial" id=18]
+[sub_resource type="SpatialMaterial" id=21]
 
 render_priority = 0
 flags_transparent = false
@@ -176,8 +178,8 @@ params_billboard_mode = 0
 params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.945098, 0, 0, 1 )
-metallic = 0.39
+albedo_color = Color( 0.85098, 0.392157, 0.392157, 1 )
+metallic = 0.8
 metallic_specular = 0.5
 metallic_texture_channel = 0
 roughness = 0.0
@@ -216,8 +218,8 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 36,
-"material": SubResource( 17 ),
-"name": "Surface_8",
+"material": SubResource( 20 ),
+"name": "Test 2",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 8
@@ -229,8 +231,8 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 36,
-"material": SubResource( 18 ),
-"name": "Surface_7",
+"material": SubResource( 21 ),
+"name": "Test 1",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 8
