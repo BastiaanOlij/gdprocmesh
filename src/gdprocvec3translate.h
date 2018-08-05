@@ -1,12 +1,12 @@
-#ifndef GD_PROC_TRANSLATE_H
-#define GD_PROC_TRANSLATE_H
+#ifndef GD_PROC_VEC3TRANSLATE_H
+#define GD_PROC_VEC3TRANSLATE_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcTranslate : public GDProcNode {
-	GODOT_SUBCLASS(GDProcTranslate, GDProcNode)
+class GDProcVec3Translate : public GDProcNode {
+	GODOT_SUBCLASS(GDProcVec3Translate, GDProcNode)
 
 private:
 	Vector3 default_translation;
@@ -47,4 +47,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_TRANSLATE_H */
+#endif /* !GD_PROC_VEC3TRANSLATE_H */

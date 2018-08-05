@@ -1,12 +1,12 @@
-#ifndef GD_PROC_VECTOR_H
-#define GD_PROC_VECTOR_H
+#ifndef GD_PROC_VEC3_H
+#define GD_PROC_VEC3_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcVector : public GDProcNode {
-	GODOT_SUBCLASS(GDProcVector, GDProcNode)
+class GDProcVec3 : public GDProcNode {
+	GODOT_SUBCLASS(GDProcVec3, GDProcNode)
 
 private:
 	Vector3 defaults;
@@ -47,4 +47,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_BOX_H */
+#endif /* !GD_PROC_VEC3_H */

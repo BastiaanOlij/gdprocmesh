@@ -10,9 +10,9 @@
 #include <map>
 
 #include "gdprocnode.h"
+#include "gdprocoutput.h"
 #include "gdprocsurface.h"
 #include "gdprocbox.h"
-#include "gdprocvector.h"
 #include "gdprocgennormals.h"
 
 namespace godot {

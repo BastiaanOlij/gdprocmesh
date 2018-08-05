@@ -22,10 +22,12 @@ This project relies on [godot_headers](https://github.com/GodotNativeTools/godot
 These dependencies will need to be compiled:
 ```
 cd godot-cpp
-scons platform=windows generate-bindings=yes use_custom_api_file=yes custom_api_file=../api.json
+scons platform=windows generate_bindings=yes use_custom_api_file=yes custom_api_file=../api.json
 cd ..
 ```
 (custom api is temporary as we needed a newer api file)
+
+You can add ```-j<n>``` to this to speed up compiling, replace ```<n>``` with the number of cores your machine has.
 
 Now we can compile our module:
 ```
@@ -39,6 +41,11 @@ Trying out the test project
 After successful compilation the dynamic library should be placed in the addons folder of the example demo project. Again I've only configured things for windows so you may need to tweak the gdprocmesh.gdnlib file for other platforms.
 
 Simply import the demo project into Godot and have fun.
+
+If you want to use this for your own projects, simply copy the addons folder into your project and make sure that the plugin is turned on.
+
+Now create a ```MeshInstance``` and create an ```ArrayMesh``` for this node. You can now drag the gdprocmesh.gdns file into the script property of the ArrayMesh. This will create a simple box as a starting template.
+Simply re-select the ArrayMesh in the property manager and you'll see that you're given a new graph editor.
 
 License
 =======

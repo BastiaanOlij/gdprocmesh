@@ -58,7 +58,6 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 	must_update = false;
 
 	if (updated || p_inputs_updated) {
-		printf("Updating box\n");
 		Vector3 size = default_size;
 
 		int input_count = p_inputs.size();

@@ -1,8 +1,0 @@
-[gd_resource type="NativeScript" load_steps=2 format=2]
-
-[ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdnlib" type="GDNativeLibrary" id=1]
-
-[resource]
-
-class_name = "GDProcTranslate"
-library = ExtResource( 1 )

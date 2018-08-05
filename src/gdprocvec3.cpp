@@ -1,23 +1,23 @@
-#include "gdprocvector.h"
+#include "gdprocvec3.h"
 
 using namespace godot;
 
-void GDProcVector::_register_methods() {
-	register_property<GDProcVector, float>("x", &GDProcVector::set_x, &GDProcVector::get_x, 0.0);
-	register_property<GDProcVector, float>("y", &GDProcVector::set_y, &GDProcVector::get_y, 0.0);
-	register_property<GDProcVector, float>("z", &GDProcVector::set_z, &GDProcVector::get_z, 0.0);
+void GDProcVec3::_register_methods() {
+	register_property<GDProcVec3, float>("x", &GDProcVec3::set_x, &GDProcVec3::get_x, 0.0);
+	register_property<GDProcVec3, float>("y", &GDProcVec3::set_y, &GDProcVec3::get_y, 0.0);
+	register_property<GDProcVec3, float>("z", &GDProcVec3::set_z, &GDProcVec3::get_z, 0.0);
 }
 
-String GDProcVector::get_type_name() {
-	return "Vector";
+String GDProcVec3::get_type_name() {
+	return "Vec3";
 }
 
-void GDProcVector::_init() {
+void GDProcVec3::_init() {
 	// first call super class
 	GDProcNode::_init();
 }
 
-void GDProcVector::set_x(float x) {
+void GDProcVec3::set_x(float x) {
 	if (defaults.x != x) {
 		defaults.x = x;
 		must_update = true;
@@ -25,11 +25,11 @@ void GDProcVector::set_x(float x) {
 	}
 }
 
-float GDProcVector::get_x() const {
+float GDProcVec3::get_x() const {
 	return defaults.x;
 }
 
-void GDProcVector::set_y(float y) {
+void GDProcVec3::set_y(float y) {
 	if (defaults.y != y) {
 		defaults.y = y;
 		must_update = true;
@@ -37,11 +37,11 @@ void GDProcVector::set_y(float y) {
 	}
 }
 
-float GDProcVector::get_y() const {
+float GDProcVec3::get_y() const {
 	return defaults.y;
 }
 
-void GDProcVector::set_z(float z) {
+void GDProcVec3::set_z(float z) {
 	if (defaults.z != z) {
 		defaults.z = z;
 		must_update = true;
@@ -49,16 +49,14 @@ void GDProcVector::set_z(float z) {
 	}
 }
 
-float GDProcVector::get_z() const {
+float GDProcVec3::get_z() const {
 	return defaults.z;
 }
 
-bool GDProcVector::update(bool p_inputs_updated, const Array &p_inputs) {
+bool GDProcVec3::update(bool p_inputs_updated, const Array &p_inputs) {
 	Vector3 new_vector = defaults;
 
 	if (must_update || p_inputs_updated) {
-		printf("Updating vector\n");
-
 		int input_count = p_inputs.size();
 		if (input_count > 0) {
 			if (p_inputs[0].get_type() == Variant::REAL) {
@@ -86,20 +84,20 @@ bool GDProcVector::update(bool p_inputs_updated, const Array &p_inputs) {
 		return false;
 	} else {
 		vector = new_vector;
-		printf("Vector was changed to %0.2f, %0.2f, %0.2f\n", vector.x, vector.y, vector.z);
+		// printf("Vector was changed to %0.2f, %0.2f, %0.2f\n", vector.x, vector.y, vector.z);
 		return true;
 	}
 }
 
-int GDProcVector::get_input_connector_count() const {
+int GDProcVec3::get_input_connector_count() const {
 	return 3;
 }
 
-Variant::Type GDProcVector::get_input_connector_type(int p_slot) const {
+Variant::Type GDProcVec3::get_input_connector_type(int p_slot) const {
 	return Variant::REAL;
 }
 
-const String GDProcVector::get_input_connector_name(int p_slot) const {
+const String GDProcVec3::get_input_connector_name(int p_slot) const {
 	if (p_slot == 0) {
 		return "x";
 	} else if (p_slot == 1) {
@@ -111,7 +109,7 @@ const String GDProcVector::get_input_connector_name(int p_slot) const {
 	return "";
 }
 
-const String GDProcVector::get_connector_property_name(int p_slot) const {
+const String GDProcVec3::get_connector_property_name(int p_slot) const {
 	if (p_slot == 0) {
 		return "x";
 	} else if (p_slot == 1) {
@@ -123,18 +121,20 @@ const String GDProcVector::get_connector_property_name(int p_slot) const {
 	return "";
 }
 
-int GDProcVector::get_output_connector_count() const {
+int GDProcVec3::get_output_connector_count() const {
 	return 1;
 }
 
-Variant::Type GDProcVector::get_output_connector_type(int p_slot) const {
+Variant::Type GDProcVec3::get_output_connector_type(int p_slot) const {
+	// maybe make this return a pool vector with just one entry?
 	return Variant::VECTOR3;
 }
 
-const String GDProcVector::get_output_connector_name(int p_slot) const {
-	return "vector";
+const String GDProcVec3::get_output_connector_name(int p_slot) const {
+	return "vec3";
 }
 
-const Variant GDProcVector::get_output(int p_slot) const {
+const Variant GDProcVec3::get_output(int p_slot) const {
+	// maybe make this return a pool vector with just one entry?
 	return Variant(vector);
 }

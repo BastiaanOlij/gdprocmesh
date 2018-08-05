@@ -30,6 +30,9 @@ func _get_type_color(p_type):
 		return Color("#8ad82b")
 	elif p_type == TYPE_COLOR_ARRAY:
 		return Color("#d82ba5")
+	elif p_type == TYPE_ARRAY:
+		# array is assumed to be a surface
+		return Color("#a8fbde")
 	
 	print('Need a color for type ' + String(p_type))
 	return Color(0.0, 0.0, 1.0)
@@ -155,8 +158,6 @@ func _dragged_node(p_from, p_to, p_node_id):
 		node.set_position(p_to)
 
 func _add_node(p_type):
-	print("Add node")
-
 	var new_script = NativeScript.new()
 	new_script.library = procmesh.script.library
 	new_script.set_class_name(node_classes[p_type])
@@ -167,8 +168,7 @@ func _add_node(p_type):
 	if new_node:
 		var id_to_use = procmesh.get_free_id()
 		
-		print("add to mesh")
-		new_node.set_position(Vector2(10.0, 50.0))
+		new_node.set_position(Vector2(10.0, 50.0) + $GraphEdit.scroll_offset)
 		procmesh.add_node(new_node, id_to_use)
 		
 		_update_graph();
@@ -187,11 +187,24 @@ func _ready():
 	# add some options (should make this smarter, maybe build an array first)
 	add_popup = add_button.get_popup()
 	add_popup.connect("id_pressed", self, "_add_node")
-	_add_node_class("Vector", "GDProcVector")
-	_add_node_class("Box", "GDProcBox")
-	_add_node_class("Surface", "GDProcSurface")
+
+	# inputs
+
+	# primitives
+	_add_node_class("Vec3", "GDProcVec3")
+
+	# transforms
+	_add_node_class("Vec3 Translate", "GDProcVec3Translate")
 	_add_node_class("Generate normals", "GDProcGenNormals")
-	_add_node_class("Translate", "GDProcTranslate")
+
+	# shapes
+	_add_node_class("Box", "GDProcBox")
+
+	# modifiers
+
+	# output
+	_add_node_class("Surface", "GDProcSurface")
+	_add_node_class("Output", "GDProcOutput")
 
 func _input(event):
 	pass

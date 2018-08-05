@@ -346,7 +346,14 @@ void GDProcMesh::_post_init() {
 	if (nodes.size() == 0) {
 		// we have no nodes, so create our defaults...
 
-		// create our surface, keep this as the first
+		// create our output
+		Ref<GDProcOutput> output;
+		output.instance();
+		output->set_name("Output");
+		output->set_position(Vector2(900.0, 50.0));
+		int output_id = add_node(output);
+
+		// create our surface
 		Ref<GDProcSurface> surface;
 		surface.instance();
 		surface->set_position(Vector2(650.0, 50.0));
@@ -370,6 +377,7 @@ void GDProcMesh::_post_init() {
 		add_connection(surface_id, 0, box_id, 0); // vertices input to box
 		add_connection(surface_id, 1, gen_normals_id, 0); // normals input to box
 		add_connection(surface_id, 8, box_id, 1); // indices input to box
+		add_connection(output_id, 0, surface_id, 0); // bind to our output
 
 		// note that this will have trigger an update...
 	}
@@ -485,7 +493,10 @@ void GDProcMesh::_update() {
 	for (it = nodes.begin(); it != nodes.end(); it++) {
 		if (it->second->get_output_connector_count() == 0) {
 			// trigger updating this node
-			if (do_update_node(it->first, it->second)) {
+			bool changed = do_update_node(it->first, it->second);
+
+			// if contents has changed, update our surface
+			if (changed) {
 				String name = "Surface_";
 				name += String::num_int64(it->first);
 				Ref<Material> material;
@@ -493,7 +504,7 @@ void GDProcMesh::_update() {
 				// find our surface and get some info we may want to cache like our material
 				int64_t s = surface_find_by_name(name);
 				if (s != -1) {
-					// printf("Removing changed surface %s\n", name.utf8().get_data());
+					// printf("Removing changed surface %lli, %s\n", s, name.utf8().get_data());
 
 					// remember our material, we're reusing it!
 					material = surface_get_material(s);

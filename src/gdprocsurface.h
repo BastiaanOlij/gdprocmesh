@@ -24,11 +24,12 @@ public:
 	virtual Variant::Type get_input_connector_type(int p_slot) const; // returns the type of the data expected for this input
 	virtual const String get_input_connector_name(int p_slot) const; // returns the name for this input
 
-	// Here we make a special exception.
-	// We don't declare our outputs because our user can't link up the output 
-	// but we do need to access our final surface array.
-	virtual int get_output_connector_count() const;
-	virtual const Variant get_output(int p_slot) const;
+	virtual int get_output_connector_count() const; // returns the number of output connectors this node has
+	virtual Variant::Type get_output_connector_type(int p_slot) const; // returns the type of the data that is output by this output
+	virtual const String get_output_connector_name(int p_slot) const; // returns the name for this output
+
+	// get our actual output for a connector, this should only be called after update has run!
+	virtual const Variant get_output(int p_slot) const; // returns the output data itself
 
 };
 

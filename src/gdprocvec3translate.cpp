@@ -1,23 +1,23 @@
-#include "gdproctranslate.h"
+#include "gdprocvec3translate.h"
 
 using namespace godot;
 
-void GDProcTranslate::_register_methods() {
-	register_property<GDProcTranslate, float>("x", &GDProcTranslate::set_x, &GDProcTranslate::get_x, 0.0);
-	register_property<GDProcTranslate, float>("y", &GDProcTranslate::set_y, &GDProcTranslate::get_y, 0.0);
-	register_property<GDProcTranslate, float>("z", &GDProcTranslate::set_z, &GDProcTranslate::get_z, 0.0);
+void GDProcVec3Translate::_register_methods() {
+	register_property<GDProcVec3Translate, float>("x", &GDProcVec3Translate::set_x, &GDProcVec3Translate::get_x, 0.0);
+	register_property<GDProcVec3Translate, float>("y", &GDProcVec3Translate::set_y, &GDProcVec3Translate::get_y, 0.0);
+	register_property<GDProcVec3Translate, float>("z", &GDProcVec3Translate::set_z, &GDProcVec3Translate::get_z, 0.0);
 }
 
-String GDProcTranslate::get_type_name() {
-	return "Translate";
+String GDProcVec3Translate::get_type_name() {
+	return "Vec3 Translate";
 }
 
-void GDProcTranslate::_init() {
+void GDProcVec3Translate::_init() {
 	// first call super class
 	GDProcNode::_init();
 }
 
-void GDProcTranslate::set_x(float x) {
+void GDProcVec3Translate::set_x(float x) {
 	if (default_translation.x != x) {
 		default_translation.x = x;
 		must_update = true;
@@ -25,11 +25,11 @@ void GDProcTranslate::set_x(float x) {
 	}
 }
 
-float GDProcTranslate::get_x() const {
+float GDProcVec3Translate::get_x() const {
 	return default_translation.x;	
 }
 
-void GDProcTranslate::set_y(float y) {
+void GDProcVec3Translate::set_y(float y) {
 	if (default_translation.y != y) {
 		default_translation.y = y;
 		must_update = true;
@@ -37,11 +37,11 @@ void GDProcTranslate::set_y(float y) {
 	}	
 }
 
-float GDProcTranslate::get_y() const {
+float GDProcVec3Translate::get_y() const {
 	return default_translation.y;	
 }
 
-void GDProcTranslate::set_z(float z) {
+void GDProcVec3Translate::set_z(float z) {
 	if (default_translation.z != z) {
 		default_translation.z = z;
 		must_update = true;
@@ -49,16 +49,15 @@ void GDProcTranslate::set_z(float z) {
 	}	
 }
 
-float GDProcTranslate::get_z() const {
+float GDProcVec3Translate::get_z() const {
 	return default_translation.z;
 }
 
-bool GDProcTranslate::update(bool p_inputs_updated, const Array &p_inputs) {
+bool GDProcVec3Translate::update(bool p_inputs_updated, const Array &p_inputs) {
 	bool updated = must_update;
 	must_update = false;
 
 	if (updated || p_inputs_updated) {
-		printf("Translating\n");
 		Vector3 translate = default_translation;
 		int num_vectors = 0;
 		PoolVector3Array input_vectors;
@@ -104,11 +103,11 @@ bool GDProcTranslate::update(bool p_inputs_updated, const Array &p_inputs) {
 	return updated;
 }
 
-int GDProcTranslate::get_input_connector_count() const {
+int GDProcVec3Translate::get_input_connector_count() const {
 	return 4;
 }
 
-Variant::Type GDProcTranslate::get_input_connector_type(int p_slot) const {
+Variant::Type GDProcVec3Translate::get_input_connector_type(int p_slot) const {
 	if (p_slot == 0) {
 		return Variant::POOL_VECTOR3_ARRAY;
 	} else {
@@ -116,7 +115,7 @@ Variant::Type GDProcTranslate::get_input_connector_type(int p_slot) const {
 	}
 }
 
-const String GDProcTranslate::get_input_connector_name(int p_slot) const {
+const String GDProcVec3Translate::get_input_connector_name(int p_slot) const {
 	if (p_slot == 0) {
 		return "input";
 	} else if (p_slot == 1) {
@@ -130,7 +129,7 @@ const String GDProcTranslate::get_input_connector_name(int p_slot) const {
 	return "";
 }
 
-const String GDProcTranslate::get_connector_property_name(int p_slot) const {
+const String GDProcVec3Translate::get_connector_property_name(int p_slot) const {
 	if (p_slot == 1) {
 		return "x";
 	} else if (p_slot == 2) {
@@ -142,19 +141,19 @@ const String GDProcTranslate::get_connector_property_name(int p_slot) const {
 	return "";
 }
 
-int GDProcTranslate::get_output_connector_count() const {
+int GDProcVec3Translate::get_output_connector_count() const {
 	return 1;
 }
 
-Variant::Type GDProcTranslate::get_output_connector_type(int p_slot) const {
+Variant::Type GDProcVec3Translate::get_output_connector_type(int p_slot) const {
 	return Variant::POOL_VECTOR3_ARRAY;
 }
 
-const String GDProcTranslate::get_output_connector_name(int p_slot) const {
+const String GDProcVec3Translate::get_output_connector_name(int p_slot) const {
 	return "output";
 }
 
-const Variant GDProcTranslate::get_output(int p_slot) const {
+const Variant GDProcVec3Translate::get_output(int p_slot) const {
 	return Variant(vectors);
 }
 

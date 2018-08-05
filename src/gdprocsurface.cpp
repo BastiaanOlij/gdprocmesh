@@ -22,8 +22,6 @@ bool GDProcSurface::update(bool p_inputs_updated, const Array &p_inputs) {
 	must_update = false;
 
 	if (updated || p_inputs_updated) {
-		printf("Updating our surface\n");
-
 		// resize our array just in case
 		surface_arr.resize(ArrayMesh::ARRAY_MAX);
 
@@ -142,13 +140,18 @@ const String GDProcSurface::get_input_connector_name(int p_slot) const {
 }
 
 int GDProcSurface::get_output_connector_count() const {
-	// We set this to zero even though we output our final array, we don't want this connector to show
-	// and it means this will be treated as a final output node
-	return 0;
+	return 1;
+}
+
+Variant::Type GDProcSurface::get_output_connector_type(int p_slot) const {
+	return Variant::ARRAY;
+}
+
+const String GDProcSurface::get_output_connector_name(int p_slot) const {
+	return "Surface";
 }
 
 const Variant GDProcSurface::get_output(int p_slot) const {
-	// this should only be called after update is called. 
 	if (p_slot == 0) {
 		return Variant(surface_arr);
 	}

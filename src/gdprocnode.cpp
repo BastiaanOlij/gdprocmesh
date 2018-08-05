@@ -4,6 +4,7 @@ using namespace godot;
 
 void GDProcNode::_register_methods() {
 	register_method("get_type_name", &GDProcNode::get_type_name);
+	
 	// position
 	register_method("get_position", &GDProcNode::get_position);
 	register_method("set_position", &GDProcNode::set_position);
