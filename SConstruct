@@ -55,6 +55,12 @@ env.Append(LIBS=[cpp_library])
 
 sources = []
 add_sources(sources, "src")
+add_sources(sources, "src/input")
+add_sources(sources, "src/shapes")
+add_sources(sources, "src/primitives")
+add_sources(sources, "src/transforms")
+add_sources(sources, "src/output")
+add_sources(sources, "src/modifiers")
 
 library = env.SharedLibrary(target=target_path + target_name, source=sources)
 Default(library)

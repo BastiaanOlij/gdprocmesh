@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdnlib" type="GDNativeLibrary" id=2]
@@ -12,144 +12,117 @@ library = ExtResource( 2 )
 [sub_resource type="Resource" id=2]
 
 script = SubResource( 1 )
-position = Vector2( 800, 20 )
+position = Vector2( 800, -80 )
+node_name = "Surface"
 
 [sub_resource type="NativeScript" id=3]
 
-class_name = "GDProcGenNormals"
+class_name = "GDProcInVec3"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=4]
 
+resource_name = "TestInput"
 script = SubResource( 3 )
-position = Vector2( 380, 100 )
+position = Vector2( 160, -60 )
+node_name = "MyFirstInput"
 
 [sub_resource type="NativeScript" id=5]
 
-class_name = "GDProcBox"
+class_name = "GDProcInReal"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=6]
 
 script = SubResource( 5 )
-position = Vector2( -100, 140 )
-width = 1.0
-height = 1.0
-depth = 1.0
+position = Vector2( 160, 320 )
+node_name = "X2"
 
 [sub_resource type="NativeScript" id=7]
 
-class_name = "GDProcSurface"
+class_name = "GDProcGenNormals"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=8]
 
 script = SubResource( 7 )
-position = Vector2( 800, 340 )
+position = Vector2( 480, 100 )
+node_name = "Generate normals"
 
 [sub_resource type="NativeScript" id=9]
 
-class_name = "GDProcVec3Translate"
+class_name = "GDProcBox"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=10]
 
 script = SubResource( 9 )
-position = Vector2( 380, 260 )
-x = 2.0
-y = 0.0
-z = 0.0
+position = Vector2( 120, 140 )
+node_name = "Box"
+width = 1.0
+height = 1.0
+depth = 1.0
 
 [sub_resource type="NativeScript" id=11]
 
-class_name = "GDProcOutput"
+class_name = "GDProcSurface"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=12]
 
-resource_name = "Test 1"
 script = SubResource( 11 )
-position = Vector2( 1100, 20 )
+position = Vector2( 800, 240 )
+node_name = "Surface_1"
 
 [sub_resource type="NativeScript" id=13]
 
-class_name = "GDProcOutput"
+class_name = "GDProcVec3Translate"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=14]
 
-resource_name = "Test 2"
 script = SubResource( 13 )
-position = Vector2( 1100, 340 )
+position = Vector2( 480, 220 )
+node_name = "Vec3 Translate"
+x = 2.0
+y = 2.0
+z = 0.0
 
 [sub_resource type="NativeScript" id=15]
 
-class_name = "GDProcVec3Translate"
+class_name = "GDProcOutput"
 library = ExtResource( 2 )
 
 [sub_resource type="Resource" id=16]
 
 script = SubResource( 15 )
-position = Vector2( 340, -80 )
-x = -2.0
+position = Vector2( 1060, -80 )
+node_name = "Output_1"
+
+[sub_resource type="NativeScript" id=17]
+
+class_name = "GDProcOutput"
+library = ExtResource( 2 )
+
+[sub_resource type="Resource" id=18]
+
+script = SubResource( 17 )
+position = Vector2( 1060, 240 )
+node_name = "Output_2"
+
+[sub_resource type="NativeScript" id=19]
+
+class_name = "GDProcVec3Translate"
+library = ExtResource( 2 )
+
+[sub_resource type="Resource" id=20]
+
+script = SubResource( 19 )
+position = Vector2( 480, -80 )
+node_name = "Vec3 Translate_1"
+x = -1.0
 y = 0.0
 z = 0.0
-
-[sub_resource type="SpatialMaterial" id=20]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 0.2, 0.709804, 0.505882, 1 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 0.6
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_enable = false
-_sections_unfolded = [ "Albedo" ]
 
 [sub_resource type="SpatialMaterial" id=21]
 
@@ -178,11 +151,11 @@ params_billboard_mode = 0
 params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.85098, 0.392157, 0.392157, 1 )
-metallic = 0.8
+albedo_color = Color( 0.945098, 0.14902, 0.14902, 1 )
+metallic = 0.62
 metallic_specular = 0.5
 metallic_texture_channel = 0
-roughness = 0.0
+roughness = 0.22
 roughness_texture_channel = 0
 emission_enabled = false
 normal_enabled = false
@@ -205,54 +178,114 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Metallic" ]
+_sections_unfolded = [ "Albedo", "Metallic", "Roughness" ]
 
-[sub_resource type="ArrayMesh" id=19]
+[sub_resource type="SpatialMaterial" id=22]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
+flags_disable_ambient_light = false
+flags_ensure_correct_normals = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_billboard_keep_scale = false
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 0.309804, 0.898039, 0.290196, 1 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 1.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
+_sections_unfolded = [ "Albedo" ]
+
+[sub_resource type="ArrayMesh" id=23]
 
 blend_shape_mode = 0
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 surfaces/0 = {
-"aabb": AABB( 1.5, -0.5, -0.5, 1, 1, 1 ),
-"array_data": PoolByteArray( 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 191, 183, 183, 183, 0, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 191, 73, 183, 183, 0, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 191, 73, 73, 183, 0, 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 191, 183, 73, 183, 0, 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 63, 183, 183, 73, 0, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 63, 73, 183, 73, 0, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 63, 73, 73, 73, 0, 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 63, 183, 73, 73, 0 ),
-"array_index_data": PoolByteArray( 0, 0, 1, 0, 3, 0, 1, 0, 2, 0, 3, 0, 5, 0, 4, 0, 6, 0, 4, 0, 7, 0, 6, 0, 4, 0, 0, 0, 3, 0, 4, 0, 3, 0, 7, 0, 1, 0, 5, 0, 6, 0, 1, 0, 6, 0, 2, 0, 4, 0, 5, 0, 1, 0, 4, 0, 1, 0, 0, 0, 3, 0, 2, 0, 6, 0, 3, 0, 6, 0, 7, 0 ),
-"blend_shape_data": [  ],
-"format": 97539,
-"index_count": 36,
-"material": SubResource( 20 ),
-"name": "Test 2",
-"primitive": 4,
-"skeleton_aabb": [  ],
-"vertex_count": 8
-}
-surfaces/1 = {
-"aabb": AABB( -2.5, -0.5, -0.5, 1, 1, 1 ),
-"array_data": PoolByteArray( 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 191, 183, 183, 183, 0, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 191, 73, 183, 183, 0, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 191, 73, 73, 183, 0, 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 191, 183, 73, 183, 0, 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 63, 183, 183, 73, 0, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 63, 73, 183, 73, 0, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 63, 73, 73, 73, 0, 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 63, 183, 73, 73, 0 ),
+"aabb": AABB( -1.5, 0.5, -0.5, 1, 1, 1 ),
+"array_data": PoolByteArray( 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 191, 183, 183, 183, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 191, 73, 183, 183, 0, 0, 0, 0, 191, 0, 0, 192, 63, 0, 0, 0, 191, 73, 73, 183, 0, 0, 0, 192, 191, 0, 0, 192, 63, 0, 0, 0, 191, 183, 73, 183, 0, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 63, 183, 183, 73, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 63, 73, 183, 73, 0, 0, 0, 0, 191, 0, 0, 192, 63, 0, 0, 0, 63, 73, 73, 73, 0, 0, 0, 192, 191, 0, 0, 192, 63, 0, 0, 0, 63, 183, 73, 73, 0 ),
 "array_index_data": PoolByteArray( 0, 0, 1, 0, 3, 0, 1, 0, 2, 0, 3, 0, 5, 0, 4, 0, 6, 0, 4, 0, 7, 0, 6, 0, 4, 0, 0, 0, 3, 0, 4, 0, 3, 0, 7, 0, 1, 0, 5, 0, 6, 0, 1, 0, 6, 0, 2, 0, 4, 0, 5, 0, 1, 0, 4, 0, 1, 0, 0, 0, 3, 0, 2, 0, 6, 0, 3, 0, 6, 0, 7, 0 ),
 "blend_shape_data": [  ],
 "format": 97539,
 "index_count": 36,
 "material": SubResource( 21 ),
-"name": "Test 1",
+"name": "Output_1",
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 8
+}
+surfaces/1 = {
+"aabb": AABB( 1.5, 1.5, -0.5, 1, 1, 1 ),
+"array_data": PoolByteArray( 0, 0, 192, 63, 0, 0, 192, 63, 0, 0, 0, 191, 183, 183, 183, 0, 0, 0, 32, 64, 0, 0, 192, 63, 0, 0, 0, 191, 73, 183, 183, 0, 0, 0, 32, 64, 0, 0, 32, 64, 0, 0, 0, 191, 73, 73, 183, 0, 0, 0, 192, 63, 0, 0, 32, 64, 0, 0, 0, 191, 183, 73, 183, 0, 0, 0, 192, 63, 0, 0, 192, 63, 0, 0, 0, 63, 183, 183, 73, 0, 0, 0, 32, 64, 0, 0, 192, 63, 0, 0, 0, 63, 73, 183, 73, 0, 0, 0, 32, 64, 0, 0, 32, 64, 0, 0, 0, 63, 73, 73, 73, 0, 0, 0, 192, 63, 0, 0, 32, 64, 0, 0, 0, 63, 183, 73, 73, 0 ),
+"array_index_data": PoolByteArray( 0, 0, 1, 0, 3, 0, 1, 0, 2, 0, 3, 0, 5, 0, 4, 0, 6, 0, 4, 0, 7, 0, 6, 0, 4, 0, 0, 0, 3, 0, 4, 0, 3, 0, 7, 0, 1, 0, 5, 0, 6, 0, 1, 0, 6, 0, 2, 0, 4, 0, 5, 0, 1, 0, 4, 0, 1, 0, 0, 0, 3, 0, 2, 0, 6, 0, 3, 0, 6, 0, 7, 0 ),
+"blend_shape_data": [  ],
+"format": 97539,
+"index_count": 36,
+"material": SubResource( 22 ),
+"name": "Output_2",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 8
 }
 script = ExtResource( 3 )
-_sections_unfolded = [ "Script", "Surface 1", "Surface 2" ]
+_sections_unfolded = [ "Inputs", "Script", "Surface 1", "Surface 2" ]
 nodes/1 = SubResource( 2 )
-nodes/2 = SubResource( 4 )
-nodes/3 = SubResource( 6 )
-nodes/5 = SubResource( 8 )
-nodes/6 = SubResource( 10 )
-nodes/7 = SubResource( 12 )
-nodes/8 = SubResource( 14 )
-nodes/9 = SubResource( 16 )
-graph/connections = PoolIntArray( 2, 0, 3, 0, 2, 1, 3, 1, 1, 8, 3, 1, 1, 1, 2, 0, 5, 1, 2, 0, 5, 8, 3, 1, 6, 0, 3, 0, 5, 0, 6, 0, 7, 0, 1, 0, 8, 0, 5, 0, 1, 0, 9, 0, 9, 0, 3, 0 )
+nodes/2 = SubResource( 8 )
+nodes/3 = SubResource( 10 )
+nodes/5 = SubResource( 12 )
+nodes/6 = SubResource( 14 )
+nodes/7 = SubResource( 16 )
+nodes/8 = SubResource( 18 )
+nodes/9 = SubResource( 20 )
+nodes/10 = SubResource( 4 )
+nodes/11 = SubResource( 6 )
+graph/connections = PoolIntArray( 2, 0, 3, 0, 2, 1, 3, 1, 1, 8, 3, 1, 1, 1, 2, 0, 5, 1, 2, 0, 5, 8, 3, 1, 6, 0, 3, 0, 5, 0, 6, 0, 7, 0, 1, 0, 8, 0, 5, 0, 1, 0, 9, 0, 9, 0, 3, 0, 9, 1, 10, 0, 9, 2, 10, 1, 9, 3, 10, 2, 6, 1, 11, 0 )
+inputs/MyFirstInput = Vector3( -1, 1, 0 )
+inputs/X2 = 2.0
 
-[node name="Main" type="Spatial" index="0"]
+[node name="Main" type="Spatial"]
 script = ExtResource( 1 )
 
-[node name="ProceduralMesh" type="MeshInstance" parent="." index="0"]
+[node name="ProceduralMesh" type="MeshInstance" parent="."]
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -262,13 +295,13 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 19 )
+mesh = SubResource( 23 )
 skeleton = NodePath("..")
 material/0 = null
 material/1 = null
 _sections_unfolded = [ "Material", "Script" ]
 
-[node name="Camera" type="Camera" parent="." index="1"]
+[node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.34401 )
 keep_aspect = 1
 cull_mask = 1048575
@@ -283,7 +316,7 @@ size = 1.0
 near = 0.05
 far = 100.0
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="2"]
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.860919, -0.244252, 0.446274, -0.0962505, 0.783167, 0.614317, -0.499555, -0.571831, 0.650733, 0, 2.32417, 0 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )

@@ -8,6 +8,8 @@
 
 namespace godot {
 
+class GDProcMesh;
+
 class GDProcNode : public Resource {
 	GODOT_CLASS(GDProcNode, Resource)
 
@@ -22,6 +24,7 @@ public:
 private:
 	ProcessStatus status; // process status updated as we process our nodes
 	Vector2	position; // position in our graph, for editing
+	String node_name; // name of this node, I had issues using the build in name not being saved...
 
 protected:
 	bool must_update; // we set this to true if one of our properties/settings has changed
@@ -34,10 +37,17 @@ public:
 
 	virtual String get_type_name(); // gets the name we display in the title of the GraphNode
 
+	void set_node_name(const String p_node_name);
+	String get_node_name() const;
+
 	void _init(); // our initializer called by Godot
 	void _touch(); // marks this node for update
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
+
+	virtual Variant::Type get_input_property_type() const; // if this is an input property, what is its type?
+	virtual void set_input(Variant p_input); // if this is an input property, set its value
+	virtual Variant get_input() const; // if this is an input property, get its value
 
 	virtual int get_input_connector_count() const; // returns the number of input connectors this note has
 	virtual Variant::Type get_input_connector_type(int p_slot) const; // returns the type of the data expected for this input

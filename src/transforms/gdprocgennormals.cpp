@@ -1,4 +1,4 @@
-#include "gdprocgennormals.h"
+#include "transforms/gdprocgennormals.h"
 
 using namespace godot;
 

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/gdprocmesh/Scripts/ProcNodeEditor.gd" type="Script" id=1]
 
-[node name="ProcNode" type="GraphNode" index="0"]
+[node name="ProcNode" type="GraphNode"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -32,7 +32,7 @@ slot/0/right_color = Color( 1, 1, 1, 1 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Rect", "Script" ]
 
-[node name="Name_Container" type="HBoxContainer" parent="." index="0"]
+[node name="Name_Container" type="HBoxContainer" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -49,7 +49,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 1
 
-[node name="Name_Label" type="Label" parent="Name_Container" index="0"]
+[node name="Name_Label" type="Label" parent="Name_Container"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -69,7 +69,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Name_Edit" type="LineEdit" parent="Name_Container" index="1"]
+[node name="Name_Edit" type="LineEdit" parent="Name_Container"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -96,5 +96,5 @@ _sections_unfolded = [ "Rect" ]
 
 [connection signal="close_request" from="." to="." method="_on_ProcNode_close_request"]
 [connection signal="dragged" from="." to="." method="_on_ProcNode_dragged"]
-[connection signal="text_changed" from="Name_Container/Name_Edit" to="." method="_on_Name_Edit_text_changed"]
+[connection signal="focus_exited" from="Name_Container/Name_Edit" to="." method="_on_Name_Edit_focus_exited"]
 [connection signal="text_entered" from="Name_Container/Name_Edit" to="." method="_on_Name_Edit_text_entered"]

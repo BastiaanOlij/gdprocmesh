@@ -1,4 +1,4 @@
-#include "gdprocvec3.h"
+#include "primitives/gdprocvec3.h"
 
 using namespace godot;
 

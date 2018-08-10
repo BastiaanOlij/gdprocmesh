@@ -40,14 +40,34 @@ Array GDProcMesh::_get_property_list() {
 		arr.push_back(prop);
 	}
 
+	// now add properties for any inputs, we should check if we have any issue with names not being unique
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		Variant::Type type = it->second->get_input_property_type();
+		String node_name = it->second->get_node_name();
 
-	// now add properties for any inputs
+		if ((type != Variant::NIL) && (node_name != "")) {
+			Dictionary prop;
+			String name = "inputs/";
+			name += node_name;
+
+			prop["name"] = name;
+			prop["type"] = type;
+			prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+			// prop["hint_string"] = "";
+			// prop["usage"] = ;
+
+			arr.push_back(prop);
+		}
+	}
 
 	return arr;
 }
 
 Variant GDProcMesh::_get(String p_name) {
-	String str_nodes = String("nodes/"); // temporary workaround to get around compile issue on Linux, needs further research
+	// temporary workaround to get around compile issue on Linux, needs further research
+	String str_nodes = String("nodes/");
+	String str_inputs = String("inputs/");
+
 	if (p_name.begins_with(str_nodes)) {
 		String index = p_name.split('/')[1];
 		int id = (int) index.to_int();
@@ -79,6 +99,15 @@ Variant GDProcMesh::_get(String p_name) {
 		}
 
 		return Variant(ret);
+	} else if (p_name.begins_with(str_inputs)) {
+		String input_name = p_name.split('/')[1];
+
+		std::map<int, Ref<GDProcNode> >::iterator it;
+		for (it = nodes.begin(); it != nodes.end(); it++) {
+			if (it->second->get_node_name() == input_name) {
+				return it->second->get_input();
+			}
+		}
 	}
 
 	// Must be a property of our superclass, returning an empty (NIL) variant will handle it further
@@ -86,7 +115,10 @@ Variant GDProcMesh::_get(String p_name) {
 }
 
 bool GDProcMesh::_set(String p_name, Variant p_value) {
-	String str_nodes = String("nodes/"); // temporary workaround to get around compile issue on Linux, needs further research
+	// temporary workaround to get around compile issue on Linux, needs further research
+	String str_nodes = String("nodes/"); 
+	String str_inputs = String("inputs/");
+
 	if (p_name.begins_with(str_nodes)) {
 		String index = p_name.split('/')[1];
 		int id = (int) index.to_int();
@@ -101,6 +133,18 @@ bool GDProcMesh::_set(String p_name, Variant p_value) {
 
 		for(int i = 0; i < count; i+=4) {
 			add_connection(data[i], data[i+1], data[i+2], data[i+3]);
+		}
+
+		return true;
+	} else if (p_name.begins_with(str_inputs)) {
+		String input_name = p_name.split('/')[1];
+
+		std::map<int, Ref<GDProcNode> >::iterator it;
+		for (it = nodes.begin(); it != nodes.end(); it++) {
+			if (it->second->get_node_name() == input_name) {
+				it->second->set_input(p_value);
+				return true;
+			}
 		}
 
 		return true;
@@ -124,12 +168,49 @@ int GDProcMesh::get_free_id() {
 	return new_id;
 }
 
-bool GDProcMesh::node_id_is_used(int p_id) {
+bool GDProcMesh::node_id_is_used(int p_id) const {
 	if (nodes.find(p_id) != nodes.end()) {
 		return true;
 	}
 
 	return false;
+}
+
+bool GDProcMesh::node_name_used(const String p_name) {
+	std::map<int, Ref<GDProcNode> >::iterator it;
+	for (it = nodes.begin(); it != nodes.end(); it++) {
+		if (it->second->get_node_name() == p_name) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+const String GDProcMesh::get_unique_node_name(const String p_base_name) {
+	int cnt = 0;
+	String node_name = p_base_name;
+
+	while (node_name_used(node_name)) {
+		cnt += 1;
+		node_name = p_base_name + "_";
+		node_name += String::num_int64(cnt);
+	}
+
+	return node_name;
+}
+
+void GDProcMesh::_child_name_changed(Ref<GDProcNode> p_child, String p_from, String p_to) {
+	// check if we need to change a surface
+	if (p_child->get_output_connector_count() == 0) {
+		int64_t s = surface_find_by_name(p_from);
+		if (s != -1) {
+			surface_set_name(s, p_to);
+		}
+	}
+
+	// we have potentially renamed properties
+	emit_signal("changed");
 }
 
 int GDProcMesh::add_node(Ref<GDProcNode> p_node, int p_id) {
@@ -144,10 +225,17 @@ int GDProcMesh::add_node(Ref<GDProcNode> p_node, int p_id) {
 		return -1;
 	}
 
-	// printf("Adding node\n");
+	// make sure our node has a unique name..
+	String node_name = p_node->get_node_name();
+	if (node_name == "") {
+		p_node->set_node_name(get_unique_node_name(p_node->get_type_name()));
+	} else if (node_name_used(node_name)) {
+		p_node->set_node_name(get_unique_node_name(node_name));
+	}
 
-	// trigger our trigger_update on a change of this node (commented out because I have a weird const error)
+	// trigger our trigger_update on a change of this node
 	p_node->connect("changed", this, "trigger_update");
+	p_node->connect("node_name_changed", this, "_child_name_changed");
 
 	// Add our node
 	nodes[p_id] = p_node;
@@ -204,6 +292,7 @@ void GDProcMesh::remove_node(int p_id) {
 
 	// disconnect our signal
 	nodes[p_id]->disconnect("changed", this, "trigger_update");
+	nodes[p_id]->disconnect("node_name_changed", this, "_child_name_changed");
 
 	// now remove our node
 	nodes.erase(p_id);
@@ -307,6 +396,7 @@ void GDProcMesh::_register_methods() {
 	register_method("get_node", &GDProcMesh::get_node);
 	register_method("get_node_id_list", &GDProcMesh::get_node_id_list);
 	register_method("remove_node", &GDProcMesh::remove_node);
+	register_method("_child_name_changed", &GDProcMesh::_child_name_changed);
 
 	/* should add some methods to interact with nodes directly */
 
@@ -467,7 +557,7 @@ void GDProcMesh::_update() {
 		bool found = false;
 
 		for (it = nodes.begin(); !found && it != nodes.end(); it++) {
-			String node_name = it->second->get_name();
+			String node_name = it->second->get_node_name();
 			if (node_name == "") {
 				node_name = "Surface_";
 				node_name += String::num_int64(it->first);
@@ -496,7 +586,7 @@ void GDProcMesh::_update() {
 
 			// if contents has changed, update our surface
 			if (changed) {
-				String name = it->second->get_name();
+				String name = it->second->get_node_name();
 				if (name == "") {
 					name = "Surface_";
 					name += String::num_int64(it->first);

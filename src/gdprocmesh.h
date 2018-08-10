@@ -10,10 +10,10 @@
 #include <map>
 
 #include "gdprocnode.h"
-#include "gdprocoutput.h"
-#include "gdprocsurface.h"
-#include "gdprocbox.h"
-#include "gdprocgennormals.h"
+#include "output/gdprocoutput.h"
+#include "output/gdprocsurface.h"
+#include "transforms/gdprocgennormals.h"
+#include "shapes/gdprocbox.h"
 
 namespace godot {
 
@@ -26,7 +26,11 @@ private:
 
 	std::map<int, Ref<GDProcNode> > nodes;
 	int get_free_id();
-	bool node_id_is_used(int p_id);
+	bool node_id_is_used(int p_id) const;
+	bool node_name_used(const String p_name);
+	const String get_unique_node_name(const String p_base_name);
+	void _child_name_changed(Ref<GDProcNode> p_child, String p_from, String p_to);
+
 	bool do_update_node(int p_id, Ref<GDProcNode> p_node);
 
 	struct ctor {

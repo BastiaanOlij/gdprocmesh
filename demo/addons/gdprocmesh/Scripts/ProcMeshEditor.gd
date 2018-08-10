@@ -23,28 +23,6 @@ func edit_mesh(p_procmesh):
 		_clear_graph()
 		hide()
 
-func _get_type_color(p_type):
-	if p_type == TYPE_REAL:
-		return Color("#f34d4d")
-	elif p_type == TYPE_VECTOR3:
-		return Color("#1e8a76")
-	elif p_type == TYPE_VECTOR3_ARRAY:
-		return Color("#d67dee")
-	elif p_type == TYPE_VECTOR2_ARRAY:
-		return Color("#61daf4")
-	elif p_type == TYPE_INT_ARRAY:
-		return Color("#f6a86e")
-	elif p_type == TYPE_REAL_ARRAY:
-		return Color("#8ad82b")
-	elif p_type == TYPE_COLOR_ARRAY:
-		return Color("#d82ba5")
-	elif p_type == TYPE_ARRAY:
-		# array is assumed to be a surface
-		return Color("#a8fbde")
-	
-	print('Need a color for type ' + String(p_type))
-	return Color(0.0, 0.0, 1.0)
-
 func _create_graph_node(p_node_id):
 	# should turn this into a scene to (pre)load...
 	
@@ -57,70 +35,7 @@ func _create_graph_node(p_node_id):
 	gn.set_proc_node(procmesh, p_node_id)
 	gn.connect("changed", self, "_update_graph")
 	
-	var node_arr = Array()
-	node_arr.push_back(p_node_id)
-	
 	slot_offset += 1
-	
-	# add input and output connectors
-	var input_connector_count = node.get_input_connector_count()
-	var output_connector_count = node.get_output_connector_count()
-	
-	if (input_connector_count > 0 or output_connector_count > 0):
-		for i in range(0, max(input_connector_count, output_connector_count)):
-			var left_is_valid = i < input_connector_count
-			var left_type = 0
-			var left_color = Color(0.0, 0.0, 1.0, 1.0)
-			var right_is_valid = i < output_connector_count
-			var right_type = 0
-			var right_color = Color(0.0, 0.0, 1.0, 1.0)
-			
-			var hb = HBoxContainer.new()
-			
-			if left_is_valid:
-				var label = Label.new()
-				label.set_text(node.get_input_connector_name(i))
-				label.rect_min_size = Vector2(75.0, 0.0)
-				hb.add_child(label)
-				left_type = node.get_input_connector_type(i)
-				left_color = _get_type_color(left_type)
-				
-			var prop_name = node.get_connector_property_name(i)
-			if prop_name != '':
-				var prop_field = null
-				var prop_value = node.get(prop_name)
-				var prop_type = typeof(prop_value)
-				if prop_type == TYPE_INT:
-					prop_field = LineEdit.new()
-					prop_field.align = LineEdit.ALIGN_RIGHT
-					prop_field.set_text(String(prop_value))
-				elif prop_type == TYPE_REAL:
-					prop_field = LineEdit.new()
-					prop_field.align = LineEdit.ALIGN_RIGHT
-					prop_field.set_text("%0.3f" % prop_value)
-					
-				if prop_field:
-					var prop_arr = Array()
-					prop_arr.push_back(p_node_id)
-					prop_arr.push_back(prop_name)
-					prop_arr.push_back(prop_field)
-					prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
-					prop_field.connect("focus_exited", self, "_exit_node_property", prop_arr)
-					prop_field.rect_min_size = Vector2(75.0, 0.0)
-					hb.add_child(prop_field)
-			
-			hb.add_spacer(false)
-			
-			if right_is_valid:
-				var label = Label.new()
-				label.set_text(node.get_output_connector_name(i))
-				label.set_align(Label.ALIGN_RIGHT)
-				hb.add_child(label)
-				right_type = node.get_output_connector_type(i)
-				right_color = _get_type_color(right_type)
-			
-			gn.add_child(hb)
-			gn.set_slot(i + slot_offset, left_is_valid, left_type, left_color, right_is_valid, right_type, right_color)
 	
 	return gn
 
@@ -137,29 +52,6 @@ func _update_graph():
 	var connections = procmesh.get_connection_list()
 	for c in connections:
 		$GraphEdit.connect_node(String(c[2]), c[3], String(c[0]), c[1])
-
-func _set_node_name(p_value, p_node_id):
-	pass
-
-func _exit_node_name(p_node_id):
-	pass
-
-func _set_node_property(p_value, p_node_id, p_property, p_field):
-	var node = procmesh.get_node(p_node_id)
-	if node:
-		node.set(p_property, p_value)
-		
-		# see what it changed to and update our display, need to figure out how...
-		var prop_value = node.get(p_property)
-		var prop_type = typeof(prop_value)
-		if prop_type == TYPE_INT:
-			p_field.set_text(String(prop_value))
-		elif prop_type == TYPE_REAL:
-			p_field.set_text("%0.3f" % prop_value)
-
-func _exit_node_property(p_node_id, p_property, p_field):
-	var value = p_field.get_text()
-	_set_node_property(value, p_node_id, p_property, p_field)
 
 func _add_node(p_type):
 	var new_script = NativeScript.new()
@@ -193,22 +85,24 @@ func _ready():
 	add_popup.connect("id_pressed", self, "_add_node")
 
 	# inputs
+	_add_node_class("Input Real", "GDProcInReal")
+	_add_node_class("Input Vec3", "GDProcInVec3")
 
 	# primitives
 	_add_node_class("Vec3", "GDProcVec3")
 
-	# transforms
+	# transforms (work on primitives)
 	_add_node_class("Vec3 Translate", "GDProcVec3Translate")
 	_add_node_class("Generate normals", "GDProcGenNormals")
 
 	# shapes
 	_add_node_class("Box", "GDProcBox")
 
-	# modifiers
-
 	# output
 	_add_node_class("Surface", "GDProcSurface")
 	_add_node_class("Output", "GDProcOutput")
+
+	# modifiers (work on surfaces)
 
 func _input(event):
 	pass
