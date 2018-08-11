@@ -15,12 +15,10 @@ void GDProcGenNormals::_init() {
 }
 
 bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
-	bool updated = must_update;
+	bool updated = must_update || p_inputs_updated;
 	must_update = false;
 
-	if (updated || p_inputs_updated) {
-		printf("Generate normals\n");
-
+	if (updated) {
 		int num_vertices = 0;
 		PoolVector3Array vertices;
 		int num_indices = 0;
@@ -44,6 +42,8 @@ bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
 		if ((num_vertices > 0) && (num_indices > 0)) {
 			normals.resize(num_vertices);
 
+			printf("Calculating %i normals\n", num_vertices);
+
 			{
 				PoolVector3Array::Write vertices_write = vertices.write();
 
@@ -53,42 +53,46 @@ bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
 				}
 			}
 
-			PoolVector3Array::Write w = normals.write();
-			PoolVector3Array::Read vertices_read = vertices.read();
-			PoolIntArray::Read indices_read = indices.read();
+			PoolVector3Array::Write wn = normals.write();
+			PoolVector3Array::Read vr = vertices.read();
+			PoolIntArray::Read ir = indices.read();
 
 			// lets reset our normals
 			for (int n = 0; n < num_vertices; n++) {
-				w[n] = Vector3(0.0, 0.0, 0.0);
+				wn[n] = Vector3(0.0, 0.0, 0.0);
 			}
 
 			// add our normals
 			for (int i = 0; i < num_indices; i+=3) {
-				int a = indices_read[i];
-				int b = indices_read[i + 1];
-				int c = indices_read[i + 2];
+				int a = ir[i];
+				int b = ir[i + 1];
+				int c = ir[i + 2];
 
 				// get the normalized vertices for this face
-				Vector3 v1 = vertices_read[a];
-				Vector3 v2 = vertices_read[b];
-				Vector3 v3 = vertices_read[c];
+				Vector3 v1 = vr[a];
+				Vector3 v2 = vr[b];
+				Vector3 v3 = vr[c];
 
 				// calculate our vectors
 				v2 -= v1;
 				v3 -= v1;
 
+				// normalize our vectors
+				v2.normalize();
+				v3.normalize();
+
 				// cross product to get our normal
-				Vector3 n = v3.cross(v2);
+				Vector3 n = v3.cross(v2).normalized();
 
 				// and add our normal to the normals for our face
-				w[a] += n;
-				w[b] += n;
-				w[c] += n;
+				wn[a] += n;
+				wn[b] += n;
+				wn[c] += n;
 			}
 
 			// now normalise our normals
 			for (int n = 0; n < num_vertices; n++) {
-				w[n].normalize();
+				wn[n].normalize();
 			}
 		} else {
 			normals.resize(0);
@@ -131,7 +135,7 @@ Variant::Type GDProcGenNormals::get_output_connector_type(int p_slot) const {
 }
 
 const String GDProcGenNormals::get_output_connector_name(int p_slot) const {
-	return "Normals";
+	return "normals";
 }
 
 const Variant GDProcGenNormals::get_output(int p_slot) const {

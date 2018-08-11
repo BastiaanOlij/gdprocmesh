@@ -17,7 +17,6 @@ void GDProcInReal::_init() {
 void GDProcInReal::set_input(Variant p_input) {
 	float new_value = p_input;
 	if (value != new_value) {
-		printf("Changing real from %0.2f to %0.2f\n", value, new_value);
 		value = new_value;
 		must_update = true;
 		emit_signal("changed");

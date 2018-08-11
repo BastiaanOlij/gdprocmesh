@@ -86,13 +86,12 @@ void GDProcNode::_touch() {
 }
 
 bool GDProcNode::update(bool p_inputs_updated, const Array &p_inputs) {
-	bool updated = must_update;
+	bool updated = must_update || p_inputs_updated;
 	must_update = false;
 
-	if (updated || p_inputs_updated) {
+	if (updated) {
 		// just am example here, but implement updating data here.. 
 
-		updated = true;
 	}
 
 	return updated;

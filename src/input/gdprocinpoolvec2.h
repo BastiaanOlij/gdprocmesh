@@ -1,15 +1,15 @@
-#ifndef GD_PROC_INVEC3_H
-#define GD_PROC_INVEC3_H
+#ifndef GD_PROC_INPOOLVEC2_H
+#define GD_PROC_INPOOLVEC2_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcInVec3 : public GDProcNode {
-	GODOT_SUBCLASS(GDProcInVec3, GDProcNode)
+class GDProcInPoolVec2 : public GDProcNode {
+	GODOT_SUBCLASS(GDProcInPoolVec2, GDProcNode)
 
 private:
-	Vector3 vector;
+	PoolVector2Array value;
 
 public:
 	static void _register_methods();
@@ -34,4 +34,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_INVEC3_H */
+#endif /* !GD_PROC_INPOOLVEC2_H */

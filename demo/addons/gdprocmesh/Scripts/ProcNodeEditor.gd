@@ -10,6 +10,10 @@ var node = null
 func _get_type_color(p_type):
 	if p_type == TYPE_REAL:
 		return Color("#f34d4d")
+	elif p_type == TYPE_INT:
+		return Color("#0d6498")
+	elif p_type == TYPE_BOOL:
+		return Color("#c4780c")
 	elif p_type == TYPE_VECTOR3:
 		return Color("#1e8a76")
 	elif p_type == TYPE_VECTOR3_ARRAY:
@@ -74,22 +78,32 @@ func set_proc_node(p_proc_mesh, p_node_id):
 				var prop_field = null
 				var prop_value = node.get(prop_name)
 				var prop_type = typeof(prop_value)
+				var prop_arr = Array()
+				prop_arr.push_back(prop_name)
+				prop_arr.push_back(prop_field)
+				
 				if prop_type == TYPE_INT:
 					prop_field = LineEdit.new()
 					prop_field.align = LineEdit.ALIGN_RIGHT
 					prop_field.set_text(String(prop_value))
+					prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
+					prop_field.connect("focus_exited", self, "_exit_node_property", prop_arr)
+					prop_field.rect_min_size = Vector2(75.0, 0.0)
 				elif prop_type == TYPE_REAL:
 					prop_field = LineEdit.new()
 					prop_field.align = LineEdit.ALIGN_RIGHT
 					prop_field.set_text("%0.3f" % prop_value)
-					
-				if prop_field:
-					var prop_arr = Array()
-					prop_arr.push_back(prop_name)
-					prop_arr.push_back(prop_field)
 					prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
 					prop_field.connect("focus_exited", self, "_exit_node_property", prop_arr)
 					prop_field.rect_min_size = Vector2(75.0, 0.0)
+				elif prop_type == TYPE_BOOL:
+					prop_field = CheckBox.new()
+					prop_field.set_text("on")
+					prop_field.pressed = prop_value
+					prop_field.connect("toggled", self, "_set_node_property", prop_arr)
+					prop_field.rect_min_size = Vector2(75.0, 0.0)
+					
+				if prop_field:
 					hb.add_child(prop_field)
 			
 			hb.add_spacer(false)

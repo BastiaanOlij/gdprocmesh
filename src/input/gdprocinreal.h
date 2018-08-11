@@ -34,4 +34,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_VEC3_H */
+#endif /* !GD_PROC_INREAL_H */

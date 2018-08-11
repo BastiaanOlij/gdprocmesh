@@ -525,6 +525,7 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 			}
 
 			// update this node
+			printf("Update %s\n", p_node->get_node_name().utf8().get_data());
 			if (p_node->update(updated, inputs)) {
 				updated = true;
 			}
@@ -596,7 +597,7 @@ void GDProcMesh::_update() {
 				// find our surface and get some info we may want to cache like our material
 				int64_t s = surface_find_by_name(name);
 				if (s != -1) {
-					printf("Removing changed surface %lli, %s\n", s, name.utf8().get_data());
+					// printf("Removing changed surface %lli, %s\n", s, name.utf8().get_data());
 
 					// remember our material, we're reusing it!
 					material = surface_get_material(s);
@@ -626,7 +627,7 @@ void GDProcMesh::_update() {
 						printf("No indices in surface\n");
 					} else {
 						// log
-						printf("Updating surface %s\n", name.utf8().get_data());
+						// printf("Updating surface %s\n", name.utf8().get_data());
 
 						// lets add a new surface
 						int64_t new_surface_id = get_surface_count();

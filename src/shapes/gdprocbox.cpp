@@ -1,4 +1,4 @@
-#include "gdprocbox.h"
+#include "shapes/gdprocbox.h"
 
 using namespace godot;
 
@@ -15,6 +15,9 @@ String GDProcBox::get_type_name() {
 void GDProcBox::_init() {
 	// first call super class
 	GDProcNode::_init();
+
+	// default size
+	default_size = Vector3(1.0, 1.0, 1.0);
 }
 
 void GDProcBox::set_width(float p_width) {
@@ -54,10 +57,10 @@ float GDProcBox::get_depth() const {
 }
 
 bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
-	bool updated = must_update;
+	bool updated = must_update || p_inputs_updated;
 	must_update = false;
 
-	if (updated || p_inputs_updated) {
+	if (updated) {
 		Vector3 size = default_size;
 
 		int input_count = p_inputs.size();
@@ -126,7 +129,6 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 			i[30] = 3; i[31] = 2; i[32] = 6;
 			i[33] = 3; i[34] = 6; i[35] = 7;
 		}		
-
 	}
 
 	return updated;

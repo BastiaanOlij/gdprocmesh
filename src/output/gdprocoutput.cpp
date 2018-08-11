@@ -18,10 +18,10 @@ void GDProcOutput::_init() {
 }
 
 bool GDProcOutput::update(bool p_inputs_updated, const Array &p_inputs) {
-	bool updated = must_update;
+	bool updated = must_update || p_inputs_updated;
 	must_update = false;
 
-	if (updated || p_inputs_updated) {
+	if (updated) {
 		// Really should change this so we keep a reference of sorts, this is a bit of a wasteful copy.
 		// Reduz was talking the other day about adding reference counting to arrays, that would be pretty cool.
 

@@ -24,11 +24,6 @@ if platform == "windows":
 if ARGUMENTS.get("use_llvm", "no") == "yes":
     env["CXX"] = "clang++"
 
-def add_sources(sources, directory):
-    for file in os.listdir(directory):
-        if file.endswith('.cpp'):
-            sources.append(directory + '/' + file)
-
 if platform == "osx":
     target_path += 'osx/'
     cpp_library += '.osx.64'
@@ -53,14 +48,8 @@ env.Append(CPPPATH=['.', 'src/', godot_headers_path, cpp_bindings_path + 'includ
 env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
 env.Append(LIBS=[cpp_library])
 
-sources = []
-add_sources(sources, "src")
-add_sources(sources, "src/input")
-add_sources(sources, "src/shapes")
-add_sources(sources, "src/primitives")
-add_sources(sources, "src/transforms")
-add_sources(sources, "src/output")
-add_sources(sources, "src/modifiers")
+sources = Glob('src/*.cpp')
+sources += Glob('src/*/*.cpp')
 
 library = env.SharedLibrary(target=target_path + target_name, source=sources)
 Default(library)

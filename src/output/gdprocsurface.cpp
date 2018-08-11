@@ -18,10 +18,10 @@ void GDProcSurface::_init() {
 }
 
 bool GDProcSurface::update(bool p_inputs_updated, const Array &p_inputs) {
-	bool updated = must_update;
+	bool updated = must_update || p_inputs_updated;
 	must_update = false;
 
-	if (updated || p_inputs_updated) {
+	if (updated) {
 		// resize our array just in case
 		surface_arr.resize(ArrayMesh::ARRAY_MAX);
 

@@ -85,6 +85,9 @@ func _ready():
 	add_popup.connect("id_pressed", self, "_add_node")
 
 	# inputs
+	_add_node_class("Input Int", "GDProcInInt")
+	_add_node_class("Input Vec2s", "GDProcInPoolVec2")
+	_add_node_class("Input Vec3s", "GDProcInPoolVec3")
 	_add_node_class("Input Real", "GDProcInReal")
 	_add_node_class("Input Vec3", "GDProcInVec3")
 
@@ -92,11 +95,14 @@ func _ready():
 	_add_node_class("Vec3", "GDProcVec3")
 
 	# transforms (work on primitives)
-	_add_node_class("Vec3 Translate", "GDProcVec3Translate")
 	_add_node_class("Generate normals", "GDProcGenNormals")
+	_add_node_class("Vec2s Bevel", "GDProcVec2Bevel")
+	_add_node_class("Vec3s Bevel", "GDProcVec3Bevel")
+	_add_node_class("Vec3s Translate", "GDProcVec3Translate")
 
 	# shapes
 	_add_node_class("Box", "GDProcBox")
+	_add_node_class("Extrude", "GDProcExtrude")
 
 	# output
 	_add_node_class("Surface", "GDProcSurface")

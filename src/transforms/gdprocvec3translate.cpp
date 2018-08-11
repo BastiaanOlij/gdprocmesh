@@ -15,6 +15,8 @@ String GDProcVec3Translate::get_type_name() {
 void GDProcVec3Translate::_init() {
 	// first call super class
 	GDProcNode::_init();
+
+	default_translation = Vector3(0.0, 0.0, 0.0);
 }
 
 void GDProcVec3Translate::set_x(float x) {
@@ -54,10 +56,10 @@ float GDProcVec3Translate::get_z() const {
 }
 
 bool GDProcVec3Translate::update(bool p_inputs_updated, const Array &p_inputs) {
-	bool updated = must_update;
+	bool updated = must_update || p_inputs_updated;
 	must_update = false;
 
-	if (updated || p_inputs_updated) {
+	if (updated) {
 		Vector3 translate = default_translation;
 		int num_vectors = 0;
 		PoolVector3Array input_vectors;
@@ -117,7 +119,7 @@ Variant::Type GDProcVec3Translate::get_input_connector_type(int p_slot) const {
 
 const String GDProcVec3Translate::get_input_connector_name(int p_slot) const {
 	if (p_slot == 0) {
-		return "input";
+		return "vec3s";
 	} else if (p_slot == 1) {
 		return "x";
 	} else if (p_slot == 2) {
@@ -150,7 +152,7 @@ Variant::Type GDProcVec3Translate::get_output_connector_type(int p_slot) const {
 }
 
 const String GDProcVec3Translate::get_output_connector_name(int p_slot) const {
-	return "output";
+	return "vec3s";
 }
 
 const Variant GDProcVec3Translate::get_output(int p_slot) const {
