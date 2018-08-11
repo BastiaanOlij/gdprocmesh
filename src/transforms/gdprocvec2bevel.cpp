@@ -118,7 +118,6 @@ bool GDProcVec2Bevel::update(bool p_inputs_updated, const Array &p_inputs) {
 			} else {
 				cnt = 2 + ((num_vectors - 2) * cnt);
 			}
-			printf("Input points: %i\nIterations: %i\nNew number of points: %i\n", num_vectors, iterations, cnt);
 			vectors.resize(cnt);
 
 			PoolVector2Array::Write w = vectors.write();
@@ -126,8 +125,6 @@ bool GDProcVec2Bevel::update(bool p_inputs_updated, const Array &p_inputs) {
 
 			if (is_closed) {
 				for (int b = 0; b < num_vectors; b++) {
-					printf("Bevel %i -> %0.2f, %0.2f\n", b, r[b].x, r[b].y);
-
 					int a = b == 0 ? num_vectors - 1 : (b - 1);
 					int c = (b + 1) % num_vectors;
 
@@ -135,16 +132,13 @@ bool GDProcVec2Bevel::update(bool p_inputs_updated, const Array &p_inputs) {
 				}
 			} else {
 				// copy our first one
-				printf("Adding %i -> %0.2f, %0.2f\n", o, r[0].x, r[0].y);
 				w[o++] = r[0];
 
 				for (int i = 1; i < num_vectors - 1; i++) {
-					printf("Bevel %i -> %0.2f, %0.2f\n", i, r[i].x, r[i].y);
 					do_bevel(w, r[i-1], r[i], r[i+1], d, iterations, o);
 				}
 
 				// copy our last one
-				printf("Final\nAdding %i -> %0.2f, %0.2f\n", o, r[num_vectors - 1].x, r[num_vectors - 1].y);
 				w[o++] = r[num_vectors - 1];
 			}
 		} else {

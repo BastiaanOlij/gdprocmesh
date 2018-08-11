@@ -42,7 +42,7 @@ bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
 		if ((num_vertices > 0) && (num_indices > 0)) {
 			normals.resize(num_vertices);
 
-			printf("Calculating %i normals\n", num_vertices);
+			// printf("Calculating %i normals\n", num_vertices);
 
 			{
 				PoolVector3Array::Write vertices_write = vertices.write();
@@ -78,11 +78,15 @@ bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
 				v3 -= v1;
 
 				// normalize our vectors
-				v2.normalize();
-				v3.normalize();
+				// v2.normalize();
+				// v3.normalize();
 
 				// cross product to get our normal
-				Vector3 n = v3.cross(v2).normalized();
+				// Vector3 n = v3.cross(v2).normalized();
+
+				// not normalising our vectors will make vector n larger/smaller based on the size of the face
+				// so bigger faces have bigger influence...
+				Vector3 n = v3.cross(v2);
 
 				// and add our normal to the normals for our face
 				wn[a] += n;

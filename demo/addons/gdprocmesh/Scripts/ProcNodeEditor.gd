@@ -80,10 +80,10 @@ func set_proc_node(p_proc_mesh, p_node_id):
 				var prop_type = typeof(prop_value)
 				var prop_arr = Array()
 				prop_arr.push_back(prop_name)
-				prop_arr.push_back(prop_field)
 				
 				if prop_type == TYPE_INT:
 					prop_field = LineEdit.new()
+					prop_arr.push_back(prop_field)
 					prop_field.align = LineEdit.ALIGN_RIGHT
 					prop_field.set_text(String(prop_value))
 					prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
@@ -91,6 +91,7 @@ func set_proc_node(p_proc_mesh, p_node_id):
 					prop_field.rect_min_size = Vector2(75.0, 0.0)
 				elif prop_type == TYPE_REAL:
 					prop_field = LineEdit.new()
+					prop_arr.push_back(prop_field)
 					prop_field.align = LineEdit.ALIGN_RIGHT
 					prop_field.set_text("%0.3f" % prop_value)
 					prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
@@ -98,6 +99,7 @@ func set_proc_node(p_proc_mesh, p_node_id):
 					prop_field.rect_min_size = Vector2(75.0, 0.0)
 				elif prop_type == TYPE_BOOL:
 					prop_field = CheckBox.new()
+					prop_arr.push_back(prop_field)
 					prop_field.set_text("on")
 					prop_field.pressed = prop_value
 					prop_field.connect("toggled", self, "_set_node_property", prop_arr)
@@ -132,7 +134,7 @@ func _set_node_property(p_value, p_property, p_field):
 			p_field.set_text("%0.3f" % prop_value)
 
 func _exit_node_property(p_property, p_field):
-	var value = p_field.get_text()
+	var value = p_field.text
 	_set_node_property(value, p_property, p_field)
 
 func _on_ProcNode_close_request():

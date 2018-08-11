@@ -3,7 +3,7 @@
 using namespace godot;
 
 void GDProcExtrude::_register_methods() {
-	// add end caps property
+	register_property<GDProcExtrude, bool>("is_closed", &GDProcExtrude::set_is_closed, &GDProcExtrude::get_is_closed, false);
 }
 
 String GDProcExtrude::get_type_name() {
@@ -16,6 +16,18 @@ void GDProcExtrude::_init() {
 
 	// is this shape closed?
 	is_closed = false;
+}
+
+void GDProcExtrude::set_is_closed(bool p_is_closed) {
+	if (is_closed != p_is_closed) {
+		is_closed = p_is_closed;
+		must_update = true;
+		emit_signal("changed");
+	}
+}
+
+bool GDProcExtrude::get_is_closed() const {
+	return is_closed;
 }
 
 bool GDProcExtrude::update(bool p_inputs_updated, const Array &p_inputs) {
@@ -43,8 +55,6 @@ bool GDProcExtrude::update(bool p_inputs_updated, const Array &p_inputs) {
 			}
 		}
 
-		printf("Shape points: %i, path points: %i\n", num_shape, num_path);
-
 		// in order to extrude we need a shape with atleast 3 points and a path with atleast 2 points 
 		if ((num_shape >= 3) && (num_path >= 2)) {
 			PoolVector2Array::Read sr = shape.read();
@@ -62,10 +72,8 @@ bool GDProcExtrude::update(bool p_inputs_updated, const Array &p_inputs) {
 				// need to add indices for start and end caps..
 
 				vertices.resize(num_shape * num_path);
-				indices.resize(num_shape * (num_path - 1) * 2 * 3);
+				indices.resize(((num_shape * (num_path - 1)) + (num_shape -2)) * 2 * 3);
 			}
-
-			printf("Vertices: %i, indices: %i\n", vertices.size(), indices.size());
 
 			PoolVector3Array::Write vw = vertices.write();
 			PoolIntArray::Write iw = indices.write();
@@ -117,6 +125,16 @@ bool GDProcExtrude::update(bool p_inputs_updated, const Array &p_inputs) {
 
 			if (!is_closed) {
 				// add start and end caps
+				for (int j = 2; j < num_shape; j++) {
+					// front cap
+					iw[curr_index++] = 0;
+					iw[curr_index++] = j;
+					iw[curr_index++] = j - 1;
+
+					iw[curr_index++] = last_start_vertice;
+					iw[curr_index++] = last_start_vertice + (j - 1);
+					iw[curr_index++] = last_start_vertice + j;
+				}
 
 			}
 
@@ -131,7 +149,7 @@ bool GDProcExtrude::update(bool p_inputs_updated, const Array &p_inputs) {
 }
 
 int GDProcExtrude::get_input_connector_count() const {
-	return 2;
+	return 3;
 }
 
 Variant::Type GDProcExtrude::get_input_connector_type(int p_slot) const {
@@ -139,6 +157,8 @@ Variant::Type GDProcExtrude::get_input_connector_type(int p_slot) const {
 		return Variant::POOL_VECTOR2_ARRAY;
 	} else if (p_slot == 1) {
 		return Variant::POOL_VECTOR3_ARRAY;
+	} else if (p_slot == 2) {
+		return Variant::BOOL;
 	}
 	return Variant::NIL;
 }
@@ -148,8 +168,17 @@ const String GDProcExtrude::get_input_connector_name(int p_slot) const {
 		return "shape";
 	} else if (p_slot == 1) {
 		return "path";
+	} else if (p_slot == 2) {
+		return "is_closed";
 	}
 
+	return "";
+}
+
+const String GDProcExtrude::get_connector_property_name(int p_slot) const {
+	if (p_slot == 2) {
+		return "is_closed";
+	}
 	return "";
 }
 
