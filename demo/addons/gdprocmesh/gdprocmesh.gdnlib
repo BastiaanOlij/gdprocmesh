@@ -1,6 +1,7 @@
 [entry]
 
 Windows.64="res://addons/gdprocmesh/bin/win64/libgdprocmesh.dll"
+X11.64="res://addons/gdprocmesh/bin/x11/libgdprocmesh.so"
 
 [dependencies]
 

@@ -33,7 +33,7 @@ if platform == "osx":
 if platform == "linux":
     target_path += 'x11/'
     cpp_library += '.linux.64'
-    env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++14'])
+    env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++17'])
 
 if platform == "windows":
     target_path += 'win64/'

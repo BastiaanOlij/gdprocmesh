@@ -33,9 +33,9 @@ void GDProcNode::_register_methods() {
 	// and a special signal for node name changes
 	{
 		Dictionary params;
-		params['node'] = Variant::OBJECT;
-		params['from'] = Variant::STRING;
-		params['to'] = Variant::STRING;
+		params["node"] = Variant::OBJECT;
+		params["from"] = Variant::STRING;
+		params["to"] = Variant::STRING;
 		register_signal<GDProcNode>((char *)"node_name_changed", params);
 	}
 }
