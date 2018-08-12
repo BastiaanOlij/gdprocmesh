@@ -24,6 +24,8 @@ bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
 		int num_indices = 0;
 		PoolIntArray indices;
 
+		///@TODO need to improve this so if two vertices are in the same space 
+
 		int input_count = p_inputs.size();
 		if (input_count > 0) {
 			if (p_inputs[0].get_type() == Variant::POOL_VECTOR3_ARRAY) {

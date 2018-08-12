@@ -69,8 +69,6 @@ bool GDProcExtrude::update(bool p_inputs_updated, const Array &p_inputs) {
 				vertices.resize(num_shape * (num_path + 1)) ;
 				indices.resize(num_shape * num_path * 2 * 3);
 			} else {
-				// need to add indices for start and end caps..
-
 				vertices.resize(num_shape * num_path);
 				indices.resize(((num_shape * (num_path - 1)) + (num_shape -2)) * 2 * 3);
 			}

@@ -17,10 +17,13 @@
 #include "transforms/gdprocvec3translate.h"
 
 #include "shapes/gdprocbox.h"
+#include "shapes/gdproccircle.h"
 #include "shapes/gdprocextrude.h"
+#include "shapes/gdprocrect.h"
+
+#include "output/gdprocsurface.h"
 
 #include "output/gdprocoutput.h"
-#include "output/gdprocsurface.h"
 
 extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *o) {
 	godot::Godot::gdnative_init(o);
@@ -57,11 +60,16 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 
 	// shapes
 	godot::register_tool_class<godot::GDProcBox>();
+	godot::register_tool_class<godot::GDProcCircle>();
 	godot::register_tool_class<godot::GDProcExtrude>();
+	godot::register_tool_class<godot::GDProcRect>();
 
-	// output
+	// segments
 	godot::register_tool_class<godot::GDProcSurface>();
-	godot::register_tool_class<godot::GDProcOutput>();
 
 	// modifiers (work on surfaces)
+
+	// output
+	godot::register_tool_class<godot::GDProcOutput>();
 }
+

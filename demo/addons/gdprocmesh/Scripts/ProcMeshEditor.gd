@@ -102,13 +102,17 @@ func _ready():
 
 	# shapes
 	_add_node_class("Box", "GDProcBox")
+	_add_node_class("Circle", "GDProcCircle")
 	_add_node_class("Extrude", "GDProcExtrude")
+	_add_node_class("Rectangle", "GDProcRect")
 
-	# output
+	# Surface
 	_add_node_class("Surface", "GDProcSurface")
-	_add_node_class("Output", "GDProcOutput")
 
 	# modifiers (work on surfaces)
+
+	# output
+	_add_node_class("Output", "GDProcOutput")
 
 func _input(event):
 	pass
