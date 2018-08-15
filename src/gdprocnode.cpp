@@ -105,7 +105,7 @@ void GDProcNode::set_input(Variant p_input) {
 	// nothing to do here
 }
 
-Variant GDProcNode::get_input() const {
+Variant GDProcNode::get_input() {
 	return Variant();
 }
 

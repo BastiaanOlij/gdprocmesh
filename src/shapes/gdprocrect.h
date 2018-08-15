@@ -9,9 +9,10 @@ class GDProcRect : public GDProcNode {
 	GODOT_SUBCLASS(GDProcRect, GDProcNode)
 
 private:
-	Vector2 default_size;
+	float default_width;
+	float default_height;
 
-	PoolVector2Array vertices;
+	PoolVector3Array vertices;
 
 public:
 	static void _register_methods();

@@ -1,15 +1,15 @@
-#ifndef GD_PROC_INVEC3_H
-#define GD_PROC_INVEC3_H
+#ifndef GD_PROC_INVECTOR_H
+#define GD_PROC_INVECTOR_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcInVec3 : public GDProcNode {
-	GODOT_SUBCLASS(GDProcInVec3, GDProcNode)
+class GDProcInVector : public GDProcNode {
+	GODOT_SUBCLASS(GDProcInVector, GDProcNode)
 
 private:
-	Vector3 vector;
+	PoolVector3Array value;
 
 public:
 	static void _register_methods();
@@ -22,7 +22,7 @@ public:
 
 	virtual Variant::Type get_input_property_type() const; // if this is an input property, what is its type?
 	virtual void set_input(Variant p_input); // if this is an input property, set its value
-	virtual Variant get_input() const; // if this is an input property, get its value
+	virtual Variant get_input(); // if this is an input property, get its value
 
 	virtual int get_output_connector_count() const; // returns the number of output connectors this node has
 	virtual Variant::Type get_output_connector_type(int p_slot) const; // returns the type of the data that is output by this output
@@ -34,4 +34,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_INVEC3_H */
+#endif /* !GD_PROC_INVECTOR_H */

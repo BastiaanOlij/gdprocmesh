@@ -12,19 +12,23 @@ String GDProcInInt::get_type_name() {
 void GDProcInInt::_init() {
 	// first call super class
 	GDProcNode::_init();
+
+	// init our buffer
+	value.resize(1);
+	value.set(0, 0);
 }
 
 void GDProcInInt::set_input(Variant p_input) {
 	int new_value = p_input;
-	if (value != new_value) {
-		value = new_value;
+	if (value[0] != new_value) {
+		value.set(0, new_value);
 		must_update = true;
 		emit_signal("changed");
 	}
 }
 
-Variant GDProcInInt::get_input() const {
-	return Variant(value);
+Variant GDProcInInt::get_input() {
+	return Variant(value[0]);
 }
 
 bool GDProcInInt::update(bool p_inputs_updated, const Array &p_inputs) {
@@ -43,7 +47,7 @@ int GDProcInInt::get_output_connector_count() const {
 }
 
 Variant::Type GDProcInInt::get_output_connector_type(int p_slot) const {
-	return Variant::INT;
+	return Variant::POOL_INT_ARRAY;
 }
 
 const String GDProcInInt::get_output_connector_name(int p_slot) const {

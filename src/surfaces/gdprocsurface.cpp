@@ -1,4 +1,4 @@
-#include "output/gdprocsurface.h"
+#include "surfaces/gdprocsurface.h"
 
 using namespace godot;
 
@@ -51,12 +51,14 @@ bool GDProcSurface::update(bool p_inputs_updated, const Array &p_inputs) {
 		}
 
 		if (input_count > ArrayMesh::ARRAY_TEX_UV) {
+			///@TODO input as vec3 and discard z?
 			if (p_inputs[ArrayMesh::ARRAY_TEX_UV].get_type() == Variant::POOL_VECTOR2_ARRAY) {
 				surface_arr[ArrayMesh::ARRAY_TEX_UV] = p_inputs[ArrayMesh::ARRAY_TEX_UV];
 			}
 		}
 
 		if (input_count > ArrayMesh::ARRAY_TEX_UV2) {
+			///@TODO input as vec3 and discard z?
 			if (p_inputs[ArrayMesh::ARRAY_TEX_UV2].get_type() == Variant::POOL_VECTOR2_ARRAY) {
 				surface_arr[ArrayMesh::ARRAY_TEX_UV2] = p_inputs[ArrayMesh::ARRAY_TEX_UV2];
 			}
@@ -99,8 +101,10 @@ Variant::Type GDProcSurface::get_input_connector_type(int p_slot) const {
 		case ArrayMesh::ARRAY_COLOR:
 			return Variant::POOL_COLOR_ARRAY;
 		case ArrayMesh::ARRAY_TEX_UV:
+			///@TODO input as vec3 and discard z?
 			return Variant::POOL_VECTOR2_ARRAY;
 		case ArrayMesh::ARRAY_TEX_UV2:
+			///@TODO input as vec3 and discard z?
 			return Variant::POOL_VECTOR2_ARRAY;
 		case ArrayMesh::ARRAY_BONES:
 			return Variant::POOL_REAL_ARRAY;
@@ -116,23 +120,23 @@ Variant::Type GDProcSurface::get_input_connector_type(int p_slot) const {
 const String GDProcSurface::get_input_connector_name(int p_slot) const {
 	switch (p_slot) {
 		case ArrayMesh::ARRAY_VERTEX:
-			return "Vertices";
+			return "vertices";
 		case ArrayMesh::ARRAY_NORMAL:
-			return "Normals";
+			return "normals";
 		case ArrayMesh::ARRAY_TANGENT:
-			return "Tangents";
+			return "tangents";
 		case ArrayMesh::ARRAY_COLOR:
-			return "Colors";
+			return "colors";
 		case ArrayMesh::ARRAY_TEX_UV:
 			return "UVs";
 		case ArrayMesh::ARRAY_TEX_UV2:
 			return "UV2s";
 		case ArrayMesh::ARRAY_BONES:
-			return "Bones";
+			return "bones";
 		case ArrayMesh::ARRAY_WEIGHTS:
-			return "Weights";
+			return "weights";
 		case ArrayMesh::ARRAY_INDEX:
-			return "Indices";
+			return "indices";
 		default:
 			return "???";
 	}
@@ -148,7 +152,7 @@ Variant::Type GDProcSurface::get_output_connector_type(int p_slot) const {
 }
 
 const String GDProcSurface::get_output_connector_name(int p_slot) const {
-	return "Surface";
+	return "surface";
 }
 
 const Variant GDProcSurface::get_output(int p_slot) const {

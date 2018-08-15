@@ -65,18 +65,27 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 
 		int input_count = p_inputs.size();
 		if (input_count > 0) {
-			if (p_inputs[0].get_type() == Variant::REAL) {
-				size.x = p_inputs[0];
+			if (p_inputs[0].get_type() == Variant::POOL_REAL_ARRAY) {
+				PoolRealArray input = p_inputs[0];
+				if (input.size() > 0) {
+					size.x = input[0];
+				}
 			}
 		}
 		if (input_count > 1) {
-			if (p_inputs[1].get_type() == Variant::REAL) {
-				size.y = p_inputs[1];
+			if (p_inputs[1].get_type() == Variant::POOL_REAL_ARRAY) {
+				PoolRealArray input = p_inputs[1];
+				if (input.size() > 0) {
+					size.y = input[0];
+				}
 			}
 		}
 		if (input_count > 2) {
-			if (p_inputs[2].get_type() == Variant::REAL) {
-				size.z = p_inputs[2];
+			if (p_inputs[2].get_type() == Variant::POOL_REAL_ARRAY) {
+				PoolRealArray input = p_inputs[2];
+				if (input.size() > 0) {
+					size.z = input[0];
+				}
 			}
 		}
 
@@ -139,7 +148,7 @@ int GDProcBox::get_input_connector_count() const {
 }
 
 Variant::Type GDProcBox::get_input_connector_type(int p_slot) const {
-	return Variant::REAL;
+	return Variant::POOL_REAL_ARRAY;
 }
 
 const String GDProcBox::get_input_connector_name(int p_slot) const {

@@ -303,18 +303,30 @@ void GDProcMesh::remove_node(int p_id) {
 
 void GDProcMesh::add_connection(int p_input_node, int p_input_connector, int p_output_node, int p_output_connector) {
 	// does our input node exist?
-	if (!node_id_is_used(p_input_node)) {
+	Ref<GDProcNode> input_node = get_node(p_input_node);
+	if (input_node.is_null()) {
 		printf("Unknown input node %i\n", p_input_node);
 		return;
 	}
 
+	// does our input node actually have this connector?
+	if (p_input_connector >= input_node->get_input_connector_count()) {
+		printf("Input node %i does not have connector %i\n", p_input_node, p_input_connector);
+		return;
+	}
+
 	// does our output node exist?
-	if (!node_id_is_used(p_output_node)) {
+	Ref<GDProcNode> output_node = get_node(p_output_node);
+	if (output_node.is_null()) {
 		printf("Unknown output node %i\n", p_output_node);
 		return;
 	}
 
-	///@TODO we should add a check here to see if the type of the output node matches the type of the input node
+	// does our output nod eactually have this connector?
+	if (p_output_connector >= output_node->get_output_connector_count()) {
+		printf("Output node %i does not have connector %i\n", p_output_node, p_output_connector);
+		return;
+	}
 
 	// first remove any existing connection on our input connector
 	remove_connection(p_input_node, p_input_connector);
@@ -323,7 +335,7 @@ void GDProcMesh::add_connection(int p_input_node, int p_input_connector, int p_o
 	connections.push_back(connection(p_input_node, p_input_connector, p_output_node, p_output_connector));
 
 	// touch our input node
-	get_node(p_input_node)->_touch();
+	input_node->_touch();
 
 	// trigger an update
 	trigger_update();
@@ -525,7 +537,7 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 			}
 
 			// update this node
-			printf("Update %s\n", p_node->get_node_name().utf8().get_data());
+			// printf("Update %s\n", p_node->get_node_name().utf8().get_data());
 			if (p_node->update(updated, inputs)) {
 				updated = true;
 			}

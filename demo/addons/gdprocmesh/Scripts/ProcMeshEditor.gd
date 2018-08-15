@@ -86,27 +86,25 @@ func _ready():
 
 	# inputs
 	_add_node_class("Input Int", "GDProcInInt")
-	_add_node_class("Input Vec2s", "GDProcInPoolVec2")
-	_add_node_class("Input Vec3s", "GDProcInPoolVec3")
+	_add_node_class("Input Vectors", "GDProcInPoolVectors")
 	_add_node_class("Input Real", "GDProcInReal")
-	_add_node_class("Input Vec3", "GDProcInVec3")
+	_add_node_class("Input Vector", "GDProcInVector")
 
 	# primitives
-	_add_node_class("Vec3", "GDProcVec3")
+	_add_node_class("Vector", "GDProcVector")
 
 	# transforms (work on primitives)
+	_add_node_class("Bevel", "GDProcBevel")
 	_add_node_class("Generate normals", "GDProcGenNormals")
-	_add_node_class("Vec2s Bevel", "GDProcVec2Bevel")
-	_add_node_class("Vec3s Bevel", "GDProcVec3Bevel")
-	_add_node_class("Vec3s Translate", "GDProcVec3Translate")
+	_add_node_class("Translate", "GDProcTranslate")
 
 	# shapes
 	_add_node_class("Box", "GDProcBox")
 	_add_node_class("Circle", "GDProcCircle")
-	_add_node_class("Extrude", "GDProcExtrude")
 	_add_node_class("Rectangle", "GDProcRect")
 
 	# Surface
+	_add_node_class("Extrude Shape", "GDProcExtrudeShape")
 	_add_node_class("Surface", "GDProcSurface")
 
 	# modifiers (work on surfaces)

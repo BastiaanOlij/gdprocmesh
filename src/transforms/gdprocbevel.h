@@ -1,20 +1,20 @@
-#ifndef GD_PROC_VEC2_BEVEL_H
-#define GD_PROC_VEC2_BEVEL_H
+#ifndef GD_PROC_BEVEL_H
+#define GD_PROC_BEVEL_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcVec2Bevel : public GDProcNode {
-	GODOT_SUBCLASS(GDProcVec2Bevel, GDProcNode)
+class GDProcBevel : public GDProcNode {
+	GODOT_SUBCLASS(GDProcBevel, GDProcNode)
 
 private:
 	float	distance;
 	int iterations;
 	bool is_closed;
-	PoolVector2Array vectors;
+	PoolVector3Array vectors;
 
-	void do_bevel(PoolVector2Array::Write &p_w, Vector2 p1, Vector2 p2, Vector2 p3, float p_distance, int p_iterations, int &p_id);
+	void do_bevel(PoolVector3Array::Write &p_w, Vector3 p1, Vector3 p2, Vector3 p3, float p_distance, int p_iterations, int &p_id);
 
 public:
 	static void _register_methods();
@@ -51,4 +51,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_VEC2_BEVEL_H */
+#endif /* !GD_PROC_BEVEL_H */

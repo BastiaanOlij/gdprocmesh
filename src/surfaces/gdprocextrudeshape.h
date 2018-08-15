@@ -5,14 +5,14 @@
 
 namespace godot {
 
-class GDProcExtrude : public GDProcNode {
-	GODOT_SUBCLASS(GDProcExtrude, GDProcNode)
+class GDProcExtrudeShape : public GDProcNode {
+	GODOT_SUBCLASS(GDProcExtrudeShape, GDProcNode)
 
 private:
-	bool is_closed;
+	bool shape_is_closed;
+	bool path_is_closed;
 	
-	PoolVector3Array vertices;
-	PoolIntArray indices;
+	Array surface_arr;
 
 public:
 	static void _register_methods();
@@ -21,8 +21,11 @@ public:
 
 	void _init();
 
-	void set_is_closed(bool p_is_closed);
-	bool get_is_closed() const;
+	void set_shape_is_closed(bool p_is_closed);
+	bool get_shape_is_closed() const;
+
+	void set_path_is_closed(bool p_is_closed);
+	bool get_path_is_closed() const;
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs);
 

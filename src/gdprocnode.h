@@ -47,7 +47,7 @@ public:
 
 	virtual Variant::Type get_input_property_type() const; // if this is an input property, what is its type?
 	virtual void set_input(Variant p_input); // if this is an input property, set its value
-	virtual Variant get_input() const; // if this is an input property, get its value
+	virtual Variant get_input(); // if this is an input property, get its value
 
 	virtual int get_input_connector_count() const; // returns the number of input connectors this note has
 	virtual Variant::Type get_input_connector_type(int p_slot) const; // returns the type of the data expected for this input

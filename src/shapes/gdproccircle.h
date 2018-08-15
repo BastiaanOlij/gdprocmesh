@@ -12,7 +12,7 @@ private:
 	float default_radius;
 	int default_segments;
 
-	PoolVector2Array vertices;
+	PoolVector3Array vertices;
 
 public:
 	static void _register_methods();

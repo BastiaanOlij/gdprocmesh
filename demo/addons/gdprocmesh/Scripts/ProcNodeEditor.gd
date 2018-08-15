@@ -85,7 +85,7 @@ func set_proc_node(p_proc_mesh, p_node_id):
 					prop_field = LineEdit.new()
 					prop_arr.push_back(prop_field)
 					prop_field.align = LineEdit.ALIGN_RIGHT
-					prop_field.set_text(String(prop_value))
+					prop_field.set_text("%d" % prop_value)
 					prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
 					prop_field.connect("focus_exited", self, "_exit_node_property", prop_arr)
 					prop_field.rect_min_size = Vector2(75.0, 0.0)
@@ -104,7 +104,12 @@ func set_proc_node(p_proc_mesh, p_node_id):
 					prop_field.pressed = prop_value
 					prop_field.connect("toggled", self, "_set_node_property", prop_arr)
 					prop_field.rect_min_size = Vector2(75.0, 0.0)
-					
+				elif prop_type == TYPE_VECTOR3:
+					prop_field = preload("res://addons/gdprocmesh/Scenes/EditVec3.tscn").instance()
+					prop_arr.push_back(prop_field)
+					prop_field.vector = prop_value
+					prop_field.connect("changed_vector", self, "_set_node_property", prop_arr)
+				
 				if prop_field:
 					hb.add_child(prop_field)
 			
@@ -129,9 +134,11 @@ func _set_node_property(p_value, p_property, p_field):
 		var prop_value = node.get(p_property)
 		var prop_type = typeof(prop_value)
 		if prop_type == TYPE_INT:
-			p_field.set_text(String(prop_value))
+			p_field.set_text("%d" % prop_value)
 		elif prop_type == TYPE_REAL:
 			p_field.set_text("%0.3f" % prop_value)
+		elif prop_type == TYPE_BOOL:
+			p_field.pressed = prop_value
 
 func _exit_node_property(p_property, p_field):
 	var value = p_field.text

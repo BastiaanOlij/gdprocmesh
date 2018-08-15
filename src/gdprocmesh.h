@@ -10,10 +10,10 @@
 #include <map>
 
 #include "gdprocnode.h"
-#include "output/gdprocoutput.h"
-#include "output/gdprocsurface.h"
 #include "transforms/gdprocgennormals.h"
 #include "shapes/gdprocbox.h"
+#include "surfaces/gdprocsurface.h"
+#include "output/gdprocoutput.h"
 
 namespace godot {
 

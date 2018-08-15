@@ -124,9 +124,9 @@ Variant::Type GDProcGenNormals::get_input_connector_type(int p_slot) const {
 
 const String GDProcGenNormals::get_input_connector_name(int p_slot) const {
 	if (p_slot == 0) {
-		return "Vertices";
+		return "vertices";
 	} else if (p_slot == 1) {
-		return "Indices";
+		return "indices";
 	}
 
 	return "";

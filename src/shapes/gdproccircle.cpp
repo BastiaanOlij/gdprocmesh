@@ -54,20 +54,26 @@ bool GDProcCircle::update(bool p_inputs_updated, const Array &p_inputs) {
 
 		int input_count = p_inputs.size();
 		if (input_count > 0) {
-			if (p_inputs[0].get_type() == Variant::REAL) {
-				radius = p_inputs[0];
+			if (p_inputs[0].get_type() == Variant::POOL_REAL_ARRAY) {
+				PoolRealArray r = p_inputs[0];
+				if (r.size() > 0) {
+					radius = r[0];					
+				}
 			}
 		}
 		if (input_count > 1) {
-			if (p_inputs[1].get_type() == Variant::INT) {
-				segments = p_inputs[1];
+			if (p_inputs[1].get_type() == Variant::POOL_INT_ARRAY) {
+				PoolIntArray s = p_inputs[1];
+				if (s.size() > 0) {
+					segments = s[0];					
+				}
 			}
 		}
 
 		// prepare our data
 		vertices.resize(segments);
 		{
-			PoolVector2Array::Write wv = vertices.write();
+			PoolVector3Array::Write wv = vertices.write();
 			float two_pi = 2.0f * 3.14159265359f;
 			float step = two_pi / segments;
 			float angle = 0.0;
@@ -75,6 +81,7 @@ bool GDProcCircle::update(bool p_inputs_updated, const Array &p_inputs) {
 			for (int s = 0; s < segments; s++) {
 				wv[s].x = radius * sin(angle);
 				wv[s].y = -radius * cos(angle);
+				wv[s].z = 0.0f; // should already be zero but just in case..
 
 				angle += step;
 			}
@@ -90,9 +97,9 @@ int GDProcCircle::get_input_connector_count() const {
 
 Variant::Type GDProcCircle::get_input_connector_type(int p_slot) const {
 	if (p_slot == 0) {
-		return Variant::REAL;
+		return Variant::POOL_REAL_ARRAY;
 	} else if (p_slot == 1) {
-		return Variant::INT;
+		return Variant::POOL_INT_ARRAY;
 	}
 
 	return Variant::NIL;
@@ -125,7 +132,7 @@ int GDProcCircle::get_output_connector_count() const {
 Variant::Type GDProcCircle::get_output_connector_type(int p_slot) const {
 	switch (p_slot) {
 		case 0:
-			return Variant::POOL_VECTOR2_ARRAY;
+			return Variant::POOL_VECTOR3_ARRAY;
 		default:
 			return Variant::NIL;		
 	}
@@ -134,7 +141,7 @@ Variant::Type GDProcCircle::get_output_connector_type(int p_slot) const {
 const String GDProcCircle::get_output_connector_name(int p_slot) const {
 	switch (p_slot) {
 		case 0:
-			return "vec2s";
+			return "vectors";
 		default:
 			return "???";
 	}
