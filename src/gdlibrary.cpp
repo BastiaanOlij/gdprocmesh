@@ -3,6 +3,7 @@
 #include "gdprocmesh.h"
 #include "gdprocnode.h"
 
+#include "input/gdprocincurve.h"
 #include "input/gdprocinint.h"
 #include "input/gdprocinpoolvectors.h"
 #include "input/gdprocinreal.h"
@@ -12,6 +13,7 @@
 
 #include "transforms/gdprocbevel.h"
 #include "transforms/gdprocgennormals.h"
+#include "transforms/gdprocscale.h"
 #include "transforms/gdproctranslate.h"
 
 #include "shapes/gdprocbox.h"
@@ -20,6 +22,8 @@
 
 #include "surfaces/gdprocextrudeshape.h"
 #include "surfaces/gdprocsurface.h"
+
+#include "modifiers/gdproctransform.h"
 
 #include "output/gdprocoutput.h"
 
@@ -41,6 +45,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcNode>();
 
 	// inputs
+	godot::register_tool_class<godot::GDProcInCurve>();
 	godot::register_tool_class<godot::GDProcInInt>();
 	godot::register_tool_class<godot::GDProcInPoolVectors>();
 	godot::register_tool_class<godot::GDProcInReal>();
@@ -52,6 +57,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	// transforms (work on primitives)
 	godot::register_tool_class<godot::GDProcBevel>();
 	godot::register_tool_class<godot::GDProcGenNormals>();
+	godot::register_tool_class<godot::GDProcScale>();
 	godot::register_tool_class<godot::GDProcTranslate>();
 
 	// shapes
@@ -64,6 +70,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcSurface>();
 
 	// modifiers (work on surfaces)
+	godot::register_tool_class<godot::GDProcTransform>();
 
 	// output
 	godot::register_tool_class<godot::GDProcOutput>();

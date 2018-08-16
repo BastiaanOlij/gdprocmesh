@@ -1,15 +1,15 @@
-#ifndef GD_PROC_TRANSLATE_H
-#define GD_PROC_TRANSLATE_H
+#ifndef GD_PROC_SCALE_H
+#define GD_PROC_SCALE_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcTranslate : public GDProcNode {
-	GODOT_SUBCLASS(GDProcTranslate, GDProcNode)
+class GDProcScale : public GDProcNode {
+	GODOT_SUBCLASS(GDProcScale, GDProcNode)
 
 private:
-	Vector3 default_translation;
+	Vector3 default_scale;
 	PoolVector3Array vectors;
 
 public:
@@ -20,8 +20,8 @@ public:
 	void _init();
 
 	// properties
-	void set_translation(Vector3 p_translation);
-	Vector3 get_translation();
+	void set_scale(Vector3 p_scale);
+	Vector3 get_scale();
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
 
@@ -41,4 +41,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_TRANSLATE_H */
+#endif /* !GD_PROC_SCALE_H */

@@ -101,6 +101,10 @@ Variant::Type GDProcNode::get_input_property_type() const {
 	return Variant::NIL;
 }
 
+String GDProcNode::get_input_property_hint() const {
+	return "";
+}
+
 void GDProcNode::set_input(Variant p_input) {
 	// nothing to do here
 }

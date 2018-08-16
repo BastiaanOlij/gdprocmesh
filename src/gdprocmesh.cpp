@@ -52,8 +52,13 @@ Array GDProcMesh::_get_property_list() {
 
 			prop["name"] = name;
 			prop["type"] = type;
-			prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
-			// prop["hint_string"] = "";
+			if (type == GlobalConstants::TYPE_OBJECT) {
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_RESOURCE_TYPE;
+				prop["hint_string"] = it->second->get_input_property_hint();
+			} else {
+				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
+				// prop["hint_string"] = "";
+			}
 			// prop["usage"] = ;
 
 			arr.push_back(prop);
@@ -599,25 +604,6 @@ void GDProcMesh::_update() {
 
 			// if contents has changed, update our surface
 			if (changed) {
-				String name = it->second->get_node_name();
-				if (name == "") {
-					name = "Surface_";
-					name += String::num_int64(it->first);
-				}
-				Ref<Material> material;
-
-				// find our surface and get some info we may want to cache like our material
-				int64_t s = surface_find_by_name(name);
-				if (s != -1) {
-					// printf("Removing changed surface %lli, %s\n", s, name.utf8().get_data());
-
-					// remember our material, we're reusing it!
-					material = surface_get_material(s);
-
-					// clear our surface
-					surface_remove(s);
-				}
-
 				// get our new surface
 				Variant surface = it->second->get_output(0);
 
@@ -638,8 +624,26 @@ void GDProcMesh::_update() {
 					} else if (((PoolIntArray) arr[ArrayMesh::ARRAY_INDEX]).size() == 0) {
 						printf("No indices in surface\n");
 					} else {
-						// log
-						// printf("Updating surface %s\n", name.utf8().get_data());
+						// only replace the surface if we have a valid surface or we'll loose our material.
+
+						String name = it->second->get_node_name();
+						if (name == "") {
+							name = "Surface_";
+							name += String::num_int64(it->first);
+						}
+						Ref<Material> material;
+
+						// find our surface and get some info we may want to cache like our material
+						int64_t s = surface_find_by_name(name);
+						if (s != -1) {
+							// printf("Removing changed surface %lli, %s\n", s, name.utf8().get_data());
+
+							// remember our material, we're reusing it!
+							material = surface_get_material(s);
+
+							// clear our surface
+							surface_remove(s);
+						}
 
 						// lets add a new surface
 						int64_t new_surface_id = get_surface_count();

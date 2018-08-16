@@ -85,6 +85,7 @@ func _ready():
 	add_popup.connect("id_pressed", self, "_add_node")
 
 	# inputs
+	_add_node_class("Input Curve", "GDProcInCurve")
 	_add_node_class("Input Int", "GDProcInInt")
 	_add_node_class("Input Vectors", "GDProcInPoolVectors")
 	_add_node_class("Input Real", "GDProcInReal")
@@ -97,6 +98,7 @@ func _ready():
 	_add_node_class("Bevel", "GDProcBevel")
 	_add_node_class("Generate normals", "GDProcGenNormals")
 	_add_node_class("Translate", "GDProcTranslate")
+	_add_node_class("Scale", "GDProcScale")
 
 	# shapes
 	_add_node_class("Box", "GDProcBox")
@@ -108,6 +110,7 @@ func _ready():
 	_add_node_class("Surface", "GDProcSurface")
 
 	# modifiers (work on surfaces)
+	_add_node_class("Transform", "GDProcTransform")
 
 	# output
 	_add_node_class("Output", "GDProcOutput")
@@ -126,5 +129,13 @@ func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
 	# ignore from
 	var input_node = to.to_int()
 	procmesh.remove_connection(input_node, to_slot)
+
+	_update_graph();
+
+func _on_GraphEdit_connection_to_empty(from, from_slot, release_position):
+	var connections = procmesh.get_connection_list()
+	for c in connections:
+		if (String(c[2]) == from) and (c[3] == from_slot):
+			procmesh.remove_connection(c[0], c[1])
 
 	_update_graph();

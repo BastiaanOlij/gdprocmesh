@@ -46,6 +46,7 @@ public:
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
 
 	virtual Variant::Type get_input_property_type() const; // if this is an input property, what is its type?
+	virtual String get_input_property_hint() const; // if this is an input property, what is the property hint?
 	virtual void set_input(Variant p_input); // if this is an input property, set its value
 	virtual Variant get_input(); // if this is an input property, get its value
 
