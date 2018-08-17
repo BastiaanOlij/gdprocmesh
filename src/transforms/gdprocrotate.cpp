@@ -63,7 +63,8 @@ bool GDProcRotate::update(bool p_inputs_updated, const Array &p_inputs) {
 		}
 
 		if (num_vectors > 0) {
-			vectors.resize(num_vectors);
+			int new_size = num_vectors > num_rotations ? num_vectors : num_rotations;
+			vectors.resize(new_size);
 
 			// Convert my quarternion array so we don't keep doing a square root
 			PoolVector3Array::Read q = rotations.read();
@@ -79,8 +80,8 @@ bool GDProcRotate::update(bool p_inputs_updated, const Array &p_inputs) {
 			PoolVector3Array::Write w = vectors.write();
 			PoolVector3Array::Read r = input_vectors.read();
 
-			for (int i = 0; i < num_vectors; i++) {
-				w[i] = rots[i % num_rotations].xform(r[i]);
+			for (int i = 0; i < new_size; i++) {
+				w[i] = rots[i % num_rotations].xform(r[i % num_vectors]);
 			}
 
 			// free 

@@ -13,6 +13,7 @@
 #include "primitives/gdprocvector.h"
 
 #include "transforms/gdprocbevel.h"
+#include "transforms/gdprocdiv.h"
 #include "transforms/gdprocgennormals.h"
 #include "transforms/gdprocmult.h"
 #include "transforms/gdprocredist.h"
@@ -63,6 +64,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 
 	// transforms (work on primitives)
 	godot::register_tool_class<godot::GDProcBevel>();
+	godot::register_tool_class<godot::GDProcDiv>();
 	godot::register_tool_class<godot::GDProcGenNormals>();
 	godot::register_tool_class<godot::GDProcMult>();
 	godot::register_tool_class<godot::GDProcRedist>();

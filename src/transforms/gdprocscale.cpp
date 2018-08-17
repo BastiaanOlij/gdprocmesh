@@ -59,14 +59,15 @@ bool GDProcScale::update(bool p_inputs_updated, const Array &p_inputs) {
 		}
 
 		if (num_vectors > 0) {
-			vectors.resize(num_vectors);
+			int new_size = num_vectors > num_scales ? num_vectors : num_scales;
+			vectors.resize(new_size);
 
 			PoolVector3Array::Write w = vectors.write();
 			PoolVector3Array::Read r = input_vectors.read();
 			PoolVector3Array::Read s = scales.read();
 
-			for (int i = 0; i < num_vectors; i++) {
-				w[i] = r[i] * s[i % num_scales];
+			for (int i = 0; i < new_size; i++) {
+				w[i] = r[i % num_vectors] * s[i % num_scales];
 			}
 
 		} else {

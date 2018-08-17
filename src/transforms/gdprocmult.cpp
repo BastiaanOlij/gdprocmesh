@@ -62,14 +62,15 @@ bool GDProcMult::update(bool p_inputs_updated, const Array &p_inputs) {
 		}
 
 		if (num_values > 0) {
-			values.resize(num_values);
+			int new_size = num_values > num_mults ? num_values : num_mults;
+			values.resize(new_size);
 
 			PoolRealArray::Write w = values.write();
 			PoolRealArray::Read r = input_values.read();
 			PoolRealArray::Read m = mults.read();
 
-			for (int i = 0; i < num_values; i++) {
-				w[i] = r[i] * m[i % num_mults];
+			for (int i = 0; i < new_size; i++) {
+				w[i] = r[i % num_values] * m[i % num_mults];
 			}
 
 		} else {

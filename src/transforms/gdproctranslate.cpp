@@ -59,14 +59,15 @@ bool GDProcTranslate::update(bool p_inputs_updated, const Array &p_inputs) {
 		}
 
 		if (num_vectors > 0) {
-			vectors.resize(num_vectors);
+			int new_size = num_vectors > num_translations ? num_vectors : num_translations;
+			vectors.resize(new_size);
 
 			PoolVector3Array::Write w = vectors.write();
 			PoolVector3Array::Read r = input_vectors.read();
 			PoolVector3Array::Read t = translations.read();
 
-			for (int i = 0; i < num_vectors; i++) {
-				w[i] = r[i] + t[i % num_translations];
+			for (int i = 0; i < new_size; i++) {
+				w[i] = r[i % num_vectors] + t[i % num_translations];
 			}
 
 		} else {

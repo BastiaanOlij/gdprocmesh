@@ -1,15 +1,15 @@
-#ifndef GD_PROC_MULT_H
-#define GD_PROC_MULT_H
+#ifndef GD_PROC_DIV_H
+#define GD_PROC_DIV_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcMult : public GDProcNode {
-	GODOT_SUBCLASS(GDProcMult, GDProcNode)
+class GDProcDiv : public GDProcNode {
+	GODOT_SUBCLASS(GDProcDiv, GDProcNode)
 
 private:
-	float default_mult;
+	float default_div;
 	PoolRealArray values;
 
 public:
@@ -20,8 +20,8 @@ public:
 	void _init();
 
 	// properties
-	void set_mult(float p_mult);
-	float get_mult();
+	void set_divider(float p_divider);
+	float get_divider();
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
 

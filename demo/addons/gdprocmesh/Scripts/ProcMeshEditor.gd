@@ -97,6 +97,7 @@ func _ready():
 
 	# transforms (work on primitives)
 	_add_node_class("Bevel", "GDProcBevel")
+	_add_node_class("Division", "GDProcDiv")
 	_add_node_class("Generate normals", "GDProcGenNormals")
 	_add_node_class("Redistribute", "GDProcRedist")
 	_add_node_class("Multiply", "GDProcMult")
