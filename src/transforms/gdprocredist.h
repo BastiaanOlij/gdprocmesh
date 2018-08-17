@@ -1,19 +1,17 @@
-#ifndef GD_PROC_TRANSFORM_H
-#define GD_PROC_TRANSFORM_H
+#ifndef GD_PROC_REDIST_H
+#define GD_PROC_REDIST_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcTransform : public GDProcNode {
-	GODOT_SUBCLASS(GDProcTransform, GDProcNode)
+class GDProcRedist : public GDProcNode {
+	GODOT_SUBCLASS(GDProcRedist, GDProcNode)
 
 private:
-	Vector3 default_rotation;
-	Vector3 default_translation;
-	Vector3 default_scale;
-
-	Array surface_arr;
+	float default_offset;
+	float default_strafe;
+	PoolVector3Array vectors;
 
 public:
 	static void _register_methods();
@@ -23,14 +21,11 @@ public:
 	void _init();
 
 	// properties
-	void set_rotation(Vector3 p_rotation);
-	Vector3 get_rotation();
+	void set_offset(float p_offset);
+	float get_offset();
 
-	void set_translation(Vector3 p_translation);
-	Vector3 get_translation();
-
-	void set_scale(Vector3 p_scale);
-	Vector3 get_scale();
+	void set_strafe(float p_strafe);
+	float get_strafe();
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
 
@@ -50,4 +45,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_TRANSFORM_H */
+#endif /* !GD_PROC_REDIST_H */

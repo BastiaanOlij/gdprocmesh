@@ -57,7 +57,10 @@ Array GDProcMesh::_get_property_list() {
 				prop["hint_string"] = it->second->get_input_property_hint();
 			} else {
 				prop["hint"] = GlobalConstants::PROPERTY_HINT_NONE;
-				// prop["hint_string"] = "";
+				prop["hint_string"] = "";
+			}
+			if (it->second->get_hidden_input()) {
+				prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
 			}
 			// prop["usage"] = ;
 
@@ -290,6 +293,11 @@ void GDProcMesh::remove_node(int p_id) {
 		// first remove any connector related to this
 		for (size_t i = max - 1; i >= 0 && i < max; i--) {
 			if ((connections[i].input.node == p_id) || (connections[i].output.node == p_id)) {
+				if (connections[i].input.node != p_id) {
+					// touch our input node
+					get_node(connections[i].input.node)->_touch();
+				}
+
 				connections.erase(connections.begin() + i);
 			}
 		}

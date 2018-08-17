@@ -3,6 +3,7 @@
 using namespace godot;
 
 void GDProcTransform::_register_methods() {
+	register_property<GDProcTransform, Vector3>("rotation", &GDProcTransform::set_rotation, &GDProcTransform::get_rotation, Vector3(0.0, 0.0, 0.0));
 	register_property<GDProcTransform, Vector3>("translation", &GDProcTransform::set_translation, &GDProcTransform::get_translation, Vector3(0.0, 0.0, 0.0));
 	register_property<GDProcTransform, Vector3>("scale", &GDProcTransform::set_scale, &GDProcTransform::get_scale, Vector3(1.0, 1.0, 1.0));
 }
@@ -15,8 +16,22 @@ void GDProcTransform::_init() {
 	// first call super class
 	GDProcNode::_init();
 
+	default_rotation = Vector3(0.0, 0.0, 0.0);
 	default_translation = Vector3(0.0, 0.0, 0.0);
 	default_scale = Vector3(1.0, 1.0, 1.0);
+}
+
+void GDProcTransform::set_rotation(Vector3 p_rotation) {
+	if (default_rotation != p_rotation) {
+		default_rotation = p_rotation;
+		must_update = true;
+		emit_signal("changed");
+	}
+
+}
+
+Vector3 GDProcTransform::get_rotation() {
+	return default_rotation;
 }
 
 void GDProcTransform::set_translation(Vector3 p_translation) {
@@ -50,6 +65,8 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 	if (updated) {
 		int num_vectors = 0;
 		PoolVector3Array input_vectors;
+		int num_rotations = 0;
+		PoolVector3Array rotations;
 		int num_translations = 0;
 		PoolVector3Array translations;
 		int num_scales = 0;
@@ -80,7 +97,12 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 				}
 			}
 		}
-		// add rotations
+		if (input_count > 1) {
+			if (p_inputs[1].get_type() == Variant::POOL_VECTOR3_ARRAY) {
+				rotations = p_inputs[1];
+				num_rotations = rotations.size();
+			}
+		}
 		if (input_count > 2) {
 			if (p_inputs[2].get_type() == Variant::POOL_VECTOR3_ARRAY) {
 				translations = p_inputs[2];
@@ -92,6 +114,15 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 				scales = p_inputs[3];
 				num_scales = scales.size();
 			}
+		}
+
+		if (num_rotations == 0) {
+			// our default rotation contains euler angles, but we're using quaternions
+			Quat q;
+			float pi_180 = 3.14159265359f / 180.0f;
+			q.set_euler_xyz(default_rotation * Vector3(pi_180, pi_180, pi_180));
+			rotations.push_back(Vector3(q.x, q.y, q.z)); // quaternions should be normalized so w should be sqrt(1.0 - x2 - y2 - z2)
+			num_rotations++;
 		}
 
 		if (num_translations == 0) {
@@ -108,14 +139,28 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 			PoolVector3Array vectors;
 			vectors.resize(num_vectors);
 
+			// Convert my quarternion array so we don't keep doing a square root
+			PoolVector3Array::Read q = rotations.read();
+			Basis *rots = (Basis *)api->godot_alloc(sizeof(Basis) * num_rotations);
+			for (int i = 0; i < num_rotations; i++) {
+				Vector3 rot = q[i];
+				Quat quat(rot.x, rot.y, rot.z, (float) sqrt(1.0 - (rot.x * rot.x + rot.y * rot.y + rot.z * rot.z)));
+
+				// convert to basis, I had problems with quat.xform...
+				rots[i] = Basis(quat);
+			}
+
 			PoolVector3Array::Write w = vectors.write();
 			PoolVector3Array::Read r = input_vectors.read();
 			PoolVector3Array::Read t = translations.read();
 			PoolVector3Array::Read s = scales.read();
 
 			for (int i = 0; i < num_vectors; i++) {
-				w[i] = (r[i] * s[i % num_scales]) + t[i % num_translations];
+				w[i] = (rots[i % num_rotations].xform(r[i]) * s[i % num_scales]) + t[i % num_translations];
 			}
+
+			// free 
+			api->godot_free(rots);
 
 			surface_arr[ArrayMesh::ARRAY_VERTEX] = vectors;
 		}
@@ -132,8 +177,8 @@ Variant::Type GDProcTransform::get_input_connector_type(int p_slot) const {
 	if (p_slot == 0) {
 		return Variant::ARRAY;
 	} else if (p_slot == 1) {
-		// we don't have a POOL_BASIS_ARRAY, need to think this through...
-		return Variant::ARRAY;
+		// we don't have a POOL_BASIS_ARRAY, abusing vec3 for storing 
+		return Variant::POOL_VECTOR3_ARRAY;
 	} else if (p_slot == 2) {
 		return Variant::POOL_VECTOR3_ARRAY;
 	} else if (p_slot == 3) {
@@ -147,18 +192,20 @@ const String GDProcTransform::get_input_connector_name(int p_slot) const {
 	if (p_slot == 0) {
 		return "surface";
 	} else if (p_slot == 1) {
-		return "rotation";
+		return "rotations";
 	} else if (p_slot == 2) {
-		return "translation";
+		return "translations";
 	} else if (p_slot == 3) {
-		return "scale";
+		return "scales";
 	}
 
 	return "";
 }
 
 const String GDProcTransform::get_connector_property_name(int p_slot) const {
-	if (p_slot == 2) {
+	if (p_slot == 1) {
+		return "rotation";
+	} else if (p_slot == 2) {
 		return "translation";
 	} else if (p_slot == 3) {
 		return "scale";

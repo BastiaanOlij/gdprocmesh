@@ -28,6 +28,7 @@ private:
 
 protected:
 	bool must_update; // we set this to true if one of our properties/settings has changed
+	bool hidden_input; // if this node has an input propery, set if we hide it.
 
 public:
 	static void _register_methods(); // register our methods and properties and signals
@@ -49,6 +50,9 @@ public:
 	virtual String get_input_property_hint() const; // if this is an input property, what is the property hint?
 	virtual void set_input(Variant p_input); // if this is an input property, set its value
 	virtual Variant get_input(); // if this is an input property, get its value
+
+	void set_hidden_input(bool p_set); // if we have an input property, set whether it should be hidden
+	bool get_hidden_input() const;
 
 	virtual int get_input_connector_count() const; // returns the number of input connectors this note has
 	virtual Variant::Type get_input_connector_type(int p_slot) const; // returns the type of the data expected for this input

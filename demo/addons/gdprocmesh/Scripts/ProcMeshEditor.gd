@@ -92,13 +92,17 @@ func _ready():
 	_add_node_class("Input Vector", "GDProcInVector")
 
 	# primitives
+	_add_node_class("Euler angles", "GDProcEuler")
 	_add_node_class("Vector", "GDProcVector")
 
 	# transforms (work on primitives)
 	_add_node_class("Bevel", "GDProcBevel")
 	_add_node_class("Generate normals", "GDProcGenNormals")
-	_add_node_class("Translate", "GDProcTranslate")
+	_add_node_class("Redistribute", "GDProcRedist")
+	_add_node_class("Multiply", "GDProcMult")
+	_add_node_class("Rotate", "GDProcRotate")
 	_add_node_class("Scale", "GDProcScale")
+	_add_node_class("Translate", "GDProcTranslate")
 
 	# shapes
 	_add_node_class("Box", "GDProcBox")
@@ -110,6 +114,8 @@ func _ready():
 	_add_node_class("Surface", "GDProcSurface")
 
 	# modifiers (work on surfaces)
+	_add_node_class("Mirror", "GDProcMirror")
+	_add_node_class("Place on path", "GDProcPlaceOnPath")
 	_add_node_class("Transform", "GDProcTransform")
 
 	# output

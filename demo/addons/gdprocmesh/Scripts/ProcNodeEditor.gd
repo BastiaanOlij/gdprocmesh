@@ -113,6 +113,12 @@ func set_proc_node(p_proc_mesh, p_node_id):
 				if prop_field:
 					hb.add_child(prop_field)
 			
+			if node.get_input_property_type() != TYPE_NIL:
+				$Name_Container/Hide_input.visible = true
+				$Name_Container/Hide_input.pressed = node.get_hidden_input()
+			else:
+				$Name_Container/Hide_input.visible = false
+			
 			hb.add_spacer(false)
 			
 			if right_is_valid:
@@ -160,3 +166,7 @@ func _on_Name_Edit_text_entered(new_text):
 
 func _on_Name_Edit_focus_exited():
 	_on_Name_Edit_text_entered($Name_Container/Name_Edit.text)
+
+func _on_Hide_input_toggled(button_pressed):
+	if node:
+		node.set_hidden_input(button_pressed)

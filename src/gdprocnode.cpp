@@ -16,6 +16,12 @@ void GDProcNode::_register_methods() {
 	register_method("set_node_name", &GDProcNode::set_node_name);
 	register_property<GDProcNode, String>("node_name", &GDProcNode::set_node_name, &GDProcNode::get_node_name, "");
 
+	// hidden input
+	register_method("get_hidden_input", &GDProcNode::get_hidden_input);
+	register_method("set_hidden_input", &GDProcNode::set_hidden_input);
+	register_property<GDProcNode, bool>("hide_input", &GDProcNode::set_hidden_input, &GDProcNode::get_hidden_input, false);
+	register_method("get_input_property_type", &GDProcNode::get_input_property_type);
+
 	// connectors
 	register_method("get_input_connector_count", &GDProcNode::get_input_connector_count);
 	register_method("get_input_connector_type", &GDProcNode::get_input_connector_type);
@@ -79,6 +85,7 @@ void GDProcNode::_init() {
 	must_update = true;
 	position = Vector2(0.0, 0.0);
 	node_name = "";
+	hidden_input = false;
 }
 
 void GDProcNode::_touch() {
@@ -90,7 +97,7 @@ bool GDProcNode::update(bool p_inputs_updated, const Array &p_inputs) {
 	must_update = false;
 
 	if (updated) {
-		// just am example here, but implement updating data here.. 
+		// just an example here, but implement updating data here.. 
 
 	}
 
@@ -111,6 +118,14 @@ void GDProcNode::set_input(Variant p_input) {
 
 Variant GDProcNode::get_input() {
 	return Variant();
+}
+
+void GDProcNode::set_hidden_input(bool p_set) {
+	hidden_input = p_set;
+}
+
+bool GDProcNode::get_hidden_input() const {
+	return hidden_input;
 }
 
 int GDProcNode::get_input_connector_count() const {

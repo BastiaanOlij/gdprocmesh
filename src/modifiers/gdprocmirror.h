@@ -1,17 +1,18 @@
-#ifndef GD_PROC_TRANSFORM_H
-#define GD_PROC_TRANSFORM_H
+#ifndef GD_PROC_MIRROR_H
+#define GD_PROC_MIRROR_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcTransform : public GDProcNode {
-	GODOT_SUBCLASS(GDProcTransform, GDProcNode)
+class GDProcMirror : public GDProcNode {
+	GODOT_SUBCLASS(GDProcMirror, GDProcNode)
 
 private:
-	Vector3 default_rotation;
-	Vector3 default_translation;
-	Vector3 default_scale;
+	bool default_mirror_x;
+	bool default_mirror_y;
+	bool default_mirror_z;
+	bool default_duplicate;
 
 	Array surface_arr;
 
@@ -23,14 +24,17 @@ public:
 	void _init();
 
 	// properties
-	void set_rotation(Vector3 p_rotation);
-	Vector3 get_rotation();
+	void set_mirror_x(bool p_mirror);
+	bool get_mirror_x();
 
-	void set_translation(Vector3 p_translation);
-	Vector3 get_translation();
+	void set_mirror_y(bool p_mirror);
+	bool get_mirror_y();
 
-	void set_scale(Vector3 p_scale);
-	Vector3 get_scale();
+	void set_mirror_z(bool p_mirror);
+	bool get_mirror_z();
+
+	void set_duplicate(bool p_duplicate);
+	bool get_duplicate();
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
 
@@ -50,4 +54,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_TRANSFORM_H */
+#endif /* !GD_PROC_MIRROR_H */

@@ -141,6 +141,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 			Vector3 last_pos = pr[0];
 			Vector3 up = Vector3(0.0, 1.0, 0.0);
 			Vector2 uv = Vector2(0.0, 0.0);
+
 			for (int p = 0; p < num_path + (pic ? 1 : 0); p++) {
 				// calculate our transform
 				Transform xf;
@@ -150,18 +151,17 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 						Vector3 p1 = pr[p == 0 ? (num_path - 1) : ((p - 1) % num_path)];
 						Vector3 p2 = pr[(p + 1) % num_path];
 						dir = (p2 - p1).normalized();
-
-						if (p == num_path) {
-							// last point? make sure up is up again
-							up = Vector3(0.0, 1.0, 0.0);
-						}
 					} else {
 						Vector3 p1 = pr[p == 0 ? 0 : (p - 1)];
 						Vector3 p2 = pr[(p + 1) < num_path ? (p + 1) : (num_path - 1)];
 						dir = (p2 - p1).normalized();
 					}
 
-					///@TODO up p = 0 and dir is up or down, should decide on a different starting value
+					// our first entry is straight up or down?
+					if ((p == 0) && (fabs(dir.dot(up)) > 0.999f)) {
+						// let's start with a different value
+						up = Vector3(1.0, 0.0, 0.0);
+					}
 
 					// calculate our new transform
 					xf.origin = pr[p % num_path];

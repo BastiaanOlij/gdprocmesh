@@ -1,18 +1,18 @@
-#include "primitives/gdprocvector.h"
+#include "primitives/gdproceuler.h"
 
 using namespace godot;
 
-void GDProcVector::_register_methods() {
-	register_property<GDProcVector, float>("x", &GDProcVector::set_x, &GDProcVector::get_x, 0.0);
-	register_property<GDProcVector, float>("y", &GDProcVector::set_y, &GDProcVector::get_y, 0.0);
-	register_property<GDProcVector, float>("z", &GDProcVector::set_z, &GDProcVector::get_z, 0.0);
+void GDProcEuler::_register_methods() {
+	register_property<GDProcEuler, float>("x", &GDProcEuler::set_x, &GDProcEuler::get_x, 0.0);
+	register_property<GDProcEuler, float>("y", &GDProcEuler::set_y, &GDProcEuler::get_y, 0.0);
+	register_property<GDProcEuler, float>("z", &GDProcEuler::set_z, &GDProcEuler::get_z, 0.0);
 }
 
-String GDProcVector::get_type_name() {
-	return "Vectors";
+String GDProcEuler::get_type_name() {
+	return "Euler angles";
 }
 
-void GDProcVector::_init() {
+void GDProcEuler::_init() {
 	// first call super class
 	GDProcNode::_init();
 
@@ -21,7 +21,7 @@ void GDProcVector::_init() {
 	value.set(0, Vector3(0.0, 0.0, 0.0));
 }
 
-void GDProcVector::set_x(float x) {
+void GDProcEuler::set_x(float x) {
 	if (defaults.x != x) {
 		defaults.x = x;
 		must_update = true;
@@ -29,11 +29,11 @@ void GDProcVector::set_x(float x) {
 	}
 }
 
-float GDProcVector::get_x() const {
+float GDProcEuler::get_x() const {
 	return defaults.x;
 }
 
-void GDProcVector::set_y(float y) {
+void GDProcEuler::set_y(float y) {
 	if (defaults.y != y) {
 		defaults.y = y;
 		must_update = true;
@@ -41,11 +41,11 @@ void GDProcVector::set_y(float y) {
 	}
 }
 
-float GDProcVector::get_y() const {
+float GDProcEuler::get_y() const {
 	return defaults.y;
 }
 
-void GDProcVector::set_z(float z) {
+void GDProcEuler::set_z(float z) {
 	if (defaults.z != z) {
 		defaults.z = z;
 		must_update = true;
@@ -53,11 +53,11 @@ void GDProcVector::set_z(float z) {
 	}
 }
 
-float GDProcVector::get_z() const {
+float GDProcEuler::get_z() const {
 	return defaults.z;
 }
 
-bool GDProcVector::update(bool p_inputs_updated, const Array &p_inputs) {
+bool GDProcEuler::update(bool p_inputs_updated, const Array &p_inputs) {
 	bool updated = must_update || p_inputs_updated;
 	must_update = false;
 
@@ -119,22 +119,26 @@ bool GDProcVector::update(bool p_inputs_updated, const Array &p_inputs) {
 		PoolVector3Array::Write vw = value.write();
 
 		for (int i = 0; i < max; i++) {
-			vw[i] = Vector3(rx[i % num_x], ry[i % num_y], rz[i % num_z]);
+			float pi_180 = 3.14159265359f / 180.0f;
+			Quat q;
+			q.set_euler_xyz(Vector3(rx[i % num_x], ry[i % num_y], rz[i % num_z]) * Vector3(pi_180, pi_180, pi_180));
+
+			vw[i] = Vector3(q.x, q.y, q.z); // quaternions should be normalized so w should be sqrt(1.0 - x2 - y2 - z2)
 		}
 	}
 
 	return updated;
 }
 
-int GDProcVector::get_input_connector_count() const {
+int GDProcEuler::get_input_connector_count() const {
 	return 3;
 }
 
-Variant::Type GDProcVector::get_input_connector_type(int p_slot) const {
+Variant::Type GDProcEuler::get_input_connector_type(int p_slot) const {
 	return Variant::POOL_REAL_ARRAY;
 }
 
-const String GDProcVector::get_input_connector_name(int p_slot) const {
+const String GDProcEuler::get_input_connector_name(int p_slot) const {
 	if (p_slot == 0) {
 		return "x";
 	} else if (p_slot == 1) {
@@ -146,7 +150,7 @@ const String GDProcVector::get_input_connector_name(int p_slot) const {
 	return "";
 }
 
-const String GDProcVector::get_connector_property_name(int p_slot) const {
+const String GDProcEuler::get_connector_property_name(int p_slot) const {
 	if (p_slot == 0) {
 		return "x";
 	} else if (p_slot == 1) {
@@ -158,18 +162,18 @@ const String GDProcVector::get_connector_property_name(int p_slot) const {
 	return "";
 }
 
-int GDProcVector::get_output_connector_count() const {
+int GDProcEuler::get_output_connector_count() const {
 	return 1;
 }
 
-Variant::Type GDProcVector::get_output_connector_type(int p_slot) const {
+Variant::Type GDProcEuler::get_output_connector_type(int p_slot) const {
 	return Variant::POOL_VECTOR3_ARRAY;
 }
 
-const String GDProcVector::get_output_connector_name(int p_slot) const {
+const String GDProcEuler::get_output_connector_name(int p_slot) const {
 	return "vector";
 }
 
-const Variant GDProcVector::get_output(int p_slot) const {
+const Variant GDProcEuler::get_output(int p_slot) const {
 	return Variant(value);
 }

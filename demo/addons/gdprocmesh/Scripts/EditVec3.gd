@@ -6,21 +6,22 @@ signal changed_vector(new_vector)
 
 func set_vector(new_vector):
 	vector = new_vector
-	$X.text = "%0.3f" % vector.x
-	$Y.text = "%0.3f" % vector.y
-	$Z.text = "%0.3f" % vector.z
+	if $X:
+		$X.text = "%0.3f" % vector.x
+		$Y.text = "%0.3f" % vector.y
+		$Z.text = "%0.3f" % vector.z
 
 func get_vector():
-	vector.x = $X.text
-	vector.y = $Y.text
-	vector.z = $Z.text
+	vector.x = float($X.text)
+	vector.y = float($Y.text)
+	vector.z = float($Z.text)
 	return vector
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
+	$X.text = "%0.3f" % vector.x
+	$Y.text = "%0.3f" % vector.y
+	$Z.text = "%0.3f" % vector.z
 
 func _on_X_text_entered(new_text):
 	vector.x = float(new_text)

@@ -9,10 +9,14 @@
 #include "input/gdprocinreal.h"
 #include "input/gdprocinvector.h"
 
+#include "primitives/gdproceuler.h"
 #include "primitives/gdprocvector.h"
 
 #include "transforms/gdprocbevel.h"
 #include "transforms/gdprocgennormals.h"
+#include "transforms/gdprocmult.h"
+#include "transforms/gdprocredist.h"
+#include "transforms/gdprocrotate.h"
 #include "transforms/gdprocscale.h"
 #include "transforms/gdproctranslate.h"
 
@@ -23,6 +27,8 @@
 #include "surfaces/gdprocextrudeshape.h"
 #include "surfaces/gdprocsurface.h"
 
+#include "modifiers/gdprocmirror.h"
+#include "modifiers/gdprocplaceonpath.h"
 #include "modifiers/gdproctransform.h"
 
 #include "output/gdprocoutput.h"
@@ -52,11 +58,15 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcInVector>();
 
 	// primitives
+	godot::register_tool_class<godot::GDProcEuler>();
 	godot::register_tool_class<godot::GDProcVector>();
 
 	// transforms (work on primitives)
 	godot::register_tool_class<godot::GDProcBevel>();
 	godot::register_tool_class<godot::GDProcGenNormals>();
+	godot::register_tool_class<godot::GDProcMult>();
+	godot::register_tool_class<godot::GDProcRedist>();
+	godot::register_tool_class<godot::GDProcRotate>();
 	godot::register_tool_class<godot::GDProcScale>();
 	godot::register_tool_class<godot::GDProcTranslate>();
 
@@ -70,6 +80,8 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcSurface>();
 
 	// modifiers (work on surfaces)
+	godot::register_tool_class<godot::GDProcMirror>();
+	godot::register_tool_class<godot::GDProcPlaceOnPath>();
 	godot::register_tool_class<godot::GDProcTransform>();
 
 	// output

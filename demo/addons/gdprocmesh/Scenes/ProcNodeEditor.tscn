@@ -39,7 +39,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 16.0
 margin_top = 24.0
-margin_right = 184.0
+margin_right = 284.0
 margin_bottom = 48.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -54,9 +54,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 11.0
+margin_left = 61.0
 margin_top = 5.0
-margin_right = 53.0
+margin_right = 103.0
 margin_bottom = 19.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -74,8 +74,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 57.0
-margin_right = 157.0
+margin_left = 107.0
+margin_right = 207.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 100, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
@@ -88,13 +88,39 @@ size_flags_vertical = 1
 secret_character = "*"
 focus_mode = 2
 context_menu_enabled = true
+clear_button_enabled = false
 placeholder_alpha = 0.6
 caret_blink = false
 caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Rect" ]
 
+[node name="Hide_input" type="CheckBox" parent="Name_Container"]
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 180.0
+margin_right = 238.0
+margin_bottom = 24.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Hide"
+flat = false
+align = 0
+
 [connection signal="close_request" from="." to="." method="_on_ProcNode_close_request"]
 [connection signal="dragged" from="." to="." method="_on_ProcNode_dragged"]
 [connection signal="focus_exited" from="Name_Container/Name_Edit" to="." method="_on_Name_Edit_focus_exited"]
 [connection signal="text_entered" from="Name_Container/Name_Edit" to="." method="_on_Name_Edit_text_entered"]
+[connection signal="toggled" from="Name_Container/Hide_input" to="." method="_on_Hide_input_toggled"]

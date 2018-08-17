@@ -1,19 +1,16 @@
-#ifndef GD_PROC_TRANSFORM_H
-#define GD_PROC_TRANSFORM_H
+#ifndef GD_PROC_EULER_H
+#define GD_PROC_EULER_H
 
 #include "gdprocnode.h"
 
 namespace godot {
 
-class GDProcTransform : public GDProcNode {
-	GODOT_SUBCLASS(GDProcTransform, GDProcNode)
+class GDProcEuler : public GDProcNode {
+	GODOT_SUBCLASS(GDProcEuler, GDProcNode)
 
 private:
-	Vector3 default_rotation;
-	Vector3 default_translation;
-	Vector3 default_scale;
-
-	Array surface_arr;
+	Vector3 defaults;
+	PoolVector3Array value;
 
 public:
 	static void _register_methods();
@@ -23,14 +20,14 @@ public:
 	void _init();
 
 	// properties
-	void set_rotation(Vector3 p_rotation);
-	Vector3 get_rotation();
+	void set_x(float x);
+	float get_x() const;
 
-	void set_translation(Vector3 p_translation);
-	Vector3 get_translation();
+	void set_y(float y);
+	float get_y() const;
 
-	void set_scale(Vector3 p_scale);
-	Vector3 get_scale();
+	void set_z(float z);
+	float get_z() const;
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs); // checks if our node has to be updated and if so, applies our calculations
 
@@ -50,4 +47,4 @@ public:
 
 }
 
-#endif /* !GD_PROC_TRANSFORM_H */
+#endif /* !GD_PROC_EULER_H */
