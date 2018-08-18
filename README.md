@@ -51,6 +51,11 @@ License
 =======
 I've made the source in this repository available under an MIT license. If you find it useful, it would always be nice to get a mention.
 
+Note that for the demo:
+- HRDI texture is from [HDRI Haven](https://hdrihaven.com)
+- Rope texture is from [Textures.com](https://textures.com)
+Please visit these sites for further license details
+
 About this repository
 ---------------------
 This repository was created by and is maintained by Bastiaan Olij a.k.a. Mux213

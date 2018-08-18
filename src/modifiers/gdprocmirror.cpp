@@ -117,25 +117,25 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 		}
 
 		if (input_surface.size() == ArrayMesh::ARRAY_MAX) {
+			int mirror_count = (mirror_x ? 1 : 0) + (mirror_y ? 1 : 0) + (mirror_z ? 1 : 0);
+
 			if (input_surface[ArrayMesh::ARRAY_VERTEX].get_type() == Variant::POOL_VECTOR3_ARRAY) {
 				PoolVector3Array input = input_surface[ArrayMesh::ARRAY_VERTEX];
 				PoolVector3Array output;
 				int size = input.size();
 
-				// double the size of our buffer
-				output.resize(size * 2);
-				PoolVector3Array::Write w = output.write();
-				PoolVector3Array::Read r = input.read();
-
 				// Start with copying our original
 				if (duplicate) {
-					for(int i = 0; i < size; i++) {
-						w[i] = r[i];
-					}
+					output.append_array(input);
 					offset = size;
 				} else {
 					offset = 0;
 				}
+
+				// double the size of our buffer
+				output.resize(size * 2);
+				PoolVector3Array::Write w = output.write();
+				PoolVector3Array::Read r = input.read();
 
 				for(int i = 0; i < size; i++) {
 					Vector3 v = r[i];
@@ -156,18 +156,16 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				int size = input.size();
 				int strafe = 0;
 
+				// Start with copying our original
+				if (duplicate) {
+					output.append_array(input);
+					strafe = size;
+				}
+
 				// double the size of our buffer
 				output.resize(size * 2);
 				PoolVector3Array::Write w = output.write();
 				PoolVector3Array::Read r = input.read();
-
-				// Start with copying our original
-				if (duplicate) {
-					for(int i = 0; i < size; i++) {
-						w[i] = r[i];
-					}
-					strafe = size;
-				}
 
 				for(int i = 0; i < size; i++) {
 					Vector3 v = r[i];
@@ -184,6 +182,31 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 
 			if (input_surface[ArrayMesh::ARRAY_TANGENT].get_type() == Variant::POOL_REAL_ARRAY) {
 				///@TODO need to figure this one out, probably just like with our faces, if we do an uneven mirror we need to flip something
+				PoolRealArray input = input_surface[ArrayMesh::ARRAY_TANGENT];
+				PoolRealArray output;
+				int size = input.size();
+				int strafe = 0;
+
+				// Start with copying our original				
+				if (duplicate) {
+					output.append_array(input);
+					strafe = size;
+				}
+
+				/* double our size */
+				output.resize(size * 2);
+				PoolRealArray::Write w = output.write();
+				PoolRealArray::Read r = input.read();
+
+				// and a copy for our mirror
+				for (int i = 0; i < size; i += 4) {
+					w[i + strafe] = mirror_x ? -r[i] : r[i];
+					w[i + strafe + 1] = mirror_y ? -r[i + 1] : r[i + 1];
+					w[i + strafe + 2] = mirror_z ? -r[i + 2] : r[i + 2];
+					w[i + strafe + 3] = (mirror_count == 1 || mirror_count == 3) ? -r[i + 3] : r[i + 3];
+				}
+
+				surface_arr[ArrayMesh::ARRAY_TANGENT] = output;
 			}
 
 			if (input_surface[ArrayMesh::ARRAY_COLOR].get_type() == Variant::POOL_COLOR_ARRAY) {
@@ -290,7 +313,6 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 					strafe = size;
 				}
 
-				int mirror_count = (mirror_x ? 1 : 0) + (mirror_y ? 1 : 0) + (mirror_z ? 1 : 0);
 				if ((mirror_count == 0) || (mirror_count == 2)) {
 					for (int i = 0; i < size; i++) {
 						w[i + strafe] = r[i] + offset;

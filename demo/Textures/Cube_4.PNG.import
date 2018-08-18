@@ -2,13 +2,13 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/Cube_4.PNG-a1298da93fc9c65c1577b05e8cc1eb36.s3tc.stex"
-path.etc2="res://.import/Cube_4.PNG-a1298da93fc9c65c1577b05e8cc1eb36.etc2.stex"
+path.s3tc="res://.import/Cube_4.PNG-e93301a982a0e9801b3490655b61bf01.s3tc.stex"
+path.etc2="res://.import/Cube_4.PNG-e93301a982a0e9801b3490655b61bf01.etc2.stex"
 
 [deps]
 
-source_file="res://Cube_4.PNG"
-dest_files=[ "res://.import/Cube_4.PNG-a1298da93fc9c65c1577b05e8cc1eb36.s3tc.stex", "res://.import/Cube_4.PNG-a1298da93fc9c65c1577b05e8cc1eb36.etc2.stex" ]
+source_file="res://Textures/Cube_4.PNG"
+dest_files=[ "res://.import/Cube_4.PNG-e93301a982a0e9801b3490655b61bf01.s3tc.stex", "res://.import/Cube_4.PNG-e93301a982a0e9801b3490655b61bf01.etc2.stex" ]
 
 [params]
 

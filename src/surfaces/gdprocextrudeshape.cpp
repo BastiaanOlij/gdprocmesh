@@ -52,6 +52,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 		// define our destination buffers
 		PoolVector3Array vertices;
 		PoolVector3Array normals;
+		PoolRealArray tangents;
 		PoolVector2Array uvs;
 		PoolIntArray indices;
 
@@ -103,24 +104,26 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 			// define some stuff
 			int last_start_vertice = 0;
 			int curr_vertice = 0;
+			int curr_tangent = 0;
 			int curr_index = 0;
 			int num_vertices = (sic ? num_shape + 1 : num_shape); // for closed shape, we add a vertice
 			float shape_total_len = 0.0;
 
 			// prepare our data
+			int total_vertices = 0;
+			int total_indices = 0;
 			if (pic) {
-				int total_vertices = num_vertices * (num_path + 1);
-				vertices.resize(total_vertices);
-				normals.resize(total_vertices);
-				uvs.resize(total_vertices);
-				indices.resize((num_vertices - 1) * num_path * 2 * 3);
+				total_vertices = num_vertices * (num_path + 1);
+				total_indices = (num_vertices - 1) * num_path * 2 * 3;
 			} else {
-				int total_vertices = num_vertices * num_path;
-				vertices.resize(total_vertices);
-				normals.resize(total_vertices);
-				uvs.resize(total_vertices);
-				indices.resize((((num_vertices - 1) * (num_path - 1)) + (num_vertices - 2)) * 2 * 3);
+				total_vertices = num_vertices * num_path;
+				total_indices = (((num_vertices - 1) * (num_path - 1)) + (num_vertices - 2)) * 2 * 3;
 			}
+			vertices.resize(total_vertices);
+			normals.resize(total_vertices);
+			tangents.resize(total_vertices * 4);
+			uvs.resize(total_vertices);
+			indices.resize(total_indices);
 
 			// figure out the total length of our shape
 			Vector3 last_point = sr[0];
@@ -133,6 +136,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 			// lock our destination buffers for writing
 			PoolVector3Array::Write vw = vertices.write();
 			PoolVector3Array::Write nw = normals.write();
+			PoolRealArray::Write tw = tangents.write();
 			PoolVector2Array::Write uvw = uvs.write();
 			PoolIntArray::Write iw = indices.write();
 
@@ -201,7 +205,12 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 					// we should calculate our normals based on our shape and cache them
 					nw[curr_vertice] = xf.basis.xform(Vector3(point.x, point.y, point.z)).normalized();
 
-					// we should calculate our tangent and bi-tangent, again do once and cache
+					// we should calculate our tangent, again do once and cache
+					Vector3 tangent = xf.basis.get_axis(2);
+					tw[curr_tangent++] = tangent.x;
+					tw[curr_tangent++] = tangent.y;
+					tw[curr_tangent++] = tangent.z;
+					tw[curr_tangent++] = 1.0; /* -1.0 ? */
 
 					// calculate our uv
 					if (j > 0) {
@@ -249,6 +258,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 
 		surface_arr[ArrayMesh::ARRAY_VERTEX] = vertices;
 		surface_arr[ArrayMesh::ARRAY_NORMAL] = normals;
+		surface_arr[ArrayMesh::ARRAY_TANGENT] = tangents;
 		surface_arr[ArrayMesh::ARRAY_TEX_UV] = uvs;
 		surface_arr[ArrayMesh::ARRAY_INDEX] = indices;
 	}
