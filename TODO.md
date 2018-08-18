@@ -3,10 +3,10 @@ Todo list:
  - add add node for real
  - add subtract node for real
  - add subdivide node
- - better box node, maybe generate a surface and separate out faces
  - add sphere node
  - make generate normals work on a surface, have it calculate tangents and options like smooth?
  - add a UV unwrap (maybe using the Thekla module in Godot?)
  - add an input where we use another mesh as an input
  - add an extract node that takes a surface as input and has each array as an output
  - add boolean node to do CSG merge
+ - add group node where you can combine a number of nodes into one new node to simplify graphs

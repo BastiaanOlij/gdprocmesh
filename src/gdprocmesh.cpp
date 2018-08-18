@@ -465,20 +465,8 @@ void GDProcMesh::_post_init() {
 		Ref<GDProcOutput> output;
 		output.instance();
 		output->set_name("Output");
-		output->set_position(Vector2(900.0, 50.0));
+		output->set_position(Vector2(600.0, 50.0));
 		int output_id = add_node(output);
-
-		// create our surface
-		Ref<GDProcSurface> surface;
-		surface.instance();
-		surface->set_position(Vector2(650.0, 50.0));
-		int surface_id = add_node(surface);
-
-		// create our generate normals entry
-		Ref<GDProcGenNormals> gen_normals;
-		gen_normals.instance();
-		gen_normals->set_position(Vector2(350.0, 50.0));
-		int gen_normals_id = add_node(gen_normals);
 
 		// create a box
 		Ref<GDProcBox> box;
@@ -487,12 +475,7 @@ void GDProcMesh::_post_init() {
 		int box_id = add_node(box);
 
 		// add our connections
-		add_connection(gen_normals_id, 0, box_id, 0); // vertices input to normals
-		add_connection(gen_normals_id, 1, box_id, 1); // indices input to normals
-		add_connection(surface_id, 0, box_id, 0); // vertices input to box
-		add_connection(surface_id, 1, gen_normals_id, 0); // normals input to box
-		add_connection(surface_id, 8, box_id, 1); // indices input to box
-		add_connection(output_id, 0, surface_id, 0); // bind to our output
+		add_connection(output_id, 0, box_id, 0); // bind to our output
 
 		// note that this will have trigger an update...
 	}
