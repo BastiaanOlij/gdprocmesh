@@ -11,8 +11,7 @@ class GDProcBox : public GDProcNode {
 private:
 	Vector3 default_size;
 
-	PoolVector3Array vertices;
-	PoolIntArray indices;
+	Array surface_arr;
 
 public:
 	static void _register_methods();
