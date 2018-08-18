@@ -24,18 +24,12 @@ func edit_mesh(p_procmesh):
 		hide()
 
 func _create_graph_node(p_node_id):
-	# should turn this into a scene to (pre)load...
-	
-	# print("Found node with id " + String(p_node_id))
 	var node = procmesh.get_node(p_node_id)
-	var slot_offset = 0
 	
 	# create a graph node for this
 	var gn = preload("res://addons/gdprocmesh/Scenes/ProcNodeEditor.tscn").instance()
 	gn.set_proc_node(procmesh, p_node_id)
 	gn.connect("changed", self, "_update_graph")
-	
-	slot_offset += 1
 	
 	return gn
 
@@ -92,7 +86,9 @@ func _ready():
 	_add_node_class("Input Vector", "GDProcInVector")
 
 	# primitives
+	_add_node_class("Count", "GDProcCount")
 	_add_node_class("Euler angles", "GDProcEuler")
+	_add_node_class("Random", "GDProcRandom")
 	_add_node_class("Vector", "GDProcVector")
 
 	# transforms (work on primitives)

@@ -3,7 +3,6 @@ Todo list:
  - add add node for real
  - add subtract node for real
  - add subdivide node
- - add random generation node
  - better box node, maybe generate a surface and separate out faces
  - add sphere node
  - make generate normals work on a surface, have it calculate tangents and options like smooth?

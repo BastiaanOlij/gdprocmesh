@@ -9,7 +9,9 @@
 #include "input/gdprocinreal.h"
 #include "input/gdprocinvector.h"
 
+#include "primitives/gdproccount.h"
 #include "primitives/gdproceuler.h"
+#include "primitives/gdprocrandom.h"
 #include "primitives/gdprocvector.h"
 
 #include "transforms/gdprocbevel.h"
@@ -60,7 +62,9 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcInVector>();
 
 	// primitives
+	godot::register_tool_class<godot::GDProcCount>();
 	godot::register_tool_class<godot::GDProcEuler>();
+	godot::register_tool_class<godot::GDProcRandom>();
 	godot::register_tool_class<godot::GDProcVector>();
 
 	// transforms (work on primitives)
