@@ -115,6 +115,7 @@ func _ready():
 	_add_node_class("Surface", "GDProcSurface")
 
 	# modifiers (work on surfaces)
+	_add_node_class("Merge", "GDProcMerge")
 	_add_node_class("Mirror", "GDProcMirror")
 	_add_node_class("Place on path", "GDProcPlaceOnPath")
 	_add_node_class("Transform", "GDProcTransform")

@@ -7,7 +7,6 @@ zconf.h.included
 *.dylib
 .import/
 *.dblite
-*.dll
 *.exp
 *.lib
 *.obj

@@ -25,6 +25,11 @@ bool GDProcSurface::update(bool p_inputs_updated, const Array &p_inputs) {
 		// resize our array just in case
 		surface_arr.resize(ArrayMesh::ARRAY_MAX);
 
+		// clear our array
+		for (int i = 0; i < ArrayMesh::ARRAY_MAX; i++) {
+			surface_arr[i] = Variant();
+		}
+
 		int input_count = p_inputs.size();
 		if (input_count > ArrayMesh::ARRAY_VERTEX) {
 			if (p_inputs[ArrayMesh::ARRAY_VERTEX].get_type() == Variant::POOL_VECTOR3_ARRAY) {

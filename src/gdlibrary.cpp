@@ -28,6 +28,7 @@
 #include "surfaces/gdprocextrudeshape.h"
 #include "surfaces/gdprocsurface.h"
 
+#include "modifiers/gdprocmerge.h"
 #include "modifiers/gdprocmirror.h"
 #include "modifiers/gdprocplaceonpath.h"
 #include "modifiers/gdproctransform.h"
@@ -82,6 +83,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcSurface>();
 
 	// modifiers (work on surfaces)
+	godot::register_tool_class<godot::GDProcMerge>();
 	godot::register_tool_class<godot::GDProcMirror>();
 	godot::register_tool_class<godot::GDProcPlaceOnPath>();
 	godot::register_tool_class<godot::GDProcTransform>();
