@@ -1,10 +1,21 @@
 Procedural Mesh Generation GDNative module
 ==========================================
 
-This is still very early days so you're probably just looking at a module that creates a cube :P
-We'll see how far we can take this.
+This is my attempt at creating a procedural mesh generator for the [Godot Game Engine](https://godotengine.org/).
 
-You will need a recent Godot 3.1 master build to run this module
+![example](https://github.com/BastiaanOlij/gdprocmesh/raw/master/example.png) 
+
+The "normal" way of creating 3D assets for your game involves using modeling software such as Maya, Blender, 3DSMax or any of the other tools out there and for many of the assets you'll want to use in your game this is by far the prefered way of creating assets. There is however one limitation to using these types of software to create 3D assets and that is that they are essentially static. Yes you can animate them but if you create a 2 story house, you'll have to create a new asset if you wish to have a 3 story house.
+
+This is the type of problem procedural modeling attempts to solve. Instead of focussing on an end result the goal is to tell the computer how an asset is to be constructed. 
+This is best explained with a video:
+[Timelapse - Procedural modeling in Godot](https://youtu.be/X574IIBgOko)
+
+That video shows the construction of a simple rope bridge where the length and width can be adjusted and instead of the bridge getting stretched, as would happen if you scale the bridge, it actually adds ropes and boards.
+
+You will need a recent Godot 3.1 master build to run this module.
+You can download a nightly build of Godot 3.1 from Hugos [Unofficial Godot Engine builds](https://hugo.pro/projects/godot-builds/) website.
+A copy of the 64bit Windows DLL is included in the demo folder, use at your own risk.
 
 Downloading and compiling
 =========================
