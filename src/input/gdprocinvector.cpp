@@ -9,6 +9,10 @@ String GDProcInVector::get_type_name() {
 	return "Input Vector";
 }
 
+String GDProcInVector::get_description() const {
+	return "Allows you to specify a single vector as input for the procedural mesh.\n Can be set from the editor.";
+}
+
 void GDProcInVector::_init() {
 	// first call super class
 	GDProcNode::_init();

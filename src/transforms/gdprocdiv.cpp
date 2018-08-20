@@ -10,6 +10,10 @@ String GDProcDiv::get_type_name() {
 	return "Division";
 }
 
+String GDProcDiv::get_description() const {
+	return "Divides all reals in input by divider.";
+}
+
 void GDProcDiv::_init() {
 	// first call super class
 	GDProcNode::_init();

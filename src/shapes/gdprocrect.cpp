@@ -11,6 +11,10 @@ String GDProcRect::get_type_name() {
 	return String("Rectangle");
 }
 
+String GDProcRect::get_description() const {
+	return "Creates a rect on a 2d plane with a set width and height.";
+}
+
 void GDProcRect::_init() {
 	// first call super class
 	GDProcNode::_init();

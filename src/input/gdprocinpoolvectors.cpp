@@ -9,6 +9,10 @@ String GDProcInPoolVectors::get_type_name() {
 	return "Input Vectors";
 }
 
+String GDProcInPoolVectors::get_description() const {
+	return "Allows you to specify an array of vectors as input for the procedural mesh.\n Can be set from the editor.";
+}
+
 void GDProcInPoolVectors::_init() {
 	// first call super class
 	GDProcNode::_init();

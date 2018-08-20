@@ -10,6 +10,10 @@ String GDProcMult::get_type_name() {
 	return "Multiply";
 }
 
+String GDProcMult::get_description() const {
+	return "Multiplies all reals in input by mult.";
+}
+
 void GDProcMult::_init() {
 	// first call super class
 	GDProcNode::_init();

@@ -17,6 +17,7 @@ public:
 	static void _register_methods();
 
 	virtual String get_type_name();
+	virtual String get_description() const;
 
 	void _init();
 

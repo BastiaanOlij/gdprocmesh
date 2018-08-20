@@ -37,6 +37,7 @@ public:
 	void set_status(ProcessStatus p_status); // change the process status
 
 	virtual String get_type_name(); // gets the name we display in the title of the GraphNode
+	virtual String get_description() const; // Get the description of the node. Displayed in the tooltip.
 
 	void set_node_name(const String p_node_name);
 	String get_node_name() const;

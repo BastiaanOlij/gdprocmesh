@@ -12,6 +12,10 @@ String GDProcBox::get_type_name() {
 	return String("Box");
 }
 
+String GDProcBox::get_description() const {
+	return "Creates a 3d box with a set width, height and depth.";
+}
+
 void GDProcBox::_init() {
 	// first call super class
 	GDProcNode::_init();

@@ -10,6 +10,10 @@ String GDProcRotate::get_type_name() {
 	return "Rotate";
 }
 
+String GDProcRotate::get_description() const {
+	return "Rotates vectors from input by rotation.";
+}
+
 void GDProcRotate::_init() {
 	// first call super class
 	GDProcNode::_init();

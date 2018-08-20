@@ -13,6 +13,10 @@ String GDProcMirror::get_type_name() {
 	return "Mirror";
 }
 
+String godot::GDProcMirror::get_description() const {
+	return "Mirrors the surface on the chosen axes.\nIf Duplicate is enabled, the node makes a copy of the surface before mirroring.";
+}
+
 void GDProcMirror::_init() {
 	// first call super class
 	GDProcNode::_init();

@@ -10,6 +10,10 @@ String GDProcTranslate::get_type_name() {
 	return "Translate";
 }
 
+String GDProcTranslate::get_description() const {
+	return "Adds together vectors from translation and vectors. In other words:\noutput[i] = vectors[i % vectors.size()] + translation[i % translation.size()]";
+}
+
 void GDProcTranslate::_init() {
 	// first call super class
 	GDProcNode::_init();
