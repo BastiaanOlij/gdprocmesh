@@ -11,6 +11,10 @@ String GDProcCircle::get_type_name() {
 	return String("Circle");
 }
 
+String GDProcCircle::get_description() const {
+	return "Creates a circle on a 2d plane with a set radius.\nSegments defines the amount of edges the circle has.";
+}
+
 void GDProcCircle::_init() {
 	// first call super class
 	GDProcNode::_init();

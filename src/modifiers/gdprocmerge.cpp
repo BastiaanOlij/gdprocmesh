@@ -9,6 +9,10 @@ String GDProcMerge::get_type_name() {
 	return "Merge";
 }
 
+String GDProcMerge::get_description() const {
+	return "Merges up to five surfaces into one.";
+}
+
 void GDProcMerge::_init() {
 	// first call super class
 	GDProcNode::_init();

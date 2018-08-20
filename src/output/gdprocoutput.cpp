@@ -10,6 +10,10 @@ String GDProcOutput::get_type_name() {
 	return String("Output");
 }
 
+String GDProcOutput::get_description() const {
+	return String("Used to output a surface to the final mesh.");
+}
+
 void GDProcOutput::_init() {
 	// first call super class
 	GDProcNode::_init();

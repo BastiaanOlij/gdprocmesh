@@ -10,6 +10,10 @@ String GDProcScale::get_type_name() {
 	return "Scale";
 }
 
+String GDProcScale::get_description() const {
+	return "Multiplies together vectors from translation and vectors. In other words:\noutput[i] = vectors[i % vectors.size()] * scale[i % scale.size()]";
+}
+
 void GDProcScale::_init() {
 	// first call super class
 	GDProcNode::_init();

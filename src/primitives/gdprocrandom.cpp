@@ -14,6 +14,10 @@ String GDProcRandom::get_type_name() {
 	return "Random";
 }
 
+String GDProcRandom::get_description() const {
+	return "Generates an array of reals where each real is a number between min_size and max_size.\nCount controls the amount of elements generated.\nSeed controls the seed used to generate the numbers. If seed is zero, a random seed is chosen.";
+}
+
 void GDProcRandom::_init() {
 	// first call super class
 	GDProcNode::_init();

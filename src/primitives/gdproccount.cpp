@@ -9,6 +9,10 @@ String GDProcCount::get_type_name() {
 	return "Count";
 }
 
+String GDProcCount::get_description() const {
+	return "Returns the amount of elements in the input.";
+}
+
 void GDProcCount::_init() {
 	// first call super class
 	GDProcNode::_init();

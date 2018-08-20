@@ -12,6 +12,10 @@ String GDProcVector::get_type_name() {
 	return "Vectors";
 }
 
+String GDProcVector::get_description() const {
+	return "Helper node to combine 3 reals into one vec3.";
+}
+
 void GDProcVector::_init() {
 	// first call super class
 	GDProcNode::_init();

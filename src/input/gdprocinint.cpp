@@ -9,6 +9,10 @@ String GDProcInInt::get_type_name() {
 	return "Input Int";
 }
 
+String GDProcInInt::get_description() const{
+	return "Allows you to specify an integer as input for the procedural mesh.\n Can be set from the editor.";
+}
+
 void GDProcInInt::_init() {
 	// first call super class
 	GDProcNode::_init();

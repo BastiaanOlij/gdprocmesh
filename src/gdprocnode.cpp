@@ -4,6 +4,7 @@ using namespace godot;
 
 void GDProcNode::_register_methods() {
 	register_method("get_type_name", &GDProcNode::get_type_name);
+	register_method("get_description", &GDProcNode::get_description);
 	register_method("_touch", &GDProcNode::_touch);
 	
 	// position
@@ -56,6 +57,10 @@ void GDProcNode::set_status(GDProcNode::ProcessStatus p_status) {
 
 String GDProcNode::get_type_name() {
 	return String("Node");
+}
+
+String GDProcNode::get_description() const {
+	return "No Description Available";
 }
 
 void GDProcNode::set_node_name(const String p_node_name) {

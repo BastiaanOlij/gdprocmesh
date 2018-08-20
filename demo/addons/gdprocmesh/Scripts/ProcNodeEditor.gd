@@ -45,6 +45,7 @@ func set_proc_node(p_proc_mesh, p_node_id):
 	set_offset(node.position)
 	set_title(node.get_type_name())
 	set_name(String(p_node_id))
+	hint_tooltip = node.get_description()
 	
 	# copy our name
 	$Name_Container/Name_Edit.set_text(node.get_node_name())

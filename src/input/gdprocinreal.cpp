@@ -9,6 +9,10 @@ String GDProcInReal::get_type_name() {
 	return "Input Real";
 }
 
+String GDProcInReal::get_description() const {
+	return "Allows you to specify a real as input for the procedural mesh.\n Can be set from the editor.";
+}
+
 void GDProcInReal::_init() {
 	// first call super class
 	GDProcNode::_init();

@@ -12,6 +12,10 @@ String GDProcTransform::get_type_name() {
 	return "Transform";
 }
 
+String GDProcTransform::get_description() const {
+	return "Transforms the surface by the given translation, rotation and scale.";
+}
+
 void GDProcTransform::_init() {
 	// first call super class
 	GDProcNode::_init();
