@@ -16,6 +16,8 @@ func _get_type_color(p_type):
 		return Color("#c4780c")
 	elif p_type == TYPE_VECTOR3:
 		return Color("#1e8a76")
+	elif p_type == TYPE_STRING:
+		return Color("#107dcc")
 	elif p_type == TYPE_VECTOR3_ARRAY:
 		return Color("#d67dee")
 	elif p_type == TYPE_VECTOR2_ARRAY:
@@ -110,6 +112,14 @@ func set_proc_node(p_proc_mesh, p_node_id):
 					prop_arr.push_back(prop_field)
 					prop_field.vector = prop_value
 					prop_field.connect("changed_vector", self, "_set_node_property", prop_arr)
+				elif prop_type == TYPE_STRING:
+					prop_field = LineEdit.new()
+					prop_arr.push_back(prop_field)
+					prop_field.set_text(prop_value)
+					#prop_field.align = LineEdit.ALIGN_RIGHT
+					prop_field.connect("text_entered", self, "_set_node_property", prop_arr)
+					prop_field.connect("focus_exited", self, "_exit_node_property", prop_arr)
+					prop_field.rect_min_size = Vector2(150.0, 0.0)
 				
 				if prop_field:
 					hb.add_child(prop_field)
@@ -146,6 +156,8 @@ func _set_node_property(p_value, p_property, p_field):
 			p_field.set_text("%0.3f" % prop_value)
 		elif prop_type == TYPE_BOOL:
 			p_field.pressed = prop_value
+		elif prop_type == TYPE_STRING:
+			p_field.set_text(prop_value)
 
 func _exit_node_property(p_property, p_field):
 	var value = p_field.text

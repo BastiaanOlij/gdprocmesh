@@ -104,6 +104,7 @@ func _ready():
 	_add_node_class("Primitives/Euler angles", "GDProcEuler")
 	_add_node_class("Primitives/Random", "GDProcRandom")
 	_add_node_class("Primitives/Vector", "GDProcVector")
+	_add_node_class("Primitives/Execute", "GDProcExec")
 
 	# transforms (work on primitives)
 	_add_node_class("Transforms/Bevel", "GDProcBevel")
