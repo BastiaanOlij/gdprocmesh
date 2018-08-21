@@ -34,13 +34,12 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-right_disconnects = false
+right_disconnects = true
 scroll_offset = Vector2( 0, 0 )
 snap_distance = 20
 use_snap = true
 zoom = 1.0
-_sections_unfolded = [ "Size Flags" ]
 
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_GraphEdit_connection_request"]
-[connection signal="connection_to_empty" from="GraphEdit" to="." method="_on_GraphEdit_connection_to_empty"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_GraphEdit_disconnection_request"]
+[connection signal="popup_request" from="GraphEdit" to="." method="_on_GraphEdit_popup_request"]

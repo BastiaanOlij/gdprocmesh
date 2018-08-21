@@ -6,7 +6,7 @@ signal changed_vector(new_vector)
 
 func set_vector(new_vector):
 	vector = new_vector
-	if $X:
+	if has_node("X"):
 		$X.text = "%0.3f" % vector.x
 		$Y.text = "%0.3f" % vector.y
 		$Z.text = "%0.3f" % vector.z
