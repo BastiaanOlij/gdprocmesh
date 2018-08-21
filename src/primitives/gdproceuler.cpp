@@ -12,6 +12,10 @@ String GDProcEuler::get_type_name() {
 	return "Euler angles";
 }
 
+String GDProcEuler::get_description() const {
+	return "Helper node to combine a rotation around the x, y and z axis (euler angles) into a quarternion.";
+}
+
 void GDProcEuler::_init() {
 	// first call super class
 	GDProcNode::_init();

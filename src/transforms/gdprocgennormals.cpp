@@ -10,7 +10,13 @@ String GDProcGenNormals::get_type_name() {
 	return "Generate normals";
 }
 
+String GDProcGenNormals::get_description() const {
+	return "Creates an array of normals by taking the average normal of each face a vertice is part of.";
+}
+
 void GDProcGenNormals::_init() {
+	// first call super class
+	GDProcNode::_init();
 
 }
 

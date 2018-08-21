@@ -58,6 +58,30 @@ If you want to use this for your own projects, simply copy the addons folder int
 Now create a ```MeshInstance``` and create an ```ArrayMesh``` for this node. You can now drag the gdprocmesh.gdns file into the script property of the ArrayMesh. This will create a simple box as a starting template.
 Simply re-select the ArrayMesh in the property manager and you'll see that you're given a new graph editor.
 
+Everything is an array
+======================
+Well, almost everything. Most nodes are designed to take arrays as input and you can do some funky things with this. 
+
+For instance, on face value GDProcScale will scale an array of vertices. So your input is an array of vertices, you specify a vertex by which to scale this input, and your output results in an array of vertices that have been scaled according to the 2nd input.
+However the 2nd input can be an array too. Let's say you input 5 vertices with 3 scales:
+Vertice 1 will be scaled by the first scale
+Vertice 2 will be scaled by the second scale
+Vertice 3 will be scaled by the third scale
+Vertice 4 will be scaled by the first scale
+Vertice 5 will be scaled by the second scale
+So the scales are applied in order and it simply repeats the pattern until all vertices are scaled.
+
+Many of the nodes work in this way where the different input arrays are combined to create the output. 
+
+Similarly primitives like the vector and euler nodes will output arrays if the input is an array of value.
+
+Rotation
+========
+To rotate elements of your mesh there are various nodes that take a rotation as input. The current input options all center around euler angles but internally these are converted to quaternions.
+Due to lacking a quaternion array construct we're using a vec3 array and passing uniform quaternions around where w is assumed to be sqrt(1.0 - (x² + y² + z²)).
+It is then these quaternions that are passed from node to node.
+Additional nodes will be added in the near future that will allow you to construct rotations on other inputs like a rotation around an axis.
+
 License
 =======
 I've made the source in this repository available under an MIT license. If you find it useful, it would always be nice to get a mention.

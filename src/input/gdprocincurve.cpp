@@ -11,7 +11,7 @@ String GDProcInCurve::get_type_name() {
 }
 
 String GDProcInCurve::get_description() const {
-	return "Allows you to specify a Curve3D as input for the procedural mesh.\n Can be set from the editor.";
+	return "Allows you to specify a Curve3D as input for the procedural mesh.\nCan be set from the editor.\nOutputs vertices at the baked interval.";
 }
 
 void GDProcInCurve::_init() {

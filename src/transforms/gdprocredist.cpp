@@ -11,6 +11,10 @@ String GDProcRedist::get_type_name() {
 	return "Redistribute";
 }
 
+String GDProcRedist::get_description() const {
+	return "This node creates an array of vertices by following the path set out by the input array and taking a sample according to the strafe settings.";
+}
+
 void GDProcRedist::_init() {
 	// first call super class
 	GDProcNode::_init();

@@ -9,10 +9,13 @@ String GDProcPlaceOnPath::get_type_name() {
 	return "Place on path";
 }
 
+String GDProcPlaceOnPath::get_description() const {
+	return "Places a copy of the surface at the given rotation(s), translation(s) and scale(s).";
+}
+
 void GDProcPlaceOnPath::_init() {
 	// first call super class
 	GDProcNode::_init();
-
 }
 
 bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {

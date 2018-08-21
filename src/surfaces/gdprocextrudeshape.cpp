@@ -11,6 +11,10 @@ String GDProcExtrudeShape::get_type_name() {
 	return String("Extrude Shape");
 }
 
+String GDProcExtrudeShape::get_description() const {
+	return "Extrudes a 2D shape along a given path.\nEach slice will orientate itself along the slopes of the path.";
+}
+
 void GDProcExtrudeShape::_init() {
 	// first call super class
 	GDProcNode::_init();

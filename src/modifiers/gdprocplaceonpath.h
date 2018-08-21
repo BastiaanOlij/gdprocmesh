@@ -17,6 +17,7 @@ public:
 	virtual String get_type_name();
 
 	void _init();
+	virtual String get_description() const;
 
 	// properties
 

@@ -10,6 +10,10 @@ String GDProcSurface::get_type_name() {
 	return String("Surface");
 }
 
+String GDProcSurface::get_description() const {
+	return "Combines an array of vertices, normals, tangents, uvs, bones, weights and indices into a 3D surface.\nVertices and indices are mandatory, other arrays are optional.";
+}
+
 void GDProcSurface::_init() {
 	// first call super class
 	GDProcNode::_init();

@@ -12,6 +12,10 @@ String GDProcBevel::get_type_name() {
 	return "Bevel";
 }
 
+String GDProcBevel::get_description() const {
+	return "Bevels a 2D path to round each corner.";
+}
+
 void GDProcBevel::_init() {
 	// first call super class
 	GDProcNode::_init();
