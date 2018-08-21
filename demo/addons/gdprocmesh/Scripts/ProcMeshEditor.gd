@@ -111,6 +111,7 @@ func _ready():
 	_add_node_class("Transforms/Bevel", "GDProcBevel")
 	_add_node_class("Transforms/Division", "GDProcDiv")
 	_add_node_class("Transforms/Generate normals", "GDProcGenNormals")
+	_add_node_class("Transforms/Raycast", "GDProcRaycast")
 	_add_node_class("Transforms/Redistribute", "GDProcRedist")
 	_add_node_class("Transforms/Multiply", "GDProcMult")
 	_add_node_class("Transforms/Rotate", "GDProcRotate")
