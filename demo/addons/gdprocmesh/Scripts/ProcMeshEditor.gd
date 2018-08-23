@@ -106,6 +106,7 @@ func _ready():
 	_add_node_class("Primitives/Vector", "GDProcVector")
 
 	# transforms (work on primitives)
+	_add_node_class("Transforms/Add", "GDProcAdd")
 	_add_node_class("Transforms/Bevel", "GDProcBevel")
 	_add_node_class("Transforms/Division", "GDProcDiv")
 	_add_node_class("Transforms/Generate normals", "GDProcGenNormals")
@@ -113,6 +114,7 @@ func _ready():
 	_add_node_class("Transforms/Multiply", "GDProcMult")
 	_add_node_class("Transforms/Rotate", "GDProcRotate")
 	_add_node_class("Transforms/Scale", "GDProcScale")
+	_add_node_class("Transforms/Subtract", "GDProcSub")
 	_add_node_class("Transforms/Translate", "GDProcTranslate")
 
 	# shapes

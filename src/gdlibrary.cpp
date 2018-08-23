@@ -14,6 +14,7 @@
 #include "primitives/gdprocrandom.h"
 #include "primitives/gdprocvector.h"
 
+#include "transforms/gdprocadd.h"
 #include "transforms/gdprocbevel.h"
 #include "transforms/gdprocdiv.h"
 #include "transforms/gdprocgennormals.h"
@@ -21,6 +22,7 @@
 #include "transforms/gdprocredist.h"
 #include "transforms/gdprocrotate.h"
 #include "transforms/gdprocscale.h"
+#include "transforms/gdprocsub.h"
 #include "transforms/gdproctranslate.h"
 
 #include "shapes/gdprocbox.h"
@@ -68,6 +70,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcVector>();
 
 	// transforms (work on primitives)
+	godot::register_tool_class<godot::GDProcAdd>();
 	godot::register_tool_class<godot::GDProcBevel>();
 	godot::register_tool_class<godot::GDProcDiv>();
 	godot::register_tool_class<godot::GDProcGenNormals>();
@@ -75,6 +78,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcRedist>();
 	godot::register_tool_class<godot::GDProcRotate>();
 	godot::register_tool_class<godot::GDProcScale>();
+	godot::register_tool_class<godot::GDProcSub>();
 	godot::register_tool_class<godot::GDProcTranslate>();
 
 	// shapes
