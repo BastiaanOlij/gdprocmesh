@@ -81,6 +81,9 @@ func _add_node_class(p_name, p_class):
 	
 
 func _ready():
+	$GraphEdit.add_valid_connection_type(TYPE_REAL_ARRAY, TYPE_INT_ARRAY)
+	$GraphEdit.add_valid_connection_type(TYPE_INT_ARRAY, TYPE_REAL_ARRAY)
+	
 	# create our add node button
 	var add_button = MenuButton.new()
 	add_button.text = "Add node..."
