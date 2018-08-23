@@ -14,6 +14,7 @@
 #include "primitives/gdprocrandom.h"
 #include "primitives/gdprocvector.h"
 #include "primitives/gdprocexec.h"
+#include "primitives/gdprocsplitvector.h"
 
 #include "transforms/gdprocadd.h"
 #include "transforms/gdprocbevel.h"
@@ -70,6 +71,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcRandom>();
 	godot::register_tool_class<godot::GDProcVector>();
 	godot::register_tool_class<godot::GDProcExec>();
+	godot::register_tool_class<godot::GDProcSplitVector>();
 
 	// transforms (work on primitives)
 	godot::register_tool_class<godot::GDProcAdd>();

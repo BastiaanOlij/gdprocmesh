@@ -9,7 +9,7 @@ void GDProcVector::_register_methods() {
 }
 
 String GDProcVector::get_type_name() {
-	return "Vectors";
+	return "Vector Combine";
 }
 
 String GDProcVector::get_description() const {
