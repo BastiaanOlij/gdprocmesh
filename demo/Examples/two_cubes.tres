@@ -1,0 +1,275 @@
+[gd_resource type="ArrayMesh" load_steps=23 format=2]
+
+[ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdnlib" type="GDNativeLibrary" id=1]
+[ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdns" type="Script" id=2]
+[ext_resource path="res://Textures/Cube_6.PNG" type="Texture" id=3]
+[ext_resource path="res://Textures/NormalMap_6.png" type="Texture" id=4]
+
+[sub_resource type="NativeScript" id=1]
+
+class_name = "GDProcInVector"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=2]
+
+resource_name = "TestInput"
+script = SubResource( 1 )
+position = Vector2( 500, -280 )
+node_name = "MyFirstInput"
+hide_input = false
+
+[sub_resource type="NativeScript" id=3]
+
+class_name = "GDProcInReal"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=4]
+
+script = SubResource( 3 )
+position = Vector2( 380, 80 )
+node_name = "X2"
+hide_input = false
+
+[sub_resource type="NativeScript" id=5]
+
+class_name = "GDProcTransform"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=6]
+
+script = SubResource( 5 )
+position = Vector2( 1020, -260 )
+node_name = "Transform"
+hide_input = false
+rotation = Vector3( 0, 0, 0 )
+translation = Vector3( 0, 0, 0 )
+scale = Vector3( 1, 1, 1 )
+
+[sub_resource type="NativeScript" id=7]
+
+class_name = "GDProcTransform"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=8]
+
+script = SubResource( 7 )
+position = Vector2( 1020, 180 )
+node_name = "Transform_1"
+hide_input = false
+rotation = Vector3( 0, 0, 0 )
+translation = Vector3( 0, 0, 0 )
+scale = Vector3( 1, 1, 1 )
+
+[sub_resource type="NativeScript" id=9]
+
+class_name = "GDProcVector"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=10]
+
+script = SubResource( 9 )
+position = Vector2( 700, 200 )
+node_name = "Vectors"
+hide_input = false
+x = 0.0
+y = 0.0
+z = 0.0
+
+[sub_resource type="NativeScript" id=11]
+
+class_name = "GDProcBox"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=12]
+
+script = SubResource( 11 )
+position = Vector2( 500, -100 )
+node_name = "Box"
+hide_input = false
+width = 1.0
+height = 1.0
+depth = 1.0
+
+[sub_resource type="NativeScript" id=13]
+
+class_name = "GDProcOutput"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=14]
+
+script = SubResource( 13 )
+position = Vector2( 1380, -260 )
+node_name = "Output_1"
+hide_input = false
+
+[sub_resource type="NativeScript" id=15]
+
+class_name = "GDProcOutput"
+library = ExtResource( 1 )
+
+[sub_resource type="Resource" id=16]
+
+script = SubResource( 15 )
+position = Vector2( 1380, 180 )
+node_name = "Output_2"
+hide_input = false
+
+[sub_resource type="SpatialMaterial" id=17]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
+flags_disable_ambient_light = false
+flags_ensure_correct_normals = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_billboard_keep_scale = false
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 0.737255, 0.2, 0.2, 1 )
+metallic = 0.5
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 0.57
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_mode = 0
+_sections_unfolded = [ "Albedo", "Flags", "Metallic", "Parameters", "Roughness" ]
+
+[sub_resource type="SpatialMaterial" id=18]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
+flags_disable_ambient_light = false
+flags_ensure_correct_normals = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_billboard_keep_scale = false
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 1, 1, 1, 1 )
+albedo_texture = ExtResource( 3 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 1.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 4 )
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_mode = 0
+_sections_unfolded = [ "Albedo", "Normal Map" ]
+
+[resource]
+
+blend_shape_mode = 0
+custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+surfaces/0 = {
+"aabb": AABB( 1.5, -0.5, -0.5, 1, 1.00001, 1.00001 ),
+"array_data": PoolByteArray( 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 0, 0, 0, 0, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 85, 53, 0, 0, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 85, 53, 0, 56, 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 0, 0, 0, 56, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 85, 57, 0, 0, 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 0, 60, 0, 0, 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 0, 60, 0, 56, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 85, 57, 0, 56, 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 191, 129, 0, 0, 0, 0, 0, 127, 129, 0, 0, 0, 56, 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 63, 129, 0, 0, 0, 0, 0, 127, 129, 85, 53, 0, 56, 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 63, 129, 0, 0, 0, 0, 0, 127, 129, 85, 53, 0, 60, 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 191, 129, 0, 0, 0, 0, 0, 127, 129, 0, 0, 0, 60, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 63, 127, 0, 0, 0, 0, 0, 129, 129, 85, 53, 0, 0, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 191, 127, 0, 0, 0, 0, 0, 129, 129, 85, 57, 0, 0, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 191, 127, 0, 0, 0, 0, 0, 129, 129, 85, 57, 0, 56, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 63, 127, 0, 0, 0, 0, 0, 129, 129, 85, 53, 0, 56, 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 191, 0, 127, 0, 0, 127, 0, 0, 129, 85, 53, 0, 56, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 191, 0, 127, 0, 0, 127, 0, 0, 129, 85, 57, 0, 56, 0, 0, 32, 64, 0, 0, 0, 63, 0, 0, 0, 63, 0, 127, 0, 0, 127, 0, 0, 129, 85, 57, 0, 60, 0, 0, 192, 63, 0, 0, 0, 63, 0, 0, 0, 63, 0, 127, 0, 0, 127, 0, 0, 129, 85, 53, 0, 60, 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 63, 0, 129, 0, 0, 127, 0, 0, 129, 85, 57, 0, 56, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 63, 0, 129, 0, 0, 127, 0, 0, 129, 0, 60, 0, 56, 0, 0, 32, 64, 0, 0, 0, 191, 0, 0, 0, 191, 0, 129, 0, 0, 127, 0, 0, 129, 0, 60, 0, 60, 0, 0, 192, 63, 0, 0, 0, 191, 0, 0, 0, 191, 0, 129, 0, 0, 127, 0, 0, 129, 85, 57, 0, 60 ),
+"array_index_data": PoolByteArray( 0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 8, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 12, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 16, 0, 18, 0, 19, 0, 20, 0, 21, 0, 22, 0, 20, 0, 22, 0, 23, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 36,
+"material": SubResource( 17 ),
+"name": "Output_1",
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 24
+}
+surfaces/1 = {
+"aabb": AABB( -2.5, -0.5, -0.5, 1, 1.00001, 1.00001 ),
+"array_data": PoolByteArray( 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 0, 0, 0, 0, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 85, 53, 0, 0, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 85, 53, 0, 56, 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 127, 0, 127, 0, 0, 129, 0, 0, 0, 56, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 85, 57, 0, 0, 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 0, 60, 0, 0, 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 0, 60, 0, 56, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 129, 0, 129, 0, 0, 129, 85, 57, 0, 56, 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 191, 129, 0, 0, 0, 0, 0, 127, 129, 0, 0, 0, 56, 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 63, 129, 0, 0, 0, 0, 0, 127, 129, 85, 53, 0, 56, 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 63, 129, 0, 0, 0, 0, 0, 127, 129, 85, 53, 0, 60, 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 191, 129, 0, 0, 0, 0, 0, 127, 129, 0, 0, 0, 60, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 63, 127, 0, 0, 0, 0, 0, 129, 129, 85, 53, 0, 0, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 191, 127, 0, 0, 0, 0, 0, 129, 129, 85, 57, 0, 0, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 191, 127, 0, 0, 0, 0, 0, 129, 129, 85, 57, 0, 56, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 63, 127, 0, 0, 0, 0, 0, 129, 129, 85, 53, 0, 56, 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 191, 0, 127, 0, 0, 127, 0, 0, 129, 85, 53, 0, 56, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 191, 0, 127, 0, 0, 127, 0, 0, 129, 85, 57, 0, 56, 0, 0, 192, 191, 0, 0, 0, 63, 0, 0, 0, 63, 0, 127, 0, 0, 127, 0, 0, 129, 85, 57, 0, 60, 0, 0, 32, 192, 0, 0, 0, 63, 0, 0, 0, 63, 0, 127, 0, 0, 127, 0, 0, 129, 85, 53, 0, 60, 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 63, 0, 129, 0, 0, 127, 0, 0, 129, 85, 57, 0, 56, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 63, 0, 129, 0, 0, 127, 0, 0, 129, 0, 60, 0, 56, 0, 0, 192, 191, 0, 0, 0, 191, 0, 0, 0, 191, 0, 129, 0, 0, 127, 0, 0, 129, 0, 60, 0, 60, 0, 0, 32, 192, 0, 0, 0, 191, 0, 0, 0, 191, 0, 129, 0, 0, 127, 0, 0, 129, 85, 57, 0, 60 ),
+"array_index_data": PoolByteArray( 0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 8, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 12, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 16, 0, 18, 0, 19, 0, 20, 0, 21, 0, 22, 0, 20, 0, 22, 0, 23, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 36,
+"material": SubResource( 18 ),
+"name": "Output_2",
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 24
+}
+script = ExtResource( 2 )
+_sections_unfolded = [ "Inputs", "Script", "Surface 1", "Surface 2" ]
+nodes/3 = SubResource( 12 )
+nodes/7 = SubResource( 14 )
+nodes/8 = SubResource( 16 )
+nodes/10 = SubResource( 2 )
+nodes/11 = SubResource( 4 )
+nodes/13 = SubResource( 6 )
+nodes/14 = SubResource( 8 )
+nodes/15 = SubResource( 10 )
+graph/connections = PoolIntArray( 7, 0, 13, 0, 13, 2, 10, 0, 8, 0, 14, 0, 14, 2, 15, 0, 15, 0, 11, 0, 13, 0, 3, 0, 14, 0, 3, 0 )
+inputs/MyFirstInput = Vector3( 2, 0, 0 )
+inputs/X2 = -2.0
+
