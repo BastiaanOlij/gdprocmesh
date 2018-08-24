@@ -103,6 +103,7 @@ func _ready():
 	_add_node_class("Primitives/Count", "GDProcCount")
 	_add_node_class("Primitives/Euler angles", "GDProcEuler")
 	_add_node_class("Primitives/Random", "GDProcRandom")
+	_add_node_class("Primitives/Split Vector", "GDProcSplitVector")
 	_add_node_class("Primitives/Vector", "GDProcVector")
 	_add_node_class("Primitives/Execute", "GDProcExec")
 
