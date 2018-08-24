@@ -21,6 +21,7 @@
 #include "transforms/gdprocdiv.h"
 #include "transforms/gdprocgennormals.h"
 #include "transforms/gdprocmult.h"
+#include "transforms/gdprocraycast.h"
 #include "transforms/gdprocredist.h"
 #include "transforms/gdprocrotate.h"
 #include "transforms/gdprocscale.h"
@@ -79,6 +80,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	godot::register_tool_class<godot::GDProcDiv>();
 	godot::register_tool_class<godot::GDProcGenNormals>();
 	godot::register_tool_class<godot::GDProcMult>();
+	godot::register_tool_class<godot::GDProcRaycast>();
 	godot::register_tool_class<godot::GDProcRedist>();
 	godot::register_tool_class<godot::GDProcRotate>();
 	godot::register_tool_class<godot::GDProcScale>();

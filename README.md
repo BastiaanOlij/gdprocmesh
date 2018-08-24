@@ -88,7 +88,7 @@ I've made the source in this repository available under an MIT license. If you f
 
 Note that for the demo:
 - HRDI texture is from [HDRI Haven](https://hdrihaven.com)
-- Rope and plank texture is from [CC0 Textures.com](https://cc0textures.com)
+- Various textures are from [CC0 Textures.com](https://cc0textures.com)
 - Not sure where the numbered textures came from
 Please visit these sites for further license details
 
