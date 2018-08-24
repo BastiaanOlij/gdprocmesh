@@ -527,7 +527,41 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 						}
 
 						// and get our output
-						inputs.push_back(output_node->get_output(c.connector));
+						Variant output = output_node->get_output(c.connector);
+
+						// Do automatic conversions of outputs if necessary
+						Variant::Type output_type = output_node->get_output_connector_type(c.connector);
+						Variant::Type input_type = p_node->get_input_connector_type(i);
+						if (output_type == Variant::POOL_REAL_ARRAY && input_type == Variant::POOL_INT_ARRAY) {
+							PoolRealArray reals = output;
+							PoolRealArray::Read read = reals.read();
+							PoolIntArray integers;
+							integers.resize(reals.size());
+							PoolIntArray::Write write = integers.write();
+							for (int i_convert = 0; i_convert < reals.size(); i_convert++) {
+								write[i_convert] = (int)read[i_convert];
+							}
+							output = integers;
+						} else if (output_type == Variant::POOL_INT_ARRAY && input_type == Variant::POOL_REAL_ARRAY) {
+							PoolIntArray integers = output;
+							PoolIntArray::Read read = integers.read();
+							PoolRealArray reals;
+							reals.resize(integers.size());
+							PoolRealArray::Write write = reals.write();
+							for (int i_convert = 0; i_convert < integers.size(); i_convert++) {
+								write[i_convert] = (real_t)read[i_convert];
+							}
+							output = reals;
+						} else if (output_type != input_type) {
+							// In this case we have a problem
+							Godot::print_warning(String("Output type ({0}) and input type ({1}) do not match.\n"
+									"Error: Bad Connection - Node {2} : Connector {3} --> Node {4} : Connector {5}")
+									.format(Array::make(output_type, input_type, output_node->get_node_name(),
+									c.connector, p_node->get_node_name(), i)), __FUNCTION__, __FILE__, __LINE__);
+							output = Variant();
+						}
+
+						inputs.push_back(output);
 					}
 				}
 			}
