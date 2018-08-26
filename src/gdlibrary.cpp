@@ -29,6 +29,7 @@
 
 #include "shapes/gdprocbox.h"
 #include "shapes/gdproccircle.h"
+#include "shapes/gdprocline.h"
 #include "shapes/gdprocrect.h"
 
 #include "surfaces/gdprocextrudeshape.h"
@@ -88,6 +89,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	// shapes
 	godot::register_tool_class<godot::GDProcBox>();
 	godot::register_tool_class<godot::GDProcCircle>();
+	godot::register_tool_class<godot::GDProcLine>();
 	godot::register_tool_class<godot::GDProcRect>();
 
 	// surfaces

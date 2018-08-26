@@ -135,7 +135,7 @@ Variant::Type GDProcRect::get_output_connector_type(int p_slot) const {
 const String GDProcRect::get_output_connector_name(int p_slot) const {
 	switch (p_slot) {
 		case 0:
-			return "vectors";
+			return "vertices";
 		default:
 			return "???";
 	}

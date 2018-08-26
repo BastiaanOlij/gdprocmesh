@@ -125,6 +125,7 @@ func _ready():
 	# shapes
 	_add_node_class("Shapes/Box", "GDProcBox")
 	_add_node_class("Shapes/Circle", "GDProcCircle")
+	_add_node_class("Shapes/Line", "GDProcLine")
 	_add_node_class("Shapes/Rectangle", "GDProcRect")
 
 	# Surface
