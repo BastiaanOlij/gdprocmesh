@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Examples/two_cubes.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Examples/test_extrude.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Examples/rope_bridge.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Examples/building.tscn" type="PackedScene" id=5]
 
 [node name="Main" type="Spatial"]
 script = ExtResource( 1 )
@@ -19,6 +20,9 @@ _sections_unfolded = [ "Script", "Transform" ]
 [node name="Rope bridge" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="Building" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8698, 0, 0 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.34401 )

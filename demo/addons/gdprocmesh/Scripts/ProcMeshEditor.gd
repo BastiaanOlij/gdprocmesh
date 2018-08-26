@@ -98,6 +98,7 @@ func _ready():
 	# inputs
 	_add_node_class("Inputs/Input Curve", "GDProcInCurve")
 	_add_node_class("Inputs/Input Int", "GDProcInInt")
+	_add_node_class("Inputs/Input Mesh", "GDProcInMesh")
 	_add_node_class("Inputs/Input Vectors", "GDProcInPoolVectors")
 	_add_node_class("Inputs/Input Real", "GDProcInReal")
 	_add_node_class("Inputs/Input Vector", "GDProcInVector")

@@ -5,6 +5,7 @@
 
 #include "input/gdprocincurve.h"
 #include "input/gdprocinint.h"
+#include "input/gdprocinmesh.h"
 #include "input/gdprocinpoolvectors.h"
 #include "input/gdprocinreal.h"
 #include "input/gdprocinvector.h"
@@ -62,6 +63,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	// inputs
 	godot::register_tool_class<godot::GDProcInCurve>();
 	godot::register_tool_class<godot::GDProcInInt>();
+	godot::register_tool_class<godot::GDProcInMesh>();
 	godot::register_tool_class<godot::GDProcInPoolVectors>();
 	godot::register_tool_class<godot::GDProcInReal>();
 	godot::register_tool_class<godot::GDProcInVector>();
