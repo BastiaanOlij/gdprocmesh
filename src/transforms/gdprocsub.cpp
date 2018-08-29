@@ -74,7 +74,7 @@ bool GDProcSub::update(bool p_inputs_updated, const Array &p_inputs) {
 			PoolRealArray::Read s = subs.read();
 
 			for (int i = 0; i < new_size; i++) {
-				w[i] = r[i % num_values] / s[i % num_subs];
+				w[i] = r[i % num_values] - s[i % num_subs];
 			}
 
 		} else {
