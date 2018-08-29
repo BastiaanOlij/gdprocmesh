@@ -129,10 +129,18 @@ bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolVector3Array input = input_surface[ArrayMesh::ARRAY_NORMAL];
 				PoolVector3Array output;
 
-				// printf("Duplicating normals %i times\n", copies);
+				int n = 0;
+				int size = input.size();
+				output.resize(size * copies);
+
+				PoolVector3Array::Write w = output.write();
+				PoolVector3Array::Read r = input.read();
 
 				for (int copy = 0; copy < copies; copy++) {
-					output.append_array(input);
+					Basis rotation = rots[copy % num_rotations];
+					for(int i = 0; i < size; i++) {
+						w[n++] = rotation.xform(r[i]);
+					}
 				}
 
 				surface_arr[ArrayMesh::ARRAY_NORMAL] = output;
@@ -145,10 +153,23 @@ bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolRealArray input = input_surface[ArrayMesh::ARRAY_TANGENT];
 				PoolRealArray output;
 
-				// printf("Duplicating tangents %i times\n", copies);
+				int n = 0;
+				int size = input.size();
+				output.resize(size * copies);
+
+				PoolRealArray::Write w = output.write();
+				PoolRealArray::Read r = input.read();
 
 				for (int copy = 0; copy < copies; copy++) {
-					output.append_array(input);
+					Basis rotation = rots[copy % num_rotations];
+					for(int i = 0; i < size; i+= 4) {
+						Vector3 v(r[i], r[i+1], r[i+2]);
+						v = rotation.xform(v);
+						w[n++] = v.x;
+						w[n++] = v.y;
+						w[n++] = v.z;
+						w[n++] = r[i+3]; // no need to update this...
+					}
 				}
 
 				surface_arr[ArrayMesh::ARRAY_TANGENT] = output;

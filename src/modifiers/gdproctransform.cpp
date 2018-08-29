@@ -69,6 +69,10 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 	if (updated) {
 		int num_vectors = 0;
 		PoolVector3Array input_vectors;
+		int num_normals = 0;
+		PoolVector3Array input_normals;
+		int num_tangents = 0;
+		PoolRealArray input_tangents;
 		int num_rotations = 0;
 		PoolVector3Array rotations;
 		int num_translations = 0;
@@ -88,10 +92,12 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 					// we're going to process our vectors
 					input_vectors = surface[ArrayMesh::ARRAY_VERTEX];
 					num_vectors = input_vectors.size();
+					input_normals = surface[ArrayMesh::ARRAY_NORMAL];
+					num_normals = input_normals.size();
+					input_tangents = surface[ArrayMesh::ARRAY_TANGENT];
+					num_tangents = input_tangents.size();
 
 					// and just copy the rest
-					surface_arr[ArrayMesh::ARRAY_NORMAL] = surface[ArrayMesh::ARRAY_NORMAL];
-					surface_arr[ArrayMesh::ARRAY_TANGENT] = surface[ArrayMesh::ARRAY_TANGENT];
 					surface_arr[ArrayMesh::ARRAY_COLOR] = surface[ArrayMesh::ARRAY_COLOR];
 					surface_arr[ArrayMesh::ARRAY_TEX_UV] = surface[ArrayMesh::ARRAY_TEX_UV];
 					surface_arr[ArrayMesh::ARRAY_TEX_UV2] = surface[ArrayMesh::ARRAY_TEX_UV2];
@@ -139,35 +145,72 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 			num_scales++;
 		}
 
+		// Convert my quarternion array so we don't keep doing a square root
+		PoolVector3Array::Read q = rotations.read();
+		Basis *rots = (Basis *)api->godot_alloc(sizeof(Basis) * num_rotations);
+		for (int i = 0; i < num_rotations; i++) {
+			Vector3 rot = q[i];
+			Quat quat(rot.x, rot.y, rot.z, (float) sqrt(1.0 - (rot.x * rot.x + rot.y * rot.y + rot.z * rot.z)));
+
+			// convert to basis, I had problems with quat.xform...
+			rots[i] = Basis(quat);
+		}
+
+		// Lock our inputs for reading
+		PoolVector3Array::Read t = translations.read();
+		PoolVector3Array::Read s = scales.read();
+
 		if (num_vectors > 0) {
 			PoolVector3Array vectors;
 			vectors.resize(num_vectors);
 
-			// Convert my quarternion array so we don't keep doing a square root
-			PoolVector3Array::Read q = rotations.read();
-			Basis *rots = (Basis *)api->godot_alloc(sizeof(Basis) * num_rotations);
-			for (int i = 0; i < num_rotations; i++) {
-				Vector3 rot = q[i];
-				Quat quat(rot.x, rot.y, rot.z, (float) sqrt(1.0 - (rot.x * rot.x + rot.y * rot.y + rot.z * rot.z)));
-
-				// convert to basis, I had problems with quat.xform...
-				rots[i] = Basis(quat);
-			}
-
 			PoolVector3Array::Write w = vectors.write();
 			PoolVector3Array::Read r = input_vectors.read();
-			PoolVector3Array::Read t = translations.read();
-			PoolVector3Array::Read s = scales.read();
 
 			for (int i = 0; i < num_vectors; i++) {
 				w[i] = (rots[i % num_rotations].xform(r[i]) * s[i % num_scales]) + t[i % num_translations];
 			}
 
-			// free 
-			api->godot_free(rots);
-
 			surface_arr[ArrayMesh::ARRAY_VERTEX] = vectors;
 		}
+
+		if (num_normals > 0) {
+			PoolVector3Array normals;
+			normals.resize(num_normals);
+
+			PoolVector3Array::Write w = normals.write();
+			PoolVector3Array::Read r = input_normals.read();
+
+			for (int i = 0; i < num_normals; i++) {
+				w[i] = rots[i % num_rotations].xform(r[i]);
+			}
+
+			surface_arr[ArrayMesh::ARRAY_NORMAL] = normals;
+		}
+
+		if (num_tangents > 0) {
+			int j = 0;
+			PoolRealArray tangents;
+			tangents.resize(num_tangents);
+
+			PoolRealArray::Write w = tangents.write();
+			PoolRealArray::Read r = input_tangents.read();
+
+			for (int i = 0; i < num_tangents; i+= 4) {
+				Vector3 v(r[i], r[i+1], r[i+2]);
+				v = rots[j % num_rotations].xform(v);
+				w[i] = v.x;
+				w[i+1] = v.y;
+				w[i+2] = v.z;
+				w[i+3] = r[i+3]; // no need to update this...
+				j++;
+			}
+
+			surface_arr[ArrayMesh::ARRAY_TANGENT] = tangents;
+		}
+
+		// free 
+		api->godot_free(rots);
 	}
 
 	return updated;

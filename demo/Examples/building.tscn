@@ -16,4 +16,6 @@ lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
 skeleton = NodePath("..")
 material/0 = null
+material/1 = null
+_sections_unfolded = [ "material" ]
 
