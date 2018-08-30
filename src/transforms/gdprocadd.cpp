@@ -74,7 +74,7 @@ bool GDProcAdd::update(bool p_inputs_updated, const Array &p_inputs) {
 			PoolRealArray::Read a = adds.read();
 
 			for (int i = 0; i < new_size; i++) {
-				w[i] = r[i % num_values] * a[i % num_adds];
+				w[i] = r[i % num_values] + a[i % num_adds];
 			}
 
 		} else {

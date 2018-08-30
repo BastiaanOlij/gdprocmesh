@@ -17,5 +17,6 @@ mesh = ExtResource( 1 )
 skeleton = NodePath("..")
 material/0 = null
 material/1 = null
+material/2 = null
 _sections_unfolded = [ "material" ]
 
