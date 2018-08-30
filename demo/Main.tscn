@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Examples/two_cubes.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Examples/test_extrude.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Examples/rope_bridge.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Examples/building.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Examples/Ground.tscn" type="PackedScene" id=6]
 
 [node name="Main" type="Spatial"]
 script = ExtResource( 1 )
@@ -24,7 +25,9 @@ _sections_unfolded = [ "Transform" ]
 [node name="Building" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8698, 0, 0 )
 
-[node name="Camera" type="Camera" parent="."]
+[node name="Setup" type="Spatial" parent="."]
+
+[node name="Camera" type="Camera" parent="Setup"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.34401 )
 keep_aspect = 1
 cull_mask = 1048575
@@ -39,7 +42,7 @@ size = 1.0
 near = 0.05
 far = 100.0
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
+[node name="DirectionalLight" type="DirectionalLight" parent="Setup"]
 transform = Transform( 0.75697, 0.468968, -0.455045, -0.179643, 0.818892, 0.54511, 0.628271, -0.330886, 0.704123, 0, 6.46809, 0 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
@@ -65,4 +68,6 @@ directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Light", "Script", "Shadow", "Transform", "script" ]
+
+[node name="Ground" parent="Setup" instance=ExtResource( 6 )]
 
