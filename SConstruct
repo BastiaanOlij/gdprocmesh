@@ -1,5 +1,5 @@
 #!python
-import os, subprocess
+import os, subprocess, sys
 
 target_path = 'demo/addons/gdprocmesh/bin/'
 target_name = 'libgdprocmesh'
@@ -30,12 +30,12 @@ if platform == "osx":
     env.Append(CCFLAGS = ['-g','-O3', '-arch', 'x86_64'])
     env.Append(LINKFLAGS = ['-arch', 'x86_64'])
 
-if platform == "linux":
+elif platform == "linux" or platform == "x11":
     target_path += 'x11/'
     cpp_library += '.linux.64'
     env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++17'])
 
-if platform == "windows":
+elif platform == "windows":
     target_path += 'win64/'
     cpp_library += '.windows.64'
     env.Append(CCFLAGS = ['-DWIN32', '-D_WIN32', '-D_WINDOWS', '-W3', '-GR', '-D_CRT_SECURE_NO_WARNINGS'])
@@ -43,6 +43,9 @@ if platform == "windows":
         env.Append(CCFLAGS = ['-EHsc', '-D_DEBUG', '-MDd'])
     else:
         env.Append(CCFLAGS = ['-O2', '-EHsc', '-DNDEBUG', '-MD'])
+else:
+    print("The only supported targets are 'osx', 'linux' and 'windows'.")
+    sys.exit(255)    
 
 env.Append(CPPPATH=['.', 'src/', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
 env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
