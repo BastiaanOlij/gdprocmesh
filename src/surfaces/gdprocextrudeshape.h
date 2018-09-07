@@ -11,6 +11,7 @@ class GDProcExtrudeShape : public GDProcNode {
 private:
 	bool shape_is_closed;
 	bool path_is_closed;
+	bool path_follow;
 	
 	Array surface_arr;
 
@@ -27,6 +28,9 @@ public:
 
 	void set_path_is_closed(bool p_is_closed);
 	bool get_path_is_closed() const;
+
+	void set_path_follow(bool p_follow);
+	bool get_path_follow() const;
 
 	virtual bool update(bool p_inputs_updated, const Array &p_inputs);
 

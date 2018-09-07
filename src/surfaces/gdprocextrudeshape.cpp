@@ -5,6 +5,7 @@ using namespace godot;
 void GDProcExtrudeShape::_register_methods() {
 	register_property<GDProcExtrudeShape, bool>("shape_is_closed", &GDProcExtrudeShape::set_shape_is_closed, &GDProcExtrudeShape::get_shape_is_closed, true);
 	register_property<GDProcExtrudeShape, bool>("path_is_closed", &GDProcExtrudeShape::set_path_is_closed, &GDProcExtrudeShape::get_path_is_closed, false);
+	register_property<GDProcExtrudeShape, bool>("path_follow", &GDProcExtrudeShape::set_path_follow, &GDProcExtrudeShape::get_path_follow, false);
 }
 
 String GDProcExtrudeShape::get_type_name() {
@@ -22,6 +23,7 @@ void GDProcExtrudeShape::_init() {
 	// defaults
 	shape_is_closed = true;
 	path_is_closed = false;
+	path_follow = false;
 }
 
 void GDProcExtrudeShape::set_shape_is_closed(bool p_is_closed) {
@@ -48,6 +50,19 @@ bool GDProcExtrudeShape::get_path_is_closed() const {
 	return path_is_closed;
 }
 
+void GDProcExtrudeShape::set_path_follow(bool p_follow) {
+	if (path_follow != p_follow) {
+		path_follow = p_follow;
+		must_update = true;
+		emit_signal("changed");
+	}
+}
+
+bool GDProcExtrudeShape::get_path_follow() const {
+	return path_follow;
+}
+
+
 bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 	bool updated = must_update || p_inputs_updated;
 	must_update = false;
@@ -65,6 +80,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 		int num_shape = 0;
 		PoolVector3Array shape;
 		bool pic = path_is_closed;
+		bool pf = path_follow;
 		int num_path = 0;
 		PoolVector3Array path;
 
@@ -96,6 +112,12 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 		if (input_count > 3) {
 			if (p_inputs[3].get_type() == Variant::BOOL) {
 				pic = p_inputs[3];
+			}
+		}
+
+		if (input_count > 4) {
+			if (p_inputs[4].get_type() == Variant::BOOL) {
+				pf = p_inputs[4];
 			}
 		}
 
@@ -176,7 +198,9 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 					xf = xf.looking_at(xf.origin + dir, up);
 
 					// use our new up for our last up
-					up = xf.basis.get_axis(1);
+					if (pf) {
+						up = xf.basis.get_axis(1);
+					}
 
 					///@TODO need to find a way to start nudging our up back to straight up whenever we can (i.e. dir is not upwards or downwards)
 
@@ -271,7 +295,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 }
 
 int GDProcExtrudeShape::get_input_connector_count() const {
-	return 4;
+	return 5;
 }
 
 Variant::Type GDProcExtrudeShape::get_input_connector_type(int p_slot) const {
@@ -282,6 +306,8 @@ Variant::Type GDProcExtrudeShape::get_input_connector_type(int p_slot) const {
 	} else if (p_slot == 2) {
 		return Variant::POOL_VECTOR3_ARRAY;
 	} else if (p_slot == 3) {
+		return Variant::BOOL;
+	} else if (p_slot == 4) {
 		return Variant::BOOL;
 	}
 	return Variant::NIL;
@@ -296,6 +322,8 @@ const String GDProcExtrudeShape::get_input_connector_name(int p_slot) const {
 		return "path";
 	} else if (p_slot == 3) {
 		return "path_is_closed";
+	} else if (p_slot == 4) {
+		return "path_follow";
 	}
 
 	return "";
@@ -306,6 +334,8 @@ const String GDProcExtrudeShape::get_connector_property_name(int p_slot) const {
 		return "shape_is_closed";
 	} else if (p_slot == 3) {
 		return "path_is_closed";
+	} else if (p_slot == 4) {
+		return "path_follow";
 	}
 	return "";
 }
