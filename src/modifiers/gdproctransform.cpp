@@ -31,7 +31,6 @@ void GDProcTransform::set_rotation(Vector3 p_rotation) {
 		must_update = true;
 		emit_signal("changed");
 	}
-
 }
 
 Vector3 GDProcTransform::get_rotation() {
@@ -74,7 +73,7 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 		int num_tangents = 0;
 		PoolRealArray input_tangents;
 		int num_rotations = 0;
-		PoolVector3Array rotations;
+		PoolColorArray rotations;
 		int num_translations = 0;
 		PoolVector3Array translations;
 		int num_scales = 0;
@@ -108,7 +107,7 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 			}
 		}
 		if (input_count > 1) {
-			if (p_inputs[1].get_type() == Variant::POOL_VECTOR3_ARRAY) {
+			if (p_inputs[1].get_type() == Variant::POOL_COLOR_ARRAY) {
 				rotations = p_inputs[1];
 				num_rotations = rotations.size();
 			}
@@ -131,7 +130,7 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 			Quat q;
 			float pi_180 = 3.14159265359f / 180.0f;
 			q.set_euler_xyz(default_rotation * Vector3(pi_180, pi_180, pi_180));
-			rotations.push_back(Vector3(q.x, q.y, q.z)); // quaternions should be normalized so w should be sqrt(1.0 - x2 - y2 - z2)
+			rotations.push_back(Color(q.x, q.y, q.z, q.w)); // quaternions should be normalized so w should be sqrt(1.0 - x2 - y2 - z2)
 			num_rotations++;
 		}
 
@@ -145,12 +144,12 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 			num_scales++;
 		}
 
-		// Convert my quarternion array so we don't keep doing a square root
-		PoolVector3Array::Read q = rotations.read();
+			// Convert my quaternion array to basis, xform on quaternion seems broken
+		PoolColorArray::Read q = rotations.read();
 		Basis *rots = (Basis *)api->godot_alloc(sizeof(Basis) * num_rotations);
 		for (int i = 0; i < num_rotations; i++) {
-			Vector3 rot = q[i];
-			Quat quat(rot.x, rot.y, rot.z, (float) sqrt(1.0 - (rot.x * rot.x + rot.y * rot.y + rot.z * rot.z)));
+			Color rot = q[i];
+			Quat quat(rot.r, rot.g, rot.b, rot.a);
 
 			// convert to basis, I had problems with quat.xform...
 			rots[i] = Basis(quat);
@@ -224,8 +223,8 @@ Variant::Type GDProcTransform::get_input_connector_type(int p_slot) const {
 	if (p_slot == 0) {
 		return Variant::ARRAY;
 	} else if (p_slot == 1) {
-		// we don't have a POOL_BASIS_ARRAY, abusing vec3 for storing 
-		return Variant::POOL_VECTOR3_ARRAY;
+		// we don't have a POOL_QUAD_ARRAY, abusing color for storing 
+		return Variant::POOL_COLOR_ARRAY;
 	} else if (p_slot == 2) {
 		return Variant::POOL_VECTOR3_ARRAY;
 	} else if (p_slot == 3) {

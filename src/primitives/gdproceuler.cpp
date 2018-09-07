@@ -22,7 +22,7 @@ void GDProcEuler::_init() {
 
 	// init our buffer
 	value.resize(1);
-	value.set(0, Vector3(0.0, 0.0, 0.0));
+	value.set(0, Color(0.0, 0.0, 0.0, 1.0));
 }
 
 void GDProcEuler::set_x(float x) {
@@ -120,14 +120,14 @@ bool GDProcEuler::update(bool p_inputs_updated, const Array &p_inputs) {
 		PoolRealArray::Read rz = z.read();
 
 		value.resize(max);
-		PoolVector3Array::Write vw = value.write();
+		PoolColorArray::Write vw = value.write();
 
 		for (int i = 0; i < max; i++) {
 			float pi_180 = 3.14159265359f / 180.0f;
 			Quat q;
 			q.set_euler_xyz(Vector3(rx[i % num_x], ry[i % num_y], rz[i % num_z]) * Vector3(pi_180, pi_180, pi_180));
 
-			vw[i] = Vector3(q.x, q.y, q.z); // quaternions should be normalized so w should be sqrt(1.0 - x2 - y2 - z2)
+			vw[i] = Color(q.x, q.y, q.z, q.w);
 		}
 	}
 
@@ -171,11 +171,11 @@ int GDProcEuler::get_output_connector_count() const {
 }
 
 Variant::Type GDProcEuler::get_output_connector_type(int p_slot) const {
-	return Variant::POOL_VECTOR3_ARRAY;
+	return Variant::POOL_COLOR_ARRAY;
 }
 
 const String GDProcEuler::get_output_connector_name(int p_slot) const {
-	return "vector";
+	return "rotations";
 }
 
 const Variant GDProcEuler::get_output(int p_slot) const {

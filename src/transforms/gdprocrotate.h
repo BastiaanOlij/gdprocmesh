@@ -9,7 +9,7 @@ class GDProcRotate : public GDProcNode {
 	GODOT_SUBCLASS(GDProcRotate, GDProcNode)
 
 private:
-	Vector3 default_rotation;
+	Vector3 default_rotation; // defaults are in euler angles
 	PoolVector3Array vectors;
 
 public:

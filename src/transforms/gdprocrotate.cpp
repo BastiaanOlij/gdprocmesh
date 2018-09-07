@@ -41,7 +41,7 @@ bool GDProcRotate::update(bool p_inputs_updated, const Array &p_inputs) {
 		int num_vectors = 0;
 		PoolVector3Array input_vectors;
 		int num_rotations = 0;
-		PoolVector3Array rotations;
+		PoolColorArray rotations;
 
 		int input_count = p_inputs.size();
 		if (input_count > 0) {
@@ -51,7 +51,7 @@ bool GDProcRotate::update(bool p_inputs_updated, const Array &p_inputs) {
 			}
 		}
 		if (input_count > 1) {
-			if (p_inputs[1].get_type() == Variant::POOL_VECTOR3_ARRAY) {
+			if (p_inputs[1].get_type() == Variant::POOL_COLOR_ARRAY) {
 				rotations = p_inputs[1];
 				num_rotations = rotations.size();
 			}
@@ -62,7 +62,7 @@ bool GDProcRotate::update(bool p_inputs_updated, const Array &p_inputs) {
 			Quat q;
 			float pi_180 = 3.14159265359f / 180.0f;
 			q.set_euler_xyz(default_rotation * Vector3(pi_180, pi_180, pi_180));
-			rotations.push_back(Vector3(q.x, q.y, q.z)); // quaternions should be normalized so w should be sqrt(1.0 - x2 - y2 - z2)
+			rotations.push_back(Color(q.x, q.y, q.z, q.w));
 			num_rotations++;
 		}
 
@@ -70,12 +70,12 @@ bool GDProcRotate::update(bool p_inputs_updated, const Array &p_inputs) {
 			int new_size = num_vectors > num_rotations ? num_vectors : num_rotations;
 			vectors.resize(new_size);
 
-			// Convert my quarternion array so we don't keep doing a square root
-			PoolVector3Array::Read q = rotations.read();
+			// Convert quaternions to basis, some weird issues using quaternions directly
+			PoolColorArray::Read q = rotations.read();
 			Basis *rots = (Basis *)api->godot_alloc(sizeof(Basis) * num_rotations);
 			for (int i = 0; i < num_rotations; i++) {
-				Vector3 rot = q[i];
-				Quat quat(rot.x, rot.y, rot.z, (float) sqrt(1.0 - (rot.x * rot.x + rot.y * rot.y + rot.z * rot.z)));
+				Color rot = q[i];
+				Quat quat(rot.r, rot.g, rot.b, rot.a);
 
 				// convert to basis, I had problems with quat.xform...
 				rots[i] = Basis(quat);
@@ -105,8 +105,10 @@ int GDProcRotate::get_input_connector_count() const {
 Variant::Type GDProcRotate::get_input_connector_type(int p_slot) const {
 	if (p_slot == 0) {
 		return Variant::POOL_VECTOR3_ARRAY;
+	} else if (p_slot == 1) {
+		return Variant::POOL_COLOR_ARRAY;
 	} else {
-		return Variant::POOL_VECTOR3_ARRAY;
+		return Variant::NIL;
 	}
 }
 

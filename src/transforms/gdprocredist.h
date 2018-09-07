@@ -9,9 +9,15 @@ class GDProcRedist : public GDProcNode {
 	GODOT_SUBCLASS(GDProcRedist, GDProcNode)
 
 private:
+	// input
 	float default_offset;
 	float default_strafe;
+	bool default_is_closed;
+	bool default_follow;
+
+	// output
 	PoolVector3Array vectors;
+	PoolColorArray rotations; // we don't have a PoolQuadArray so abuse Color
 
 public:
 	static void _register_methods();
@@ -20,6 +26,12 @@ public:
 	virtual String get_description() const;
 
 	void _init();
+
+	void set_is_closed(bool p_is_closed);
+	bool get_is_closed() const;
+
+	void set_follow(bool p_follow);
+	bool get_follow() const;
 
 	// properties
 	void set_offset(float p_offset);

@@ -119,6 +119,7 @@ func _ready():
 	_add_node_class("Transforms/Redistribute", "GDProcRedist")
 	_add_node_class("Transforms/Multiply", "GDProcMult")
 	_add_node_class("Transforms/Rotate", "GDProcRotate")
+	_add_node_class("Transforms/Multiply rotation", "GDProcRotMult")
 	_add_node_class("Transforms/Scale", "GDProcScale")
 	_add_node_class("Transforms/Subtract", "GDProcSub")
 	_add_node_class("Transforms/Translate", "GDProcTranslate")
