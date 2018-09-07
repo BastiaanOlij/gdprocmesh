@@ -51,7 +51,7 @@ if env['p'] != 'not set':
 
 if env['platform'] == 'windows':
     env['target_path'] += 'win64/'
-    env['cpp_library'] += '.windows.64'
+    cpp_library += '.windows.64'
     if not env['use_llvm']:
 
         # This makes sure to keep the session environment variables on windows,
@@ -73,7 +73,7 @@ if env['platform'] == 'windows':
 # untested
 elif env['platform'] == 'osx':
     env['target_path'] += 'osx/'
-    env['cpp_library'] += '.osx.64'
+    cpp_library += '.osx.64'
     if env['target'] in ('debug', 'd'):
         env.Append(CCFLAGS = ['-g','-O2', '-arch', 'x86_64'])
         env.Append(LINKFLAGS = ['-arch', 'x86_64'])
