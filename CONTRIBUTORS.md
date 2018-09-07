@@ -6,5 +6,6 @@ https://github.com/BastiaanOlij/gdprocmesh
 
 Other people who have helped out by submitting fixes, enhancements, etc are:
 - [Daniel Eliasinski](https://github.com/Mr-Slurpy)
+- [Martin Capitanio](https://github.com/capnm)
 
 Want to be on this list? We would love your help.
