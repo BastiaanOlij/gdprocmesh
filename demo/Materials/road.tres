@@ -47,7 +47,7 @@ subsurf_scatter_enabled = false
 transmission_enabled = false
 refraction_enabled = false
 detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
+uv1_scale = Vector3( 1, 0.1, 1 )
 uv1_offset = Vector3( 0, 0, 0 )
 uv1_triplanar = false
 uv1_triplanar_sharpness = 1.0
@@ -57,5 +57,5 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Metallic", "Roughness" ]
+_sections_unfolded = [ "Albedo", "Metallic", "Roughness", "UV1", "UV2" ]
 

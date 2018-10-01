@@ -79,6 +79,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 		bool sic = shape_is_closed;
 		int num_shape = 0;
 		PoolVector3Array shape;
+		PoolVector3Array shape_normals;
 		bool pic = path_is_closed;
 		bool pf = path_follow;
 		int num_path = 0;
@@ -123,9 +124,30 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 
 		// make sure we have enough definition for extrusion 
 		if ((num_shape >= (sic ? 3 : 2)) && (num_path >= (pic ? 3 : 2))) {
+
 			// lock our source buffers for reading
 			PoolVector3Array::Read sr = shape.read();
 			PoolVector3Array::Read pr = path.read();
+
+			// calculate our base normals
+			for (int i = 0; i < num_shape; i++) {
+				Vector3 in, out;
+				Vector3 n;
+
+				if (sic) {
+					in = sr[(i + num_shape - 1) % num_shape];
+					out = sr[(i + 1) % num_shape];
+				} else {
+					in = sr[i == 0 ? 0 : i - 1];
+					out = sr[i < (num_shape - 1) ? i + 1 : (num_shape -1)];
+				}
+
+				n = (out - in).normalized().cross(Vector3(0.0, 0.0, 1.0));
+				shape_normals.push_back(n);
+			}
+
+			// and lock our normals for reading
+			PoolVector3Array::Read sn = shape_normals.read();
 
 			// define some stuff
 			int last_start_vertice = 0;
@@ -229,9 +251,9 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 					Vector3 xf_point = xf.xform(Vector3(point.x, point.y, point.z));
 					vw[curr_vertice] = xf_point;
 
-					// calculate our normal (we cheat for now)
-					// we should calculate our normals based on our shape and cache them
-					nw[curr_vertice] = xf.basis.xform(Vector3(point.x, point.y, point.z)).normalized();
+					// calculate our normal
+					Vector3 norm = sn[j % num_shape];
+					nw[curr_vertice] = xf.basis.xform(norm).normalized();
 
 					// we should calculate our tangent, again do once and cache
 					Vector3 tangent = xf.basis.get_axis(2).cross(nw[curr_vertice]).normalized();
