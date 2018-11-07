@@ -33,8 +33,10 @@ opts.AddVariables(
 )
 godot_headers_path = "godot-cpp/godot_headers/"
 cpp_bindings_path = "godot-cpp/"
-cpp_library = "godot-cpp"
+cpp_library = "libgodot-cpp"
 
+# only support 64 at this time..
+bits = 64
 
 # Compilation environment setup.
 opts.Add("CXX", "C++ compiler")
@@ -51,7 +53,7 @@ if env['p'] != 'not set':
 
 if env['platform'] == 'windows':
     env['target_path'] += 'win64/'
-    cpp_library += '.windows.64'
+    cpp_library += '.windows'
     if not env['use_llvm']:
 
         # This makes sure to keep the session environment variables on windows,
@@ -73,7 +75,7 @@ if env['platform'] == 'windows':
 # untested
 elif env['platform'] == 'osx':
     env['target_path'] += 'osx/'
-    cpp_library += '.osx.64'
+    cpp_library += '.osx'
     if env['target'] in ('debug', 'd'):
         env.Append(CCFLAGS = ['-g','-O2', '-arch', 'x86_64'])
         env.Append(LINKFLAGS = ['-arch', 'x86_64'])
@@ -83,11 +85,18 @@ elif env['platform'] == 'osx':
 
 elif env['platform'] in ('x11', 'linux'):
     env['target_path'] += 'x11/'
-    cpp_library += '.linux.64'
+    cpp_library += '.linux'
     if env['target'] in ('debug', 'd'):
         env.Append(CCFLAGS = ['-fPIC', '-g3','-Og', '-std=c++17'])
     else:
         env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++17'])
+
+if env['target'] in ('debug', 'd'):
+    cpp_library += '.debug'
+else:
+    cpp_library += '.release'
+
+cpp_library += '.' + str(bits)
 
 env.Append(CPPPATH=['.', 'src/', godot_headers_path,
     cpp_bindings_path + 'include/',
