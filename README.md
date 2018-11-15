@@ -90,6 +90,10 @@ The following 3rd party libraries are used:
 
 * [Fast Quadric Mesh Simplication](https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification) - MIT licensed
 
+We also make use of the algorithm explained here:
+
+* [Lengyel, Eric. “Computing Tangent Space Basis Vectors for an Arbitrary Mesh”. Terathon Software, 2001](http://www.terathon.com/code/tangent.html)
+
 Note that for the demo:
 
 * HRDI texture is from [HDRI Haven](https://hdrihaven.com)
