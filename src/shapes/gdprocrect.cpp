@@ -81,10 +81,18 @@ bool GDProcRect::update(bool p_inputs_updated, const Array &p_inputs) {
 			float hsx = width / 2.0f;
 			float hsy = height / 2.0f;
 
-			wv[0].x = -hsx; wv[0].y = -hsy; wv[0].z = 0.0f;
-			wv[1].x =  hsx; wv[1].y = -hsy; wv[1].z = 0.0f;
-			wv[2].x =  hsx; wv[2].y =  hsy; wv[2].z = 0.0f;
-			wv[3].x = -hsx; wv[3].y =  hsy; wv[3].z = 0.0f;
+			wv[0].x = -hsx;
+			wv[0].y = -hsy;
+			wv[0].z = 0.0f;
+			wv[1].x = hsx;
+			wv[1].y = -hsy;
+			wv[1].z = 0.0f;
+			wv[2].x = hsx;
+			wv[2].y = hsy;
+			wv[2].z = 0.0f;
+			wv[3].x = -hsx;
+			wv[3].y = hsy;
+			wv[3].z = 0.0f;
 		}
 	}
 
@@ -128,7 +136,7 @@ Variant::Type GDProcRect::get_output_connector_type(int p_slot) const {
 		case 0:
 			return Variant::POOL_VECTOR3_ARRAY;
 		default:
-			return Variant::NIL;		
+			return Variant::NIL;
 	}
 }
 

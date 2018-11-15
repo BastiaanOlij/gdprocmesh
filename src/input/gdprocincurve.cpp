@@ -90,7 +90,7 @@ Variant GDProcInCurve::get_input() {
 
 void GDProcInCurve::_curve_changed() {
 	must_update = true;
-	emit_signal("changed");	
+	emit_signal("changed");
 }
 
 int GDProcInCurve::get_output_connector_count() const {

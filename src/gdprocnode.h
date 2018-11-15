@@ -1,10 +1,10 @@
 #ifndef GD_PROC_NODE_H
 #define GD_PROC_NODE_H
 
-#include <Godot.hpp>
-#include <Resource.hpp>
 #include <ArrayMesh.hpp>
+#include <Godot.hpp>
 #include <Material.hpp>
+#include <Resource.hpp>
 
 namespace godot {
 
@@ -23,7 +23,7 @@ public:
 
 private:
 	ProcessStatus status; // process status updated as we process our nodes
-	Vector2	position; // position in our graph, for editing
+	Vector2 position; // position in our graph, for editing
 	String node_name; // name of this node, I had issues using the build in name not being saved...
 
 protected:
@@ -72,6 +72,6 @@ public:
 	void set_position(Vector2 p_pos); // sets the display position of thisnode in our graph
 };
 
-}
+} // namespace godot
 
 #endif /* !GD_PROC_NODE_H */

@@ -84,6 +84,3 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.72169, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="OmniLight" type="OmniLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35247, 1.06215, 0.426254 )
-

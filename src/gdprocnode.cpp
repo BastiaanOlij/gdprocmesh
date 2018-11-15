@@ -6,7 +6,7 @@ void GDProcNode::_register_methods() {
 	register_method("get_type_name", &GDProcNode::get_type_name);
 	register_method("get_description", &GDProcNode::get_description);
 	register_method("_touch", &GDProcNode::_touch);
-	
+
 	// position
 	register_method("get_position", &GDProcNode::get_position);
 	register_method("set_position", &GDProcNode::set_position);
@@ -94,7 +94,7 @@ void GDProcNode::_init() {
 }
 
 void GDProcNode::_touch() {
-	must_update = true;	
+	must_update = true;
 }
 
 bool GDProcNode::update(bool p_inputs_updated, const Array &p_inputs) {
@@ -102,8 +102,7 @@ bool GDProcNode::update(bool p_inputs_updated, const Array &p_inputs) {
 	must_update = false;
 
 	if (updated) {
-		// just an example here, but implement updating data here.. 
-
+		// just an example here, but implement updating data here..
 	}
 
 	return updated;
@@ -177,4 +176,3 @@ void GDProcNode::set_position(Vector2 p_pos) {
 		// probably should send signal
 	}
 }
-

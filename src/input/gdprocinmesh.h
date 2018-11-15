@@ -1,8 +1,8 @@
 #ifndef GD_PROC_INMESH_H
 #define GD_PROC_INMESH_H
 
-#include "gdprocnode.h"
 #include "Mesh.hpp"
+#include "gdprocnode.h"
 
 namespace godot {
 
@@ -35,9 +35,8 @@ public:
 	virtual const String get_output_connector_name(int p_slot) const; // returns the name for this output
 
 	virtual const Variant get_output(int p_slot) const; // returns the output data itself
-
 };
 
-}
+} // namespace godot
 
 #endif /* !GD_PROC_INMESH_H */

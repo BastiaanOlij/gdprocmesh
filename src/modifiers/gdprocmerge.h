@@ -37,6 +37,6 @@ public:
 	virtual const Variant get_output(int p_slot) const; // returns the output data itself
 };
 
-}
+} // namespace godot
 
 #endif /* !GD_PROC_MERGE_H */

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Examples/two_cubes.tscn" type="PackedScene" id=2]
@@ -6,74 +6,38 @@
 [ext_resource path="res://Examples/rope_bridge.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Examples/building.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Examples/track.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Examples/Ground.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Examples/Reduce.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Examples/Ground.tscn" type="PackedScene" id=8]
 
 [node name="Main" type="Spatial"]
 script = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
 
 [node name="Two cubes" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5 )
-_sections_unfolded = [ "Material", "Script", "Transform" ]
 
 [node name="Test extrude" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -2 )
-_sections_unfolded = [ "Script", "Transform" ]
 
 [node name="Rope bridge" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-_sections_unfolded = [ "Transform" ]
 
 [node name="Building" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.03549, 0, -28.4394 )
 
 [node name="Track" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-_sections_unfolded = [ "Transform" ]
+
+[node name="Reduce" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1995, 2.65433, -2.97687 )
 
 [node name="Setup" type="Spatial" parent="."]
 
 [node name="Camera" type="Camera" parent="Setup"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.34401 )
-keep_aspect = 1
-cull_mask = 1048575
-environment = null
-h_offset = 0.0
-v_offset = 0.0
-doppler_tracking = 0
-projection = 0
-current = false
-fov = 70.0
-size = 1.0
-near = 0.05
-far = 100.0
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Setup"]
 transform = Transform( 0.75697, 0.468968, -0.455045, -0.179643, 0.818892, 0.54511, 0.628271, -0.330886, 0.704123, 0, 6.46809, 0 )
-layers = 1
-light_color = Color( 1, 1, 1, 1 )
-light_energy = 1.0
-light_indirect_energy = 1.0
-light_negative = false
-light_specular = 0.5
-light_bake_mode = 1
-light_cull_mask = -1
 shadow_enabled = true
-shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.1
-shadow_contact = 0.0
-shadow_reverse_cull_face = false
-editor_only = false
-directional_shadow_mode = 2
-directional_shadow_split_1 = 0.1
-directional_shadow_split_2 = 0.2
-directional_shadow_split_3 = 0.5
-directional_shadow_blend_splits = false
-directional_shadow_normal_bias = 0.8
-directional_shadow_bias_split_scale = 0.25
-directional_shadow_depth_range = 0
-directional_shadow_max_distance = 200.0
-_sections_unfolded = [ "Light", "Script", "Shadow", "Transform", "script" ]
 
-[node name="Ground" parent="Setup" instance=ExtResource( 7 )]
+[node name="Ground" parent="Setup" instance=ExtResource( 8 )]
 

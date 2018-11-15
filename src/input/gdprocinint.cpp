@@ -9,7 +9,7 @@ String GDProcInInt::get_type_name() {
 	return "Input Int";
 }
 
-String GDProcInInt::get_description() const{
+String GDProcInInt::get_description() const {
 	return "Allows you to specify an integer as input for the procedural mesh.\nCan be set from the editor.";
 }
 

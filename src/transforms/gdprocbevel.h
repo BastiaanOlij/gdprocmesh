@@ -9,7 +9,7 @@ class GDProcBevel : public GDProcNode {
 	GODOT_SUBCLASS(GDProcBevel, GDProcNode)
 
 private:
-	float	distance;
+	float distance;
 	int iterations;
 	bool is_closed;
 	PoolVector3Array vectors;
@@ -47,9 +47,8 @@ public:
 	virtual const String get_output_connector_name(int p_slot) const; // returns the name for this output
 
 	virtual const Variant get_output(int p_slot) const; // returns the output data itself
-
 };
 
-}
+} // namespace godot
 
 #endif /* !GD_PROC_BEVEL_H */

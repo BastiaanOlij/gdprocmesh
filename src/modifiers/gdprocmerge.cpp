@@ -213,4 +213,3 @@ const String GDProcMerge::get_output_connector_name(int p_slot) const {
 const Variant GDProcMerge::get_output(int p_slot) const {
 	return surface_arr;
 }
-

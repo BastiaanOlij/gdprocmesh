@@ -114,7 +114,7 @@ bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {
 					Basis rotation = rots[copy % num_rotations];
 					Vector3 translation = t[copy % num_translations];
 					Vector3 scale = s[copy % num_scales];
-					for(int i = 0; i < size; i++) {
+					for (int i = 0; i < size; i++) {
 						w[n++] = (rotation.xform(r[i]) * scale) + translation;
 					}
 				}
@@ -138,7 +138,7 @@ bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {
 
 				for (int copy = 0; copy < copies; copy++) {
 					Basis rotation = rots[copy % num_rotations];
-					for(int i = 0; i < size; i++) {
+					for (int i = 0; i < size; i++) {
 						w[n++] = rotation.xform(r[i]);
 					}
 				}
@@ -162,13 +162,13 @@ bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {
 
 				for (int copy = 0; copy < copies; copy++) {
 					Basis rotation = rots[copy % num_rotations];
-					for(int i = 0; i < size; i+= 4) {
-						Vector3 v(r[i], r[i+1], r[i+2]);
+					for (int i = 0; i < size; i += 4) {
+						Vector3 v(r[i], r[i + 1], r[i + 2]);
 						v = rotation.xform(v);
 						w[n++] = v.x;
 						w[n++] = v.y;
 						w[n++] = v.z;
-						w[n++] = r[i+3]; // no need to update this...
+						w[n++] = r[i + 3]; // no need to update this...
 					}
 				}
 
@@ -272,7 +272,7 @@ bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolIntArray::Read r = input.read();
 				for (int copy = 0; copy < copies; copy++) {
 					int offset = copy * strafe;
-					for(int i = 0; i < size; i++) {
+					for (int i = 0; i < size; i++) {
 						w[n++] = r[i] + offset;
 					}
 				}
@@ -282,7 +282,7 @@ bool GDProcPlaceOnPath::update(bool p_inputs_updated, const Array &p_inputs) {
 				surface_arr[ArrayMesh::ARRAY_INDEX] = Variant();
 			}
 
-			// free 
+			// free
 			api->godot_free(rots);
 		}
 	}
@@ -298,7 +298,7 @@ Variant::Type GDProcPlaceOnPath::get_input_connector_type(int p_slot) const {
 	if (p_slot == 0) {
 		return Variant::ARRAY;
 	} else if (p_slot == 1) {
-		// we don't have a POOL_QUAD_ARRAY, abusing color for storing 
+		// we don't have a POOL_QUAD_ARRAY, abusing color for storing
 		return Variant::POOL_COLOR_ARRAY;
 	} else if (p_slot == 2) {
 		return Variant::POOL_VECTOR3_ARRAY;
@@ -338,4 +338,3 @@ const String GDProcPlaceOnPath::get_output_connector_name(int p_slot) const {
 const Variant GDProcPlaceOnPath::get_output(int p_slot) const {
 	return Variant(surface_arr);
 }
-

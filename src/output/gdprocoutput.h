@@ -26,13 +26,12 @@ public:
 	virtual const String get_input_connector_name(int p_slot) const; // returns the name for this input
 
 	// Here we make a special exception.
-	// We don't declare our outputs because our user can't link up the output 
+	// We don't declare our outputs because our user can't link up the output
 	// but we do need to access our final surface array.
 	virtual int get_output_connector_count() const;
 	virtual const Variant get_output(int p_slot) const;
-
 };
 
-}
+} // namespace godot
 
 #endif /* !GD_PROC_OUTPUT_H */

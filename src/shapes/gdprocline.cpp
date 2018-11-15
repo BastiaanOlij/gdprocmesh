@@ -141,7 +141,7 @@ Variant::Type GDProcLine::get_output_connector_type(int p_slot) const {
 		case 0:
 			return Variant::POOL_VECTOR3_ARRAY;
 		default:
-			return Variant::NIL;		
+			return Variant::NIL;
 	}
 }
 

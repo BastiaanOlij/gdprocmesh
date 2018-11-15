@@ -130,4 +130,3 @@ const String GDProcMult::get_output_connector_name(int p_slot) const {
 const Variant GDProcMult::get_output(int p_slot) const {
 	return Variant(values);
 }
-

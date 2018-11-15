@@ -1,19 +1,19 @@
 #ifndef GD_PROC_MESH_H
 #define GD_PROC_MESH_H
 
-#include <Godot.hpp>
 #include <ArrayMesh.hpp>
+#include <Godot.hpp>
 #include <Material.hpp>
 
 // yes using std C++
-#include <vector>
 #include <map>
+#include <vector>
 
 #include "gdprocnode.h"
-#include "transforms/gdprocgennormals.h"
+#include "output/gdprocoutput.h"
 #include "shapes/gdprocbox.h"
 #include "surfaces/gdprocsurface.h"
-#include "output/gdprocoutput.h"
+#include "transforms/gdprocgennormals.h"
 
 namespace godot {
 
@@ -65,7 +65,7 @@ private:
 
 public:
 	static void _register_methods();
-	
+
 	void _init();
 	void _post_init();
 	void _update();
@@ -92,10 +92,10 @@ public:
 	void set_size(float new_size);
 	*/
 
-	GDProcMesh();	
+	GDProcMesh();
 	~GDProcMesh();
 };
 
-}
+} // namespace godot
 
 #endif /* !GD_PROC_MESH_H */

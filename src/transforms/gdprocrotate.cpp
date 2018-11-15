@@ -88,7 +88,7 @@ bool GDProcRotate::update(bool p_inputs_updated, const Array &p_inputs) {
 				w[i] = rots[i % num_rotations].xform(r[i % num_vectors]);
 			}
 
-			// free 
+			// free
 			api->godot_free(rots);
 		} else {
 			vectors.resize(0);
@@ -145,4 +145,3 @@ const String GDProcRotate::get_output_connector_name(int p_slot) const {
 const Variant GDProcRotate::get_output(int p_slot) const {
 	return Variant(vectors);
 }
-

@@ -35,7 +35,7 @@ void GDProcBevel::set_distance(float p_distance) {
 }
 
 float GDProcBevel::get_distance() const {
-	return distance;	
+	return distance;
 }
 
 void GDProcBevel::set_iterations(int p_iterations) {
@@ -50,7 +50,7 @@ void GDProcBevel::set_iterations(int p_iterations) {
 	if (iterations != p_iterations) {
 		iterations = p_iterations;
 		must_update = true;
-		emit_signal("changed");		
+		emit_signal("changed");
 	}
 }
 
@@ -159,7 +159,7 @@ bool GDProcBevel::update(bool p_inputs_updated, const Array &p_inputs) {
 				w[o++] = r[0];
 
 				for (int i = 1; i < num_vectors - 1; i++) {
-					do_bevel(w, r[i-1], r[i], r[i+1], d, itr, o);
+					do_bevel(w, r[i - 1], r[i], r[i + 1], d, itr, o);
 				}
 
 				// copy our last one
@@ -232,4 +232,3 @@ const String GDProcBevel::get_output_connector_name(int p_slot) const {
 const Variant GDProcBevel::get_output(int p_slot) const {
 	return Variant(vectors);
 }
-

@@ -3,7 +3,6 @@
 using namespace godot;
 
 void GDProcGenNormals::_register_methods() {
-
 }
 
 String GDProcGenNormals::get_type_name() {
@@ -17,7 +16,6 @@ String GDProcGenNormals::get_description() const {
 void GDProcGenNormals::_init() {
 	// first call super class
 	GDProcNode::_init();
-
 }
 
 bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
@@ -30,7 +28,7 @@ bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
 		int num_indices = 0;
 		PoolIntArray indices;
 
-		///@TODO need to improve this so if two vertices are in the same space 
+		///@TODO need to improve this so if two vertices are in the same space
 
 		int input_count = p_inputs.size();
 		if (input_count > 0) {
@@ -71,7 +69,7 @@ bool GDProcGenNormals::update(bool p_inputs_updated, const Array &p_inputs) {
 			}
 
 			// add our normals
-			for (int i = 0; i < num_indices; i+=3) {
+			for (int i = 0; i < num_indices; i += 3) {
 				int a = ir[i];
 				int b = ir[i + 1];
 				int c = ir[i + 2];

@@ -141,7 +141,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolVector3Array::Write w = output.write();
 				PoolVector3Array::Read r = input.read();
 
-				for(int i = 0; i < size; i++) {
+				for (int i = 0; i < size; i++) {
 					Vector3 v = r[i];
 					if (mirror_x) v.x = -v.x;
 					if (mirror_y) v.y = -v.y;
@@ -171,7 +171,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolVector3Array::Write w = output.write();
 				PoolVector3Array::Read r = input.read();
 
-				for(int i = 0; i < size; i++) {
+				for (int i = 0; i < size; i++) {
 					Vector3 v = r[i];
 					if (mirror_x) v.x = -v.x;
 					if (mirror_y) v.y = -v.y;
@@ -191,7 +191,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				int size = input.size();
 				int strafe = 0;
 
-				// Start with copying our original				
+				// Start with copying our original
 				if (duplicate) {
 					output.append_array(input);
 					strafe = size;
@@ -217,7 +217,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolColorArray input = input_surface[ArrayMesh::ARRAY_COLOR];
 				PoolColorArray output;
 
-				// Start with copying our original				
+				// Start with copying our original
 				if (duplicate) {
 					output.append_array(input);
 				}
@@ -234,7 +234,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolVector2Array input = input_surface[ArrayMesh::ARRAY_TEX_UV];
 				PoolVector2Array output;
 
-				// Start with copying our original				
+				// Start with copying our original
 				if (duplicate) {
 					output.append_array(input);
 				}
@@ -251,7 +251,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolVector2Array input = input_surface[ArrayMesh::ARRAY_TEX_UV2];
 				PoolVector2Array output;
 
-				// Start with copying our original				
+				// Start with copying our original
 				if (duplicate) {
 					output.append_array(input);
 				}
@@ -268,7 +268,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolRealArray input = input_surface[ArrayMesh::ARRAY_BONES];
 				PoolRealArray output;
 
-				// Start with copying our original				
+				// Start with copying our original
 				if (duplicate) {
 					output.append_array(input);
 				}
@@ -285,7 +285,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 				PoolRealArray input = input_surface[ArrayMesh::ARRAY_WEIGHTS];
 				PoolRealArray output;
 
-				// Start with copying our original				
+				// Start with copying our original
 				if (duplicate) {
 					output.append_array(input);
 				}
@@ -322,7 +322,7 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 						w[i + strafe] = r[i] + offset;
 					}
 				} else {
-					for (int i = 0; i < size; i+=3) {
+					for (int i = 0; i < size; i += 3) {
 						w[i + strafe] = r[i] + offset;
 						w[i + strafe + 1] = r[i + 2] + offset;
 						w[i + strafe + 2] = r[i + 1] + offset;
@@ -333,7 +333,6 @@ bool GDProcMirror::update(bool p_inputs_updated, const Array &p_inputs) {
 			} else {
 				surface_arr[ArrayMesh::ARRAY_INDEX] = Variant();
 			}
-
 		}
 	}
 
@@ -405,4 +404,3 @@ const String GDProcMirror::get_output_connector_name(int p_slot) const {
 const Variant GDProcMirror::get_output(int p_slot) const {
 	return surface_arr;
 }
-

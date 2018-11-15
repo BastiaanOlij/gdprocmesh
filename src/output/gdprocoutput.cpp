@@ -3,7 +3,6 @@
 using namespace godot;
 
 void GDProcOutput::_register_methods() {
-
 }
 
 String GDProcOutput::get_type_name() {
@@ -74,7 +73,7 @@ int GDProcOutput::get_output_connector_count() const {
 }
 
 const Variant GDProcOutput::get_output(int p_slot) const {
-	// this should only be called after update is called. 
+	// this should only be called after update is called.
 	if (p_slot == 0) {
 		return Variant(output_arr);
 	}

@@ -31,9 +31,8 @@ public:
 
 	// get our actual output for a connector, this should only be called after update has run!
 	virtual const Variant get_output(int p_slot) const; // returns the output data itself
-
 };
 
-}
+} // namespace godot
 
 #endif /* !GD_PROC_SURFACE_H */

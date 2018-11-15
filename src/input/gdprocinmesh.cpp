@@ -117,7 +117,7 @@ Variant GDProcInMesh::get_input() {
 
 void GDProcInMesh::_mesh_changed() {
 	must_update = true;
-	emit_signal("changed");	
+	emit_signal("changed");
 }
 
 int GDProcInMesh::get_output_connector_count() const {

@@ -144,7 +144,7 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 			num_scales++;
 		}
 
-			// Convert my quaternion array to basis, xform on quaternion seems broken
+		// Convert my quaternion array to basis, xform on quaternion seems broken
 		PoolColorArray::Read q = rotations.read();
 		Basis *rots = (Basis *)api->godot_alloc(sizeof(Basis) * num_rotations);
 		for (int i = 0; i < num_rotations; i++) {
@@ -195,20 +195,20 @@ bool GDProcTransform::update(bool p_inputs_updated, const Array &p_inputs) {
 			PoolRealArray::Write w = tangents.write();
 			PoolRealArray::Read r = input_tangents.read();
 
-			for (int i = 0; i < num_tangents; i+= 4) {
-				Vector3 v(r[i], r[i+1], r[i+2]);
+			for (int i = 0; i < num_tangents; i += 4) {
+				Vector3 v(r[i], r[i + 1], r[i + 2]);
 				v = rots[j % num_rotations].xform(v);
 				w[i] = v.x;
-				w[i+1] = v.y;
-				w[i+2] = v.z;
-				w[i+3] = r[i+3]; // no need to update this...
+				w[i + 1] = v.y;
+				w[i + 2] = v.z;
+				w[i + 3] = r[i + 3]; // no need to update this...
 				j++;
 			}
 
 			surface_arr[ArrayMesh::ARRAY_TANGENT] = tangents;
 		}
 
-		// free 
+		// free
 		api->godot_free(rots);
 	}
 
@@ -223,7 +223,7 @@ Variant::Type GDProcTransform::get_input_connector_type(int p_slot) const {
 	if (p_slot == 0) {
 		return Variant::ARRAY;
 	} else if (p_slot == 1) {
-		// we don't have a POOL_QUAD_ARRAY, abusing color for storing 
+		// we don't have a POOL_QUAD_ARRAY, abusing color for storing
 		return Variant::POOL_COLOR_ARRAY;
 	} else if (p_slot == 2) {
 		return Variant::POOL_VECTOR3_ARRAY;
@@ -275,4 +275,3 @@ const String GDProcTransform::get_output_connector_name(int p_slot) const {
 const Variant GDProcTransform::get_output(int p_slot) const {
 	return Variant(surface_arr);
 }
-

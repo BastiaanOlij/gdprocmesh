@@ -124,7 +124,6 @@ bool GDProcRedist::update(bool p_inputs_updated, const Array &p_inputs) {
 			}
 		}
 
-
 		if (num_strafes == 0) {
 			strafes.push_back(default_strafe);
 			num_strafes++;
@@ -313,4 +312,3 @@ const Variant GDProcRedist::get_output(int p_slot) const {
 		return Variant();
 	}
 }
-

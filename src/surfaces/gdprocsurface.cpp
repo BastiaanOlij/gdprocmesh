@@ -3,7 +3,6 @@
 using namespace godot;
 
 void GDProcSurface::_register_methods() {
-
 }
 
 String GDProcSurface::get_type_name() {
@@ -149,7 +148,6 @@ const String GDProcSurface::get_input_connector_name(int p_slot) const {
 		default:
 			return "???";
 	}
-
 }
 
 int GDProcSurface::get_output_connector_count() const {

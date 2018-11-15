@@ -28,7 +28,7 @@ bool GDProcCount::update(bool p_inputs_updated, const Array &p_inputs) {
 
 	if (updated) {
 		int count = 0;
-		
+
 		int input_count = p_inputs.size();
 		for (int i = 0; i < input_count; i++) {
 			switch (p_inputs[i].get_type()) {

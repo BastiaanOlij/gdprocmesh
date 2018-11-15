@@ -1,6 +1,6 @@
 #include "gdprocmesh.h"
-#include <GlobalConstants.hpp>
 #include <Dictionary.hpp>
+#include <GlobalConstants.hpp>
 #include <VisualServer.hpp>
 
 using namespace godot;
@@ -21,9 +21,9 @@ Array GDProcMesh::_get_property_list() {
 		prop["hint_string"] = "GDProcNode";
 		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
 		// PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE is new and not yet in gdnative..
-//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
+		//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
 
-		arr.push_back(prop);		
+		arr.push_back(prop);
 	}
 
 	// now add a property for our connection
@@ -31,11 +31,11 @@ Array GDProcMesh::_get_property_list() {
 		Dictionary prop;
 		prop["name"] = "graph/connections";
 		prop["type"] = GlobalConstants::TYPE_INT_ARRAY;
-//		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
-//		prop["hint_string"] = "";
+		//		prop["hint"] = GlobalConstants::PROPERTY_HINT_XYZ;
+		//		prop["hint_string"] = "";
 		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR;
 		// PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE is new and not yet in gdnative..
-//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
+		//		prop["usage"] = GlobalConstants::PROPERTY_USAGE_NOEDITOR | GlobalConstants::PROPERTY_USAGE_DO_NOT_SHARE_ON_DUPLICATE
 
 		arr.push_back(prop);
 	}
@@ -78,8 +78,8 @@ Variant GDProcMesh::_get(String p_name) {
 
 	if (p_name.begins_with(str_nodes)) {
 		String index = p_name.split('/')[1];
-		int id = (int) index.to_int();
-		
+		int id = (int)index.to_int();
+
 		std::map<int, Ref<GDProcNode> >::iterator it = nodes.find(id);
 		if (it == nodes.end()) {
 			printf("Couldn't find node %i\n", id);
@@ -90,7 +90,7 @@ Variant GDProcMesh::_get(String p_name) {
 	} else if (p_name == "graph/connections") {
 		PoolIntArray ret;
 
-		ret.resize((int) connections.size() * 4);
+		ret.resize((int)connections.size() * 4);
 		{
 			PoolIntArray::Write w = ret.write();
 			int *i = w.ptr();
@@ -124,12 +124,12 @@ Variant GDProcMesh::_get(String p_name) {
 
 bool GDProcMesh::_set(String p_name, Variant p_value) {
 	// temporary workaround to get around compile issue on Linux, needs further research
-	String str_nodes = String("nodes/"); 
+	String str_nodes = String("nodes/");
 	String str_inputs = String("inputs/");
 
 	if (p_name.begins_with(str_nodes)) {
 		String index = p_name.split('/')[1];
-		int id = (int) index.to_int();
+		int id = (int)index.to_int();
 
 		// printf("Loading node %i from scene\n", id);
 		add_node(p_value, id);
@@ -139,8 +139,8 @@ bool GDProcMesh::_set(String p_name, Variant p_value) {
 		PoolIntArray data = p_value;
 		int count = data.size();
 
-		for(int i = 0; i < count; i+=4) {
-			add_connection(data[i], data[i+1], data[i+2], data[i+3]);
+		for (int i = 0; i < count; i += 4) {
+			add_connection(data[i], data[i + 1], data[i + 2], data[i + 3]);
 		}
 
 		return true;
@@ -508,7 +508,7 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 				// find if this has been connected
 				ctor c = get_output_for_input(p_id, i);
 
-				if (c.node == -1 ) {
+				if (c.node == -1) {
 					// printf("Node %i, Connector %i is not connected\n", p_id, i);
 					// if not, just add a NIL input
 					inputs.push_back(Variant());
@@ -555,9 +555,10 @@ bool GDProcMesh::do_update_node(int p_id, Ref<GDProcNode> p_node) {
 						} else if (output_type != input_type) {
 							// In this case we have a problem
 							Godot::print_warning(String("Output type ({0}) and input type ({1}) do not match.\n"
-									"Error: Bad Connection - Node {2} : Connector {3} --> Node {4} : Connector {5}")
-									.format(Array::make(output_type, input_type, output_node->get_node_name(),
-									c.connector, p_node->get_node_name(), i)), __FUNCTION__, __FILE__, __LINE__);
+														"Error: Bad Connection - Node {2} : Connector {3} --> Node {4} : Connector {5}")
+														 .format(Array::make(output_type, input_type, output_node->get_node_name(),
+																 c.connector, p_node->get_node_name(), i)),
+									__FUNCTION__, __FILE__, __LINE__);
 							output = Variant();
 						}
 
@@ -592,7 +593,7 @@ void GDProcMesh::_update() {
 	std::map<int, Ref<GDProcNode> >::iterator it;
 
 	// if we change any surface we turn this to true and check if we need to do any post processing.
-	bool has_changed = false; 
+	bool has_changed = false;
 
 	// clear surfaces we'll no longer be needing
 	for (int64_t s = get_surface_count() - 1; s >= 0; s--) {
@@ -612,7 +613,7 @@ void GDProcMesh::_update() {
 
 		if (!found) {
 			printf("Removing unused surface %s\n", name.utf8().get_data());
-			surface_remove(s);			
+			surface_remove(s);
 		}
 	}
 
@@ -639,14 +640,14 @@ void GDProcMesh::_update() {
 					Array arr = surface;
 
 					if (arr.size() != ArrayMesh::ARRAY_MAX) {
-						printf("Final node is not returning a correctly sized array\n");	
+						printf("Final node is not returning a correctly sized array\n");
 					} else if (arr[ArrayMesh::ARRAY_VERTEX].get_type() != Variant::POOL_VECTOR3_ARRAY) {
 						printf("No vertices in surface\n");
-					} else if (((PoolVector3Array) arr[ArrayMesh::ARRAY_VERTEX]).size() == 0) {
+					} else if (((PoolVector3Array)arr[ArrayMesh::ARRAY_VERTEX]).size() == 0) {
 						printf("No vertices in surface\n");
 					} else if (arr[ArrayMesh::ARRAY_INDEX].get_type() != Variant::POOL_INT_ARRAY) {
 						printf("No indices in surface\n");
-					} else if (((PoolIntArray) arr[ArrayMesh::ARRAY_INDEX]).size() == 0) {
+					} else if (((PoolIntArray)arr[ArrayMesh::ARRAY_INDEX]).size() == 0) {
 						printf("No indices in surface\n");
 					} else {
 						// only replace the surface if we have a valid surface or we'll loose our material.
@@ -677,7 +678,7 @@ void GDProcMesh::_update() {
 						surface_set_name(new_surface_id, name);
 
 						if (material.is_valid()) {
-							surface_set_material(new_surface_id, material);								
+							surface_set_material(new_surface_id, material);
 						}
 					}
 				}

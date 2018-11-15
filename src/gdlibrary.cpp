@@ -12,10 +12,10 @@
 
 #include "primitives/gdproccount.h"
 #include "primitives/gdproceuler.h"
-#include "primitives/gdprocrandom.h"
-#include "primitives/gdprocvector.h"
 #include "primitives/gdprocexec.h"
+#include "primitives/gdprocrandom.h"
 #include "primitives/gdprocsplitvector.h"
+#include "primitives/gdprocvector.h"
 
 #include "transforms/gdprocadd.h"
 #include "transforms/gdprocbevel.h"
@@ -111,4 +111,3 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 	// output
 	godot::register_tool_class<godot::GDProcOutput>();
 }
-

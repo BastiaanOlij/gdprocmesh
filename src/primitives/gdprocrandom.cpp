@@ -67,7 +67,7 @@ float GDProcRandom::get_min_value() const {
 
 void GDProcRandom::set_max_value(float p_minvalue) {
 	if (default_max_value != p_minvalue) {
-		default_max_value  = p_minvalue;
+		default_max_value = p_minvalue;
 		must_update = true;
 		emit_signal("changed");
 	}
@@ -140,7 +140,7 @@ bool GDProcRandom::update(bool p_inputs_updated, const Array &p_inputs) {
 		values.resize(count);
 		if (count > 0) {
 			if (seed == 0) {
-				srand((int) time(NULL));
+				srand((int)time(NULL));
 			} else {
 				srand(seed);
 			}
@@ -150,11 +150,11 @@ bool GDProcRandom::update(bool p_inputs_updated, const Array &p_inputs) {
 			for (int i = 0; i < count; i++) {
 				float a = min[i % num_min_values];
 				float b = max[i % num_min_values];
-				float r = (float) rand();
+				float r = (float)rand();
 				r /= RAND_MAX;
-				r *= (b-a);
+				r *= (b - a);
 				w[i] = a + r;
-			}			
+			}
 		}
 	}
 

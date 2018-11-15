@@ -61,7 +61,7 @@ bool GDProcCircle::update(bool p_inputs_updated, const Array &p_inputs) {
 			if (p_inputs[0].get_type() == Variant::POOL_REAL_ARRAY) {
 				PoolRealArray r = p_inputs[0];
 				if (r.size() > 0) {
-					radius = r[0];					
+					radius = r[0];
 				}
 			}
 		}
@@ -69,7 +69,7 @@ bool GDProcCircle::update(bool p_inputs_updated, const Array &p_inputs) {
 			if (p_inputs[1].get_type() == Variant::POOL_INT_ARRAY) {
 				PoolIntArray s = p_inputs[1];
 				if (s.size() > 0) {
-					segments = s[0];					
+					segments = s[0];
 				}
 			}
 		}
@@ -138,7 +138,7 @@ Variant::Type GDProcCircle::get_output_connector_type(int p_slot) const {
 		case 0:
 			return Variant::POOL_VECTOR3_ARRAY;
 		default:
-			return Variant::NIL;		
+			return Variant::NIL;
 	}
 }
 

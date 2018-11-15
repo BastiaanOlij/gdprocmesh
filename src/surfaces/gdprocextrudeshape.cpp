@@ -62,7 +62,6 @@ bool GDProcExtrudeShape::get_path_follow() const {
 	return path_follow;
 }
 
-
 bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 	bool updated = must_update || p_inputs_updated;
 	must_update = false;
@@ -122,7 +121,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 			}
 		}
 
-		// make sure we have enough definition for extrusion 
+		// make sure we have enough definition for extrusion
 		if ((num_shape >= (sic ? 3 : 2)) && (num_path >= (pic ? 3 : 2))) {
 
 			// lock our source buffers for reading
@@ -139,7 +138,7 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 					out = sr[(i + 1) % num_shape];
 				} else {
 					in = sr[i == 0 ? 0 : i - 1];
-					out = sr[i < (num_shape - 1) ? i + 1 : (num_shape -1)];
+					out = sr[i < (num_shape - 1) ? i + 1 : (num_shape - 1)];
 				}
 
 				n = (out - in).normalized().cross(Vector3(0.0, 0.0, 1.0));
@@ -302,7 +301,6 @@ bool GDProcExtrudeShape::update(bool p_inputs_updated, const Array &p_inputs) {
 					iw[curr_index++] = last_start_vertice + (j - 1);
 					iw[curr_index++] = last_start_vertice + j;
 				}
-
 			}
 		}
 

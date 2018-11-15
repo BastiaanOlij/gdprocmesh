@@ -129,7 +129,8 @@ bool GDProcExec::update(bool p_inputs_updated, const Array &p_inputs) {
 		if (expression == String()) {
 			// No expression. Leave output unmodified
 			Godot::print_warning(String("Node '{0}' failed to parse expression. Output will be unmodified.\nError Message: No expression found.")
-				.format(Array::make(get_node_name())), __FUNCTION__, __FILE__, __LINE__);
+										 .format(Array::make(get_node_name())),
+					__FUNCTION__, __FILE__, __LINE__);
 			return false;
 		}
 
@@ -187,7 +188,8 @@ bool GDProcExec::update(bool p_inputs_updated, const Array &p_inputs) {
 		if (err != Error::OK) {
 			// We error'd out. output is unmodified.
 			Godot::print_warning(String("Node '{0}' failed to parse expression. Output will be unmodified.\nError Message: {1}")
-					.format(Array::make(get_node_name(), executor->get_error_text())), __FUNCTION__, __FILE__, __LINE__);
+										 .format(Array::make(get_node_name(), executor->get_error_text())),
+					__FUNCTION__, __FILE__, __LINE__);
 			return false;
 		}
 
@@ -219,7 +221,8 @@ bool GDProcExec::update(bool p_inputs_updated, const Array &p_inputs) {
 			if (executor->has_execute_failed()) {
 				// If first execution fails, all of them will fail so exit early
 				Godot::print_warning(String("Node '{0}' failed to execute expression. Output will be unmodified.\nError Message: {1}")
-						.format(Array::make(get_node_name(), executor->get_error_text())), __FUNCTION__, __FILE__, __LINE__);
+											 .format(Array::make(get_node_name(), executor->get_error_text())),
+						__FUNCTION__, __FILE__, __LINE__);
 				return false;
 			} else {
 				vw[i] = v;

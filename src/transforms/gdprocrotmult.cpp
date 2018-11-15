@@ -93,7 +93,7 @@ int GDProcRotMult::get_input_connector_count() const {
 }
 
 Variant::Type GDProcRotMult::get_input_connector_type(int p_slot) const {
-	// we don't have a POOL_QUAD_ARRAY, abusing color for storing 
+	// we don't have a POOL_QUAD_ARRAY, abusing color for storing
 	if (p_slot == 0) {
 		return Variant::POOL_COLOR_ARRAY;
 	} else {
@@ -116,7 +116,7 @@ int GDProcRotMult::get_output_connector_count() const {
 }
 
 Variant::Type GDProcRotMult::get_output_connector_type(int p_slot) const {
-	// we don't have a POOL_QUAD_ARRAY, abusing color for storing 
+	// we don't have a POOL_QUAD_ARRAY, abusing color for storing
 	return Variant::POOL_COLOR_ARRAY;
 }
 
@@ -127,4 +127,3 @@ const String GDProcRotMult::get_output_connector_name(int p_slot) const {
 const Variant GDProcRotMult::get_output(int p_slot) const {
 	return Variant(values);
 }
-
