@@ -86,10 +86,16 @@ License
 =======
 I've made the source in this repository available under an MIT license. If you find it useful, it would always be nice to get a mention.
 
+The following 3rd party libraries are used:
+
+* [Fast Quadric Mesh Simplication](https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification) - MIT licensed
+
 Note that for the demo:
-- HRDI texture is from [HDRI Haven](https://hdrihaven.com)
-- Rope and plank texture is from [CC0 Textures.com](https://cc0textures.com)
-- Not sure where the numbered textures came from
+
+* HRDI texture is from [HDRI Haven](https://hdrihaven.com)
+* Rope and plank texture is from [CC0 Textures.com](https://cc0textures.com)
+* Not sure where the numbered textures came from
+
 Please visit these sites for further license details
 
 About this repository

@@ -35,6 +35,7 @@
 #include "shapes/gdprocrect.h"
 
 #include "surfaces/gdprocextrudeshape.h"
+#include "surfaces/gdprocsimplify.h"
 #include "surfaces/gdprocsurface.h"
 
 #include "modifiers/gdprocmerge.h"
@@ -98,6 +99,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 
 	// surfaces
 	godot::register_tool_class<godot::GDProcExtrudeShape>();
+	godot::register_tool_class<godot::GDProcSimplify>();
 	godot::register_tool_class<godot::GDProcSurface>();
 
 	// modifiers (work on surfaces)

@@ -132,6 +132,7 @@ func _ready():
 
 	# Surface
 	_add_node_class("Surfaces/Extrude Shape", "GDProcExtrudeShape")
+	_add_node_class("Surfaces/Simplify", "GDProcSimplify")
 	_add_node_class("Surfaces/Surface", "GDProcSurface")
 
 	# modifiers (work on surfaces)
