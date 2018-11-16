@@ -296,10 +296,10 @@ bool GDProcSimplify::update(bool p_inputs_updated, const Array &p_inputs) {
 								// Gram-Schmidt orthogonalize
 								vec3f tn = (t1 - n * n.dot(t1)).normalize();
 
-								// And copy into our tangent buffer
-								tw[ti++] = (float)tn.x;
-								tw[ti++] = (float)tn.y;
-								tw[ti++] = (float)tn.z;
+								// And copy into our tangent buffer (note that we negate the tangent due to Godot handedness)
+								tw[ti++] = (float)-tn.x;
+								tw[ti++] = (float)-tn.y;
+								tw[ti++] = (float)-tn.z;
 
 								// Calculate handedness
 								vec3f nc; // cross also assigns, bit weird..
