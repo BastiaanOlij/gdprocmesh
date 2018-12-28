@@ -475,7 +475,7 @@ void GDProcMesh::_post_init() {
 		int box_id = add_node(box);
 
 		// add our connections
-		add_connection(output_id, 0, box_id, 0); // bind to our output
+		// add_connection(output_id, 0, box_id, 0); // bind to our output
 
 		// note that this will have trigger an update...
 	}
