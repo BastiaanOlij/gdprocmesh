@@ -13,8 +13,7 @@ This is best explained with a video:
 
 That video shows the construction of a simple rope bridge where the length and width can be adjusted and instead of the bridge getting stretched, as would happen if you scale the bridge, it actually adds ropes and boards.
 
-You will need a recent Godot 3.1 master build to run this module.
-You can download a nightly build of Godot 3.1 from Hugos [Unofficial Godot Engine builds](https://hugo.pro/projects/godot-builds/) website.
+You will need Godot 3.1 or later to run this module.
 A copy of the 64bit Windows DLL is included in the demo folder, use at your own risk.
 
 Downloading and compiling
@@ -33,7 +32,7 @@ This project relies on [godot_headers](https://github.com/GodotNativeTools/godot
 These dependencies will need to be compiled:
 ```
 cd godot-cpp
-scons platform=windows generate_bindings=yes use_custom_api_file=yes custom_api_file=../api.json
+scons platform=windows generate_bindings=yes
 cd ..
 ```
 (custom api is temporary as we needed a newer api file)
@@ -108,4 +107,4 @@ This repository was created by and is maintained by Bastiaan Olij a.k.a. Mux213
 
 You can follow me on [Twitter](https://twitter.com/mux213) for regular updates.
 
-Videos about my work with Godot can by found on my [Youtube page](https://www.youtube.com/channel/UCrbLJYzJjDf2p-vJC011lYw)
+Videos about my work with Godot can by found on my [Youtube page](https://www.youtube.com/BastiaanOlij)

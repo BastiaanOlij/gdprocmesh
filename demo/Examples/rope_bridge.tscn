@@ -3,17 +3,6 @@
 [ext_resource path="res://Examples/rope_bridge.tres" type="ArrayMesh" id=1]
 
 [node name="Rope bridge" type="MeshInstance"]
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
-skeleton = NodePath("..")
 material/0 = null
 material/1 = null
-

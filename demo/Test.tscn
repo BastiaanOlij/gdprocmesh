@@ -1,43 +1,41 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdnlib" type="GDNativeLibrary" id=1]
 [ext_resource path="res://addons/gdprocmesh/gdprocmesh.gdns" type="Script" id=2]
 
-[sub_resource type="CubeMesh" id=6]
-
-
 [sub_resource type="NativeScript" id=1]
 
-class_name = "GDProcOutput"
+class_name = "GDProcBox"
 library = ExtResource( 1 )
 
 [sub_resource type="Resource" id=2]
 
-resource_name = "Output"
 script = SubResource( 1 )
-position = Vector2( 600, 50 )
-node_name = "Output_1"
+position = Vector2( 10, -25 )
+node_name = "Box"
 hide_input = false
+width = 1.0
+height = 1.0
+depth = 1.0
 
 [sub_resource type="NativeScript" id=3]
 
-class_name = "GDProcInMesh"
+class_name = "GDProcOutput"
 library = ExtResource( 1 )
 
 [sub_resource type="Resource" id=4]
 
 script = SubResource( 3 )
-position = Vector2( -60, -20 )
-node_name = "Input Mesh"
+position = Vector2( 360, 0 )
+node_name = "Output"
 hide_input = false
 
 [sub_resource type="ArrayMesh" id=5]
 
 script = ExtResource( 2 )
-nodes/1 = SubResource( 2 )
-nodes/2 = SubResource( 4 )
+nodes/2 = SubResource( 2 )
+nodes/3 = SubResource( 4 )
 graph/connections = PoolIntArray(  )
-"inputs/Input Mesh" = SubResource( 6 )
 
 [node name="Spatial" type="Spatial"]
 

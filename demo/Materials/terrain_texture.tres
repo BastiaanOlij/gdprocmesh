@@ -3,7 +3,6 @@
 [ext_resource path="res://Textures/texturesCom/TexturesCom_RockGrassy0142_2_seamless_S.jpg" type="Texture" id=1]
 
 [sub_resource type="Shader" id=1]
-
 code = "shader_type spatial;
 
 uniform sampler2D terrain_texture : hint_albedo;
@@ -21,9 +20,5 @@ void fragment() {
 }"
 
 [resource]
-
-render_priority = 0
 shader = SubResource( 1 )
 shader_param/terrain_texture = ExtResource( 1 )
-_sections_unfolded = [ "shader", "shader_param" ]
-

@@ -2,12 +2,12 @@
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Examples/two_cubes.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Examples/test_extrude.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Examples/rope_bridge.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Examples/building.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Examples/building.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Examples/test_extrude.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Examples/rope_bridge.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Examples/track.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Examples/Reduce.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Examples/Ground.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Examples/Ground.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Examples/Reduce.tscn" type="PackedScene" id=8]
 
 [node name="Main" type="Spatial"]
 script = ExtResource( 1 )
@@ -15,19 +15,19 @@ script = ExtResource( 1 )
 [node name="Two cubes" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5 )
 
-[node name="Test extrude" parent="." instance=ExtResource( 3 )]
+[node name="Test extrude" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -2 )
 
-[node name="Rope bridge" parent="." instance=ExtResource( 4 )]
+[node name="Rope bridge" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
-[node name="Building" parent="." instance=ExtResource( 5 )]
+[node name="Building" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.03549, 0, -28.4394 )
 
 [node name="Track" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
-[node name="Reduce" parent="." instance=ExtResource( 7 )]
+[node name="Reduce" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1995, 2.65433, -2.97687 )
 
 [node name="Setup" type="Spatial" parent="."]
@@ -39,5 +39,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.34401 )
 transform = Transform( 0.75697, 0.468968, -0.455045, -0.179643, 0.818892, 0.54511, 0.628271, -0.330886, 0.704123, 0, 6.46809, 0 )
 shadow_enabled = true
 
-[node name="Ground" parent="Setup" instance=ExtResource( 8 )]
-
+[node name="Ground" parent="Setup" instance=ExtResource( 7 )]

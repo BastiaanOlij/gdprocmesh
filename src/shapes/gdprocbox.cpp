@@ -74,6 +74,9 @@ bool GDProcBox::update(bool p_inputs_updated, const Array &p_inputs) {
 
 		// resize our array just in case
 		surface_arr.resize(ArrayMesh::ARRAY_MAX);
+		for (int i = 0; i < ArrayMesh::ARRAY_MAX; i++) {
+			surface_arr[i] = Variant();
+		}
 
 		// process our inputs
 		int input_count = p_inputs.size();
